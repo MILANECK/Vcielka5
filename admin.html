@@ -427,6 +427,19 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
           <a href="skolka.html" target="_blank" class="btn-secondary" style="text-decoration:none;">🔐 Otvoriť stránku</a>
         </div>
       </div>
+      <div class="card" style="max-width:480px;">
+        <div class="card-title">🔗 URL adresa editora</div>
+        <p style="font-size:13px;color:#888;margin-bottom:18px;">Zadajte presnú cestu k súboru editora na vašom serveri. Napr. <code style="background:#f0f6ff;padding:2px 6px;border-radius:6px;">/vcielka_editor.html</code> alebo plnú URL.</p>
+        <div class="field">
+          <label>Aktuálna URL</label>
+          <input type="text" id="editor_url_current" placeholder="Načítavam…" readonly style="opacity:.6;"/>
+        </div>
+        <div class="field">
+          <label>Nová URL editora</label>
+          <input type="text" id="editor_url_new" placeholder="napr. /vcielka_editor.html"/>
+        </div>
+        <button class="btn-save" onclick="saveEditorUrl()">💾 Uložiť URL</button>
+      </div>
     </div>
   </div><!-- /main -->
 </div><!-- /app -->
@@ -1074,9 +1087,23 @@ async function deleteSkolkaFolder(folderId, folderName) {
 
 // ===== VS HESLO =====
 async function loadSkolkaPw() {
+  // also load editor URL
+  const { data: eu } = await db.from('settings').select('value').eq('key','editor_url').single();
+  const euel = document.getElementById('editor_url_current');
+  if (euel) euel.value = eu?.value || 'vcielka_editor.html';
+
   const { data } = await db.from('settings').select('value').eq('key','skolka_password').single();
   const el = document.getElementById('vs_pw_current');
   if (el) el.value = data?.value || 'vcielka2025';
+}
+
+async function saveEditorUrl() {
+  const url = document.getElementById('editor_url_new').value.trim();
+  if (!url) { toast('Zadajte URL', 'error'); return; }
+  await db.from('settings').upsert({ key: 'editor_url', value: url }, { onConflict: 'key' });
+  document.getElementById('editor_url_current').value = url;
+  document.getElementById('editor_url_new').value = '';
+  toast('✅ URL uložená!');
 }
 
 async function saveSkolkaPw() {

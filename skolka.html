@@ -105,7 +105,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#dce8f4;min-height:10
       </div>
     </div>
     <div class="vs-header-actions">
-      <a href="vcielka_editor.html" class="btn-editor" target="_blank">🖼️ Otvoriť Editor rámčekov</a>
+      <a href="#" id="editor-link-header" class="btn-editor" target="_blank">🖼️ Otvoriť Editor rámčekov</a>
       <button class="btn-logout" onclick="doLogout()">Odhlásiť</button>
     </div>
   </div>
@@ -126,7 +126,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#dce8f4;min-height:10
       <button class="gallery-close" onclick="closeGallery()">← Späť</button>
       <span class="gallery-header-title" id="gallery-title">Fotografie</span>
     </div>
-    <a href="vcielka_editor.html" class="btn-editor" target="_blank">🖼️ Otvoriť Editor</a>
+    <a href="#" id="editor-link-gallery" class="btn-editor" target="_blank">🖼️ Otvoriť Editor</a>
   </div>
   <div id="gallery-grid-fs" class="gallery-grid-fs"></div>
 </div>
@@ -160,6 +160,7 @@ async function doLogin() {
     document.getElementById('login-wrap').style.display='none';
     document.getElementById('app').style.display='block';
     loadFolders();
+    loadEditorUrl();
   } else {
     document.getElementById('login-error').style.display='block';
     setTimeout(()=>document.getElementById('login-error').style.display='none',3000);
@@ -238,7 +239,18 @@ document.addEventListener('keydown', e => {
   if (e.key==='ArrowLeft') lbPrev();
 });
 
+// ── LOAD EDITOR URL ──
+async function loadEditorUrl() {
+  const { data } = await db.from('settings').select('value').eq('key','editor_url').single();
+  const url = data?.value || 'vcielka_editor.html';
+  const h = document.getElementById('editor-link-header');
+  const g = document.getElementById('editor-link-gallery');
+  if(h) h.href = url;
+  if(g) g.href = url;
+}
+
 // ── BOOT ──
+loadEditorUrl();
 if (sessionStorage.getItem('vs_auth')==='1') {
   document.getElementById('login-wrap').style.display='none';
   document.getElementById('app').style.display='block';
