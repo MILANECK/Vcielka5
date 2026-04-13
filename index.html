@@ -1071,7 +1071,7 @@ button{outline:none;border:none;}
             <div class="contact-sub">kliknutím zavoláte</div>
           </div>
       </a>
-      <a class="contact-card green" href="/cdn-cgi/l/email-protection#f0999e969fb0839b9f9c9b91dd869399959c9b91de839b">
+      <a class="contact-card green" href="/cdn-cgi/l/email-protection#bdd4d3dbd2fdced6d2d1d6dc90cbded4d8d1d6dc93ced6">
           <div class="contact-icon">✉️</div>
           <div class="contact-body">
             <div class="contact-label">E-mail</div>
@@ -1133,7 +1133,7 @@ button{outline:none;border:none;}
       <h4>Kontakt</h4>
       <span class="footer-link">Sečovská 144/3, Ružinov</span>
       <a href="tel:0918607935" class="footer-link">0918 607 935</a>
-      <a href="/cdn-cgi/l/email-protection#afc6c1c9c0efdcc4c0c3c4ce82d9ccc6cac3c4ce81dcc4" class="footer-link"><span class="__cf_email__" data-cfemail="a5cccbc3cae5d6cecac9cec488d3c6ccc0c9cec48bd6ce">[email&#160;protected]</span></a>
+      <a href="/cdn-cgi/l/email-protection#640d0a020b24170f0b080f054912070d01080f054a170f" class="footer-link"><span class="__cf_email__" data-cfemail="e68f888089a6958d898a8d87cb90858f838a8d87c8958d">[email&#160;protected]</span></a>
       <span class="footer-link">Po–Pia: 7:00 – 17:00</span>
     </div>
   </div>
@@ -1563,9 +1563,9 @@ async function openFullGallery(){
     try {
       const { createClient } = supabase;
       const db2 = createClient('https://fmjtzuligqsugsauqkgz.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZtanR6dWxpZ3FzdWdzYXVxa2d6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MTQyMTUsImV4cCI6MjA5MDk5MDIxNX0.gRF-roExLgnVDG4bSNt7EzX6c1v-JtM5v6ZcX8dY934');
-      const { data } = await db2.from('gallery').select('*').order('id',{ascending:false});
-      if(data && data.length){
-        grid.innerHTML = data.map(g =>
+      const { data: gItems } = await db2.from('gallery').select('*').order('sort_order');
+      if(gItems?.length){
+        grid.innerHTML = gItems.map((g,i) =>
           `<div class="gallery-popup-item" onclick="openLightboxUrl('${g.photo_url}')"><img src="${g.photo_url}" alt="foto" loading="lazy"/></div>`
         ).join('');
       } else { grid.innerHTML='<div style="color:rgba(255,255,255,.5);">Galéria je prázdna.</div>'; }
@@ -1637,4 +1637,11 @@ document.addEventListener('DOMContentLoaded', function(){
   const lbNext = document.getElementById('lbNext');
   const lbClose = document.getElementById('lbClose');
   const lb = document.getElementById('lightbox');
-  if(lbPrev) lbPrev.addEventListener('cli
+  if(lbPrev) lbPrev.addEventListener('click', e=>{e.stopPropagation();lbGo(-1);});
+  if(lbNext) lbNext.addEventListener('click', e=>{e.stopPropagation();lbGo(1);});
+  if(lb) lb.addEventListener('click',e=>{if(e.target===lb)closeLightbox();});
+  if(lbClose) lbClose.addEventListener('click',closeLightbox);
+});
+</script>
+</body>
+</html>
