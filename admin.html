@@ -542,13 +542,18 @@ async function loadActivities() {
         <button class="btn-danger" style="padding:5px 10px;font-size:11px;" onclick="deleteActivity(${a.id})">🗑️ Odstrániť</button>
       </div>
       ${a.photo_url
-        ? `<img class="activity-photo" src="${a.photo_url}" alt="" onclick="this.nextElementSibling.click()" style="cursor:pointer;" title="Kliknite pre zmenu foto"/>
-           <div style="display:none;"><input type="file" accept="image/*" onchange="uploadActivityPhoto(this,${a.id})"/></div>
-           <button class="btn-danger" style="width:100%;margin-bottom:8px;" onclick="removeActivityPhoto(${a.id})">🗑️ Odstrániť foto</button>`
-        : `<div class="activity-photo-placeholder">
-            <input type="file" accept="image/*" onchange="uploadActivityPhoto(this,${a.id})"/>
-            📷
+        ? `<img class="activity-photo" src="${a.photo_url}" alt=""/>
+           <div style="display:flex;gap:8px;margin-bottom:8px;">
+             <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:#D9EFFF;color:#1A5FA8;font-family:'Quicksand',sans-serif;font-size:12px;font-weight:700;padding:7px 12px;border-radius:50px;cursor:pointer;">
+               <input type="file" accept="image/*" style="display:none;" onchange="uploadActivityPhoto(this,${a.id})"/>
+               📷 Zmeniť foto
+             </label>
+             <button class="btn-danger" style="flex:1;" onclick="removeActivityPhoto(${a.id})">🗑️ Odstrániť foto</button>
            </div>`
+        : `<label style="display:flex;align-items:center;justify-content:center;gap:8px;background:#E0ECFF;border-radius:10px;height:100px;margin-bottom:10px;cursor:pointer;border:2px dashed #C8E6FA;">
+             <input type="file" accept="image/*" style="display:none;" onchange="uploadActivityPhoto(this,${a.id})"/>
+             📷 Nahrať foto
+           </label>`
       }
       <div class="field"><label>Emoji ikona</label>
         <input type="text" value="${a.icon}" onchange="updateActivity(${a.id},'icon',this.value)" style="font-size:20px;text-align:center;"/>
@@ -556,8 +561,11 @@ async function loadActivities() {
       <div class="field"><label>Názov</label>
         <input type="text" value="${a.title}" onchange="updateActivity(${a.id},'title',this.value)"/>
       </div>
-      <div class="field"><label>Popis</label>
+      <div class="field"><label>Krátky popis (na karte)</label>
         <textarea onchange="updateActivity(${a.id},'description',this.value)">${a.description||''}</textarea>
+      </div>
+      <div class="field"><label>Text popupu „Viac" (dlhší popis)</label>
+        <textarea style="min-height:100px;" onchange="updateActivity(${a.id},'popup_text',this.value)">${a.popup_text||''}</textarea>
       </div>
       <div class="field"><label>Farba karty</label>
         <select onchange="updateActivity(${a.id},'color',this.value)">
