@@ -204,6 +204,30 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#c8d8e4;color:#1a2a3a
 .sb-pridat:disabled{opacity:.4;cursor:default;transform:none}
 .sb-loading{text-align:center;padding:40px;color:#7a9ab0;font-size:14px}
 
+
+@media(max-width:768px){
+  #float-logo{width:54px;height:54px;padding:7px;top:10px;left:10px}
+  .fb-lg{width:50px;height:50px;font-size:18px}
+  .fb-sm{width:38px;height:38px;font-size:15px}
+  .fb-md{width:44px;height:44px;font-size:17px}
+  .icon{width:18px;height:18px}
+  #float-photos{gap:7px;left:10px}
+  #float-right{gap:7px;right:10px}
+  #float-template{top:10px;right:10px;gap:6px}
+  #tpl-thumb-big{width:58px;height:32px}
+  #tpl-change-btn{width:34px;height:34px}
+  #save-btn{padding:10px 18px;font-size:13px;gap:6px}
+  .zoom-wrap{padding:7px 10px;gap:5px}
+  #zoom-slider{width:70px}
+  .zoom-pct{font-size:12px;min-width:30px}
+  #float-bottom{gap:7px;bottom:10px}
+  #item-tb{bottom:62px;padding:5px 10px;gap:5px}
+  .itb-btn{width:42px;height:42px;font-size:17px}
+  #photos-panel{width:155px;left:58px;padding:11px;font-size:12px}
+  .photo-thumb img{height:60px}
+  .panel-hdr-title{font-size:12px}
+  #photo-count{font-size:10px}
+}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -284,8 +308,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#c8d8e4;color:#1a2a3a
   </div>
   <div id="photo-count">0/10 fotografií</div>
   <div id="photos-list"></div>
-  <div id="photos-empty">Nahrajte fotografie<br>pomocou + tlačidla<br><br><span style="font-size:10px;color:#a0b0c0">Na mobile: klepnite +</span></div>
-  <input type="file" id="up-inp" multiple accept="image/*" style="display:none" onchange="handleUpload(event)">
+  <div id="photos-empty">Pridajte fotografie<br>z Virtuálnej Školky<br>pomocou ružového tlačidla 📷<br><br><span style="font-size:10px;color:#a0b0c0">Klepnite na ružové tlačidlo vľavo</span></div>
 </div>
 
 <!-- Right: utility buttons -->
@@ -431,16 +454,11 @@ function tapPlace(pid){
   items.push(ni);mkPhoto(ni);setSel(ni.id);updateHints();toast('Fotografia pridaná!');
 }
 
-function handleUpload(e){
-  Array.from(e.target.files||[]).slice(0,10-photos.length).forEach(f=>{const fr=new FileReader();fr.onload=ev=>{photos.push({id:uid(),src:ev.target.result,name:f.name});renderPanel();};fr.readAsDataURL(f);});
-  e.target.value='';
-}
 
 function togglePanel(){
   panOpen=!panOpen;
   document.getElementById('photos-panel').classList.toggle('open',panOpen);
   document.getElementById('pan-btn').style.background=panOpen?'#cc0088':'#ff00aa';
-  if(panOpen) document.getElementById('up-inp').click();
 }
 
 function renderPanel(){

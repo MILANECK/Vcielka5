@@ -90,9 +90,12 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
 
 /* GALLERY GRID */
 .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;}
-.gallery-item{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:1;}
+.gallery-item{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:4/3;cursor:grab;transition:opacity .2s,transform .2s;}
+.gallery-item:active{cursor:grabbing;}
 .gallery-item img{width:100%;height:100%;object-fit:cover;}
 .gallery-item-del{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.6);color:#fff;border:none;border-radius:50%;width:26px;height:26px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;}
+.gallery-item.drag-over{outline:3px dashed #4A9FD4;outline-offset:2px;transform:scale(1.04);}
+.gallery-item.dragging{opacity:.35;}
 .gallery-upload{border:2px dashed #C8E6FA;border-radius:14px;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;transition:.2s;}
 .gallery-upload:hover{border-color:#4A9FD4;background:#F0F7FF;}
 .gallery-upload input{position:absolute;inset:0;opacity:0;cursor:pointer;}
@@ -751,7 +754,7 @@ async function loadGallery() {
   if (!grid) return;
   grid.innerHTML = '<div style="color:#888;font-size:13px;">Načítavam...</div>';
 
-  const { data, error } = await db.from('gallery').select('*').order('id', { ascending: false });
+  const { data, error } = await db.from('gallery').select('*').order('sort_order', { ascending: true });
 
   if (error) {
     grid.innerHTML = `<div style="color:red;font-size:13px;">Chyba: ${error.message}</div>`;
@@ -766,7 +769,9 @@ async function loadGallery() {
 
   grid.style.display = 'grid';
   grid.innerHTML = data.map(g => `
-    <div class="gallery-item" id="gitem-${g.id}">
+    <div class="gallery-item" id="gitem-${g.id}" data-id="${g.id}" draggable="true"
+         ondragstart="galleryDragStart(event)" ondragover="galleryDragOver(event)"
+         ondrop="galleryDrop(event)" ondragend="galleryDragEnd(event)">
       <img src="${g.photo_url}" alt="foto" loading="lazy" onerror="this.parentElement.style.background='#fee'"/>
       <button class="gallery-item-del" onclick="deleteGalleryItem(${g.id})">✕</button>
     </div>
@@ -1121,6 +1126,53 @@ async function saveSkolkaPw() {
   document.getElementById('vs_pw_current').value = newPw;
   document.getElementById('vs_pw_new').value = '';
   toast('✅ Heslo uložené!');
+}
+
+// ===== GALLERY DRAG TO REORDER =====
+let _galleryDragSrc = null;
+
+function galleryDragStart(e) {
+  _galleryDragSrc = e.currentTarget;
+  e.dataTransfer.effectAllowed = 'move';
+  setTimeout(() => e.currentTarget.classList.add('dragging'), 0);
+}
+
+function galleryDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  document.querySelectorAll('#galleryItemsGrid .gallery-item').forEach(el => el.classList.remove('drag-over'));
+  if (e.currentTarget !== _galleryDragSrc) e.currentTarget.classList.add('drag-over');
+}
+
+function galleryDrop(e) {
+  e.preventDefault();
+  if (!_galleryDragSrc || _galleryDragSrc === e.currentTarget) return;
+  const grid = document.getElementById('galleryItemsGrid');
+  const items = [...grid.querySelectorAll('.gallery-item')];
+  const srcIdx = items.indexOf(_galleryDragSrc);
+  const tgtIdx = items.indexOf(e.currentTarget);
+  if (srcIdx < tgtIdx) {
+    grid.insertBefore(_galleryDragSrc, e.currentTarget.nextSibling);
+  } else {
+    grid.insertBefore(_galleryDragSrc, e.currentTarget);
+  }
+  document.querySelectorAll('#galleryItemsGrid .gallery-item').forEach(el => el.classList.remove('drag-over'));
+}
+
+async function galleryDragEnd(e) {
+  e.currentTarget.classList.remove('dragging');
+  document.querySelectorAll('#galleryItemsGrid .gallery-item').forEach(el => el.classList.remove('drag-over'));
+  _galleryDragSrc = null;
+  await saveGalleryOrder();
+}
+
+async function saveGalleryOrder() {
+  const items = [...document.querySelectorAll('#galleryItemsGrid .gallery-item')];
+  for (let i = 0; i < items.length; i++) {
+    const id = parseInt(items[i].dataset.id);
+    await db.from('gallery').update({ sort_order: i }).eq('id', id);
+  }
+  toast('✅ Poradie uložené!');
 }
 
 // ===== BOOT =====
