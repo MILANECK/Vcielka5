@@ -617,8 +617,8 @@ button{outline:none;border:none;}
 /* ===== O NÁS SECTION ===== */
 .onas-body{max-width:720px;margin:0 auto;text-align:center;}
 .onas-body p{font-family:'Inter',sans-serif;font-size:16px;color:#444;line-height:1.78;margin-bottom:16px;}
-.onas-expand{max-height:0;overflow:hidden;transition:max-height .55s ease,opacity .4s ease;opacity:0;}
-.onas-expand.open{max-height:2000px;opacity:1;}
+.onas-expand{max-height:0;overflow:hidden;transition:max-height .45s ease-out;}
+.onas-expand.open{max-height:3000px;}
 .onas-expand p{font-family:'Inter',sans-serif;font-size:16px;color:#444;line-height:1.78;margin-bottom:16px;text-align:center;}
 .onas-expand ul{list-style:none;padding:0;margin:4px 0 16px;display:inline-block;text-align:left;}
 .onas-expand ul li{font-family:'Inter',sans-serif;font-size:15px;color:#444;line-height:1.7;padding-left:22px;position:relative;margin-bottom:6px;}
@@ -632,9 +632,8 @@ button{outline:none;border:none;}
 .ppv-section{max-width:720px;margin:48px auto 0;text-align:center;padding-top:40px;border-top:1.5px solid rgba(0,0,0,.07);}
 .ppv-section h3{font-family:'Quicksand',sans-serif;font-size:clamp(18px,3vw,24px);font-weight:700;color:#1A5FA8;margin-bottom:20px;}
 .ppv-section>p{font-family:'Inter',sans-serif;font-size:16px;color:#444;line-height:1.78;margin-bottom:0;}
-.ppv-expand{max-height:0;overflow:hidden;transition:max-height .55s ease,opacity .4s ease;opacity:0;}
-.ppv-expand.open{max-height:2000px;opacity:1;}
-.ppv-expand p{font-family:'Inter',sans-serif;font-size:16px;color:#444;line-height:1.78;margin-top:16px;}
+.ppv-btn{display:inline-flex;align-items:center;gap:9px;background:var(--blue-light);color:#fff;font-family:'Quicksand',sans-serif;font-size:14px;font-weight:700;padding:12px 26px;border-radius:50px;border:none;cursor:pointer;margin-top:20px;text-decoration:none;transition:background .2s,transform .15s;}
+.ppv-btn:hover{background:#1A5FA8;transform:translateY(-1px);}
 
 /* ===== CLOUDS ===== */
 .cloud-deco{position:absolute;pointer-events:none;opacity:0.4;z-index:0;}
@@ -823,7 +822,7 @@ button{outline:none;border:none;}
 <!-- ===========================
      O NÁS
 =========================== -->
-<section class="section bg-warm" id="o-nas" style="position:relative;padding-bottom:48px;">
+<section class="section bg-yellow-pale" id="o-nas" style="position:relative;padding-bottom:48px;">
   <div class="section-center fade-in">
     <span class="label">O nás</span>
     <h2>Kto sme</h2>
@@ -843,7 +842,6 @@ button{outline:none;border:none;}
     </div>
     <button class="onas-toggle" id="onasBtn" onclick="toggleOnas()">
       <div class="onas-chevrons">
-        <svg viewBox="0 0 24 13" width="28" height="15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 11 L12 2 L22 11" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <svg viewBox="0 0 24 13" width="28" height="15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 2 L12 11 L22 2" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
       <span class="onas-toggle-label" id="onasBtnLabel">Čítať viac</span>
@@ -853,22 +851,13 @@ button{outline:none;border:none;}
     <div class="ppv-section fade-in">
       <h3>Povinné predprimárne vzdelávanie</h3>
       <p id="cms-ppv-intro">Predprimárne vzdelávanie je povinné pre všetky deti, ktoré dovŕšia vek 5 rokov do 31. 8. v roku, ktorý predchádza začiatku školského roka, od ktorého bude dieťa plniť povinnú školskú dochádzku v základnej škole. Rodič má zákonnú povinnosť prihlásiť dieťa na povinné predprimárne vzdelávanie. Povinné predprimárne vzdelávanie v materskej škole trvá jeden školský rok.</p>
-      <div class="ppv-expand" id="ppvExpand">
-        <p id="cms-ppv-extra"></p>
-      </div>
-      <button class="onas-toggle" id="ppvBtn" onclick="togglePpv()" style="display:none;">
-        <div class="onas-chevrons">
-          <svg viewBox="0 0 24 13" width="28" height="15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 11 L12 2 L22 11" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <svg viewBox="0 0 24 13" width="28" height="15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 2 L12 11 L22 2" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <span class="onas-toggle-label" id="ppvBtnLabel">Viac</span>
-      </button>
+      <a href="ppv.html" class="ppv-btn">Čítať viac →</a>
     </div>
   </div>
 </section>
 
 <!-- wave o-nas→services -->
-<svg class="wave" viewBox="0 0 1440 55" preserveAspectRatio="none" style="display:block;margin-bottom:-2px;background:#FFFDF8;" xmlns="http://www.w3.org/2000/svg">
+<svg class="wave" viewBox="0 0 1440 55" preserveAspectRatio="none" style="display:block;margin-bottom:-2px;background:#FFF9E0;" xmlns="http://www.w3.org/2000/svg">
   <path d="M0,40 C280,5 600,55 900,22 C1100,5 1300,46 1440,28 L1440,55 L0,55Z" fill="#D9EFFF"/>
 </svg>
 

@@ -227,13 +227,14 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
 
       <div class="card">
         <div class="card-title">📜 Povinné predprimárne vzdelávanie</div>
+        <p style="font-size:12px;color:#888;margin-bottom:14px;">Krátky úryvok sa zobrazí na hlavnej stránke. Celý text sa zobrazí na samostatnej podstránke <strong>ppv.html</strong> po kliknutí na tlačidlo „Čítať viac →".</p>
         <div class="field">
-          <label>Viditeľný text (zobrazený vždy)</label>
+          <label>Krátky úryvok (na hlavnej stránke)</label>
           <textarea id="ppv_intro" style="min-height:120px;" placeholder="Predprimárne vzdelávanie je povinné pre všetky deti..."></textarea>
         </div>
         <div class="field">
-          <label>Celý text (rozbaľovací, zobrazí sa po kliknutí „Viac")</label>
-          <textarea id="ppv_extra" style="min-height:150px;" placeholder="Zadajte rozbaľovací text. Ak je prázdny, tlačidlo sa nezobrazí."></textarea>
+          <label>Celý text podstránky ppv.html (môže byť dlhý — podporuje nové riadky)</label>
+          <textarea id="ppv_extra" style="min-height:260px;" placeholder="Tu vložte celý text o povinnom predprimárnom vzdelávaní..."></textarea>
         </div>
         <button class="btn-save" onclick="saveSettings(['ppv_intro','ppv_extra'])">💾 Uložiť</button>
       </div>
