@@ -1784,17 +1784,23 @@ function toggleUcebneInline(){
   const text = document.getElementById('ucebneInlineText');
   if(!btn || !text) return;
   const isOpen = text.classList.contains('open');
-  // close the other accordion if open
   if(!isOpen){
     document.getElementById('zvedavaText')?.classList.remove('open');
     document.getElementById('zvedavaBtn')?.classList.remove('open');
+    text.classList.add('open');
+    btn.classList.add('open');
+    // after the max-height transition finishes, let shadows breathe outside
+    setTimeout(()=>{ if(text.classList.contains('open')) text.style.overflow='visible'; }, 520);
+    setTimeout(()=>{ text.scrollIntoView({behavior:'smooth', block:'nearest'}); }, 100);
+  } else {
+    text.style.overflow='hidden'; // clip again before closing animation
+    text.classList.remove('open');
+    btn.classList.remove('open');
   }
-  text.classList.toggle('open', !isOpen);
-  btn.classList.toggle('open', !isOpen);
-  if(!isOpen) setTimeout(()=>{ text.scrollIntoView({behavior:'smooth', block:'nearest'}); }, 100);
 }
 function closeUcebneOsnovy(){
-  document.getElementById('ucebneInlineText')?.classList.remove('open');
+  const text = document.getElementById('ucebneInlineText');
+  if(text){ text.style.overflow='hidden'; text.classList.remove('open'); }
   document.getElementById('ucebneBtn')?.classList.remove('open');
 }
 
@@ -1817,19 +1823,18 @@ document.addEventListener('keydown', e=>{
 })();
 
 // ===== MOUSE-FOLLOW BEE (O NÁS section only) =====
-(function(){
+document.addEventListener('DOMContentLoaded', function(){
   const bee = document.getElementById('mouseFollowBee');
   if(!bee) return;
-  // target the yellow O nás section (second #o-nas)
   const onas = document.querySelector('section.bg-yellow-pale');
-  let mx = 0, my = 0, cx = 0, cy = 0, visible = false, raf;
+  let mx = 0, my = 0, cx = 0, cy = 0;
   function lerp(a,b,t){ return a+(b-a)*t; }
   function tick(){
     cx = lerp(cx, mx, 0.07);
     cy = lerp(cy, my, 0.07);
     bee.style.left = cx + 'px';
     bee.style.top  = cy + 'px';
-    raf = requestAnimationFrame(tick);
+    requestAnimationFrame(tick);
   }
   document.addEventListener('mousemove', e=>{
     mx = e.clientX;
@@ -1840,7 +1845,7 @@ document.addEventListener('keydown', e=>{
     bee.style.opacity = inside ? '1' : '0';
   });
   tick();
-})();
+});
 // Lightbox arrows
 document.addEventListener('DOMContentLoaded', function(){
   const lbPrev = document.getElementById('lbPrev');
