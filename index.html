@@ -614,6 +614,28 @@ button{outline:none;border:none;}
 .about-text-inner p{margin-bottom:12px;}
 .about-text-inner p:last-child{margin-bottom:0;}
 
+/* ===== O NÁS SECTION ===== */
+.onas-body{max-width:720px;margin:0 auto;text-align:center;}
+.onas-body p{font-family:'Inter',sans-serif;font-size:16px;color:#444;line-height:1.78;margin-bottom:16px;}
+.onas-expand{max-height:0;overflow:hidden;transition:max-height .55s ease,opacity .4s ease;opacity:0;}
+.onas-expand.open{max-height:2000px;opacity:1;}
+.onas-expand p{font-family:'Inter',sans-serif;font-size:16px;color:#444;line-height:1.78;margin-bottom:16px;text-align:center;}
+.onas-expand ul{list-style:none;padding:0;margin:4px 0 16px;display:inline-block;text-align:left;}
+.onas-expand ul li{font-family:'Inter',sans-serif;font-size:15px;color:#444;line-height:1.7;padding-left:22px;position:relative;margin-bottom:6px;}
+.onas-expand ul li::before{content:'—';position:absolute;left:0;color:#5590C4;font-weight:700;}
+.onas-toggle{display:flex;flex-direction:column;align-items:center;gap:5px;background:none;border:none;cursor:pointer;margin:24px auto 0;padding:6px 12px;color:#1a1a1a;transition:color .2s;}
+.onas-toggle:hover{color:#5590C4;}
+.onas-chevrons{display:flex;flex-direction:column;align-items:center;gap:2px;transition:transform .4s ease;}
+.onas-toggle.open .onas-chevrons{transform:rotate(180deg);}
+.onas-toggle-label{font-family:'Quicksand',sans-serif;font-size:13px;font-weight:700;letter-spacing:.3px;}
+/* ===== PPV SUBSECTION ===== */
+.ppv-section{max-width:720px;margin:48px auto 0;text-align:center;padding-top:40px;border-top:1.5px solid rgba(0,0,0,.07);}
+.ppv-section h3{font-family:'Quicksand',sans-serif;font-size:clamp(18px,3vw,24px);font-weight:700;color:#1A5FA8;margin-bottom:20px;}
+.ppv-section>p{font-family:'Inter',sans-serif;font-size:16px;color:#444;line-height:1.78;margin-bottom:0;}
+.ppv-expand{max-height:0;overflow:hidden;transition:max-height .55s ease,opacity .4s ease;opacity:0;}
+.ppv-expand.open{max-height:2000px;opacity:1;}
+.ppv-expand p{font-family:'Inter',sans-serif;font-size:16px;color:#444;line-height:1.78;margin-top:16px;}
+
 /* ===== CLOUDS ===== */
 .cloud-deco{position:absolute;pointer-events:none;opacity:0.4;z-index:0;}
 @keyframes cloudDrift1{0%{transform:translateX(0) translateY(0);}33%{transform:translateX(20px) translateY(-8px);}66%{transform:translateX(8px) translateY(5px);}100%{transform:translateX(0) translateY(0);}}
@@ -798,7 +820,54 @@ button{outline:none;border:none;}
 </div>
 </div>
 
-<!-- wave stats→services -->
+<!-- ===========================
+     O NÁS
+=========================== -->
+<section class="section bg-warm" id="o-nas" style="position:relative;padding-bottom:48px;">
+  <div class="section-center fade-in">
+    <span class="label">O nás</span>
+    <h2>Kto sme</h2>
+  </div>
+  <div class="onas-body fade-in">
+    <p id="cms-onas-p1">Sme súkromná materská škola s 20-ročnou tradíciou, kde sa stretáva odborná starostlivosť s rodinnou atmosférou a deťom ponúkame rozmanité možnosti predprimárneho vzdelávania.</p>
+    <p id="cms-onas-p2">Hlavným cieľom výchovy a vzdelávania je umožniť deťom hravou formou, na základe ich prirodzenej zvedavosti, dosiahnuť optimálnu kognitívnu, senzomotorickú a sociálno-emocionálnu úroveň ako základ pre ďalšie vzdelávanie v základnej škole a pre život v spoločnosti – v súlade s individuálnymi a vekovými osobitosťami detí.</p>
+    <div class="onas-expand" id="onasExpand">
+      <p id="cms-onas-extra-p1">K materskej škole patrí priestranný, oplotený areál so školským dvorom, ktorý ponúka deťom bezpečné a podnetné prostredie na hry a rôzne aktivity. Nachádza sa na Sečovskej ulici č. 3 v mestskej časti Bratislava-Ružinov.</p>
+      <p id="cms-onas-extra-p2">Naša materská škola vznikla v roku 2006 a od roku 2010 je zaradená do siete škôl a školských zariadení SR. Garantujeme predprimárne vzdelávanie v zmysle príslušnej platnej legislatívy:</p>
+      <ul id="cms-onas-list">
+        <li>zariadenie spĺňa štátne vzdelávacie štandardy a je kontrolované Ministerstvom školstva,</li>
+        <li>učitelia s odborným vzdelaním a praxou v oblasti predprimárneho vzdelávania,</li>
+        <li>plynulý prechod detí do základnej školy v rámci jednotného systému,</li>
+        <li>pravidelné kontroly a dodržiavanie hygienických a bezpečnostných noriem.</li>
+      </ul>
+    </div>
+    <button class="onas-toggle" id="onasBtn" onclick="toggleOnas()">
+      <div class="onas-chevrons">
+        <svg viewBox="0 0 24 13" width="28" height="15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 11 L12 2 L22 11" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg viewBox="0 0 24 13" width="28" height="15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 2 L12 11 L22 2" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="onas-toggle-label" id="onasBtnLabel">Čítať viac</span>
+    </button>
+
+    <!-- Povinné predprimárne vzdelávanie -->
+    <div class="ppv-section fade-in">
+      <h3>Povinné predprimárne vzdelávanie</h3>
+      <p id="cms-ppv-intro">Predprimárne vzdelávanie je povinné pre všetky deti, ktoré dovŕšia vek 5 rokov do 31. 8. v roku, ktorý predchádza začiatku školského roka, od ktorého bude dieťa plniť povinnú školskú dochádzku v základnej škole. Rodič má zákonnú povinnosť prihlásiť dieťa na povinné predprimárne vzdelávanie. Povinné predprimárne vzdelávanie v materskej škole trvá jeden školský rok.</p>
+      <div class="ppv-expand" id="ppvExpand">
+        <p id="cms-ppv-extra"></p>
+      </div>
+      <button class="onas-toggle" id="ppvBtn" onclick="togglePpv()" style="display:none;">
+        <div class="onas-chevrons">
+          <svg viewBox="0 0 24 13" width="28" height="15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 11 L12 2 L22 11" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg viewBox="0 0 24 13" width="28" height="15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 2 L12 11 L22 2" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <span class="onas-toggle-label" id="ppvBtnLabel">Viac</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- wave o-nas→services -->
 <svg class="wave" viewBox="0 0 1440 55" preserveAspectRatio="none" style="display:block;margin-bottom:-2px;background:#FFFDF8;" xmlns="http://www.w3.org/2000/svg">
   <path d="M0,40 C280,5 600,55 900,22 C1100,5 1300,46 1440,28 L1440,55 L0,55Z" fill="#D9EFFF"/>
 </svg>
@@ -1309,6 +1378,18 @@ async function loadCMS() {
       if (s.contact_phone) { document.querySelectorAll('.cms-phone').forEach(el => { el.textContent = s.contact_phone; el.href = 'tel:'+s.contact_phone.replace(/\s/g,''); }); }
       if (s.contact_email) { document.querySelectorAll('.cms-email').forEach(el => { el.textContent = s.contact_email; el.href = 'mailto:'+s.contact_email; }); }
       if (s.contact_hours) { const el = document.getElementById('cms-hours'); if(el) el.textContent = s.contact_hours; }
+      // O nás
+      if (s.onas_p1) { const el = document.getElementById('cms-onas-p1'); if(el) el.textContent = s.onas_p1; }
+      if (s.onas_p2) { const el = document.getElementById('cms-onas-p2'); if(el) el.textContent = s.onas_p2; }
+      if (s.onas_extra_p1) { const el = document.getElementById('cms-onas-extra-p1'); if(el) el.textContent = s.onas_extra_p1; }
+      if (s.onas_extra_p2) { const el = document.getElementById('cms-onas-extra-p2'); if(el) el.textContent = s.onas_extra_p2; }
+      if (s.onas_list) { const el = document.getElementById('cms-onas-list'); if(el) el.innerHTML = s.onas_list.split('\n').filter(l=>l.trim()).map(l=>`<li>${l.trim()}</li>`).join(''); }
+      // PPV
+      if (s.ppv_intro) { const el = document.getElementById('cms-ppv-intro'); if(el) el.textContent = s.ppv_intro; }
+      if (s.ppv_extra && s.ppv_extra.trim()) {
+        const el = document.getElementById('cms-ppv-extra'); if(el) el.innerHTML = s.ppv_extra.replace(/\n/g,'<br>');
+        const btn = document.getElementById('ppvBtn'); if(btn) btn.style.display = '';
+      }
       // Pricing
       if (s.price_full_amount) { const el = document.getElementById('cms-price-full'); if(el) el.textContent = s.price_full_amount+' €'; }
       if (s.price_full_detail) { const el = document.getElementById('cms-price-full-detail'); if(el) el.innerHTML = (s.price_full_detail||'').replace(/\\n/g,'<br>').replace(/\n/g,'<br>'); }
@@ -1476,6 +1557,29 @@ function toggleAbout(){
   if(!isOpen){
     setTimeout(()=>{ text.scrollIntoView({behavior:'smooth', block:'nearest'}); }, 100);
   }
+
+// ===== O NÁS TOGGLE =====
+function toggleOnas(){
+  const btn = document.getElementById('onasBtn');
+  const area = document.getElementById('onasExpand');
+  const lbl = document.getElementById('onasBtnLabel');
+  if(!btn || !area) return;
+  const open = area.classList.toggle('open');
+  btn.classList.toggle('open', open);
+  lbl.textContent = open ? 'Čítať menej' : 'Čítať viac';
+}
+
+// ===== PPV TOGGLE =====
+function togglePpv(){
+  const btn = document.getElementById('ppvBtn');
+  const area = document.getElementById('ppvExpand');
+  const lbl = document.getElementById('ppvBtnLabel');
+  if(!btn || !area) return;
+  const open = area.classList.toggle('open');
+  btn.classList.toggle('open', open);
+  lbl.textContent = open ? 'Menej' : 'Viac';
+}
+
 }
 
 // ===== SCROLL TO NEWS =====

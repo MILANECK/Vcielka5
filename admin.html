@@ -145,6 +145,9 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
     <div class="nav-item active" onclick="showPage('hero')" id="nav-hero">
       <span class="icon">🏠</span> Hero sekcia
     </div>
+    <div class="nav-item" onclick="showPage('onas')" id="nav-onas">
+      <span class="icon">📖</span> O nás & PPV
+    </div>
     <div class="nav-item" onclick="showPage('activities')" id="nav-activities">
       <span class="icon">🎯</span> Aktivity
     </div>
@@ -186,6 +189,55 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
 
   <!-- MAIN CONTENT -->
   <div class="main">
+
+    <!-- O NÁS & PPV -->
+    <div class="section-page" id="page-onas">
+      <div class="page-title">📖 O nás & Povinné vzdelávanie</div>
+      <div class="page-sub">Texty v sekcii "O nás" a "Povinné predprimárne vzdelávanie" na hlavnej stránke</div>
+
+      <div class="card">
+        <div class="card-title">✏️ Viditeľné texty (vždy zobrazené)</div>
+        <div class="field">
+          <label>1. odstavec</label>
+          <textarea id="onas_p1" style="min-height:90px;" placeholder="Sme súkromná materská škola..."></textarea>
+        </div>
+        <div class="field">
+          <label>2. odstavec</label>
+          <textarea id="onas_p2" style="min-height:90px;" placeholder="Hlavným cieľom výchovy a vzdelávania..."></textarea>
+        </div>
+        <button class="btn-save" onclick="saveSettings(['onas_p1','onas_p2'])">💾 Uložiť</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📂 Rozbaľovací obsah (po kliknutí „Čítať viac")</div>
+        <div class="field">
+          <label>3. odstavec</label>
+          <textarea id="onas_extra_p1" style="min-height:90px;" placeholder="K materskej škole patrí..."></textarea>
+        </div>
+        <div class="field">
+          <label>4. odstavec</label>
+          <textarea id="onas_extra_p2" style="min-height:90px;" placeholder="Naša materská škola vznikla..."></textarea>
+        </div>
+        <div class="field">
+          <label>Odrážky (každá položka na nový riadok)</label>
+          <textarea id="onas_list" style="min-height:130px;" placeholder="zariadenie spĺňa štátne vzdelávacie štandardy...&#10;učitelia s odborným vzdelaním a praxou...&#10;plynulý prechod detí do základnej školy...&#10;pravidelné kontroly a dodržiavanie noriem..."></textarea>
+        </div>
+        <button class="btn-save" onclick="saveSettings(['onas_extra_p1','onas_extra_p2','onas_list'])">💾 Uložiť</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📜 Povinné predprimárne vzdelávanie</div>
+        <div class="field">
+          <label>Viditeľný text (zobrazený vždy)</label>
+          <textarea id="ppv_intro" style="min-height:120px;" placeholder="Predprimárne vzdelávanie je povinné pre všetky deti..."></textarea>
+        </div>
+        <div class="field">
+          <label>Celý text (rozbaľovací, zobrazí sa po kliknutí „Viac")</label>
+          <textarea id="ppv_extra" style="min-height:150px;" placeholder="Zadajte rozbaľovací text. Ak je prázdny, tlačidlo sa nezobrazí."></textarea>
+        </div>
+        <button class="btn-save" onclick="saveSettings(['ppv_intro','ppv_extra'])">💾 Uložiť</button>
+      </div>
+    </div>
 
     <!-- HERO -->
     <div class="section-page active" id="page-hero">
@@ -501,6 +553,7 @@ async function loadPage(name) {
   if (name === 'skolka') { loadSkolka(); return; }
   if (name === 'skolka_pw') { loadSkolkaPw(); return; }
   if (name === 'hero') await loadSettings(['hero_title','hero_subtitle','hero_photo']);
+  if (name === 'onas') await loadSettings(['onas_p1','onas_p2','onas_extra_p1','onas_extra_p2','onas_list','ppv_intro','ppv_extra']);
   if (name === 'contact') await loadSettings(['contact_address','contact_phone','contact_email','contact_hours']);
   if (name === 'pricing') await loadSettings(['price_full_amount','price_full_detail','price_half_amount','price_half_detail']);
   if (name === 'activities') await loadActivities();
