@@ -253,6 +253,8 @@ button{outline:none;border:none;}
 .tl-name{font-family:'Quicksand',sans-serif;font-size:15px;font-weight:700;color:#1a1a1a;}
 .tl-desc{font-family:'Inter',sans-serif;font-size:14px;color:var(--text-muted);}
 .z-item{background:rgba(255,255,255,.6);border-radius:18px;padding:14px 16px;display:flex;gap:12px;align-items:center;margin-bottom:10px;}
+.z-icon{font-size:24px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.z-icon img{width:40px;height:40px;object-fit:contain;filter:drop-shadow(0 3px 8px rgba(0,0,0,.13));}
 .z-item:last-child{margin-bottom:0;}
 .z-item-title{font-family:'Quicksand',sans-serif;font-size:14px;font-weight:700;color:#1a1a1a;margin-bottom:2px;}
 .z-item-desc{font-family:'Inter',sans-serif;font-size:13px;color:#666;}
@@ -961,10 +963,10 @@ button{outline:none;border:none;}
         <p class="desc">Vzdelávací program špeciálne navrhnutý pre všestranný rozvoj predškolského dieťaťa.</p>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:700px;margin:0 auto;" class="fade-in">
-        <div class="z-item"><span style="font-size:24px;">🐝</span><div><div class="z-item-title">Sociálno-emocionálny rozvoj</div><div class="z-item-desc">Empatia, komunikácia, spolupráca</div></div></div>
-        <div class="z-item"><span style="font-size:24px;">🎨</span><div><div class="z-item-title">Kreatívne myslenie</div><div class="z-item-desc">Umenie, hudba, tvorivé hry</div></div></div>
-        <div class="z-item"><span style="font-size:24px;">🏃</span><div><div class="z-item-title">Telesný rozvoj</div><div class="z-item-desc">Šport, pohyb, zdravý životný štýl</div></div></div>
-        <div class="z-item"><span style="font-size:24px;">🔬</span><div><div class="z-item-title">Intelektuálny rozvoj</div><div class="z-item-desc">Zvedavosť, pokusy, objavovanie</div></div></div>
+        <div class="z-item"><span id="cms-icon-social" class="z-icon">🐝</span><div><div class="z-item-title">Sociálno-emocionálny rozvoj</div><div class="z-item-desc">Empatia, komunikácia, spolupráca</div></div></div>
+        <div class="z-item"><span id="cms-icon-kreativ" class="z-icon">🎨</span><div><div class="z-item-title">Kreatívne myslenie</div><div class="z-item-desc">Umenie, hudba, tvorivé hry</div></div></div>
+        <div class="z-item"><span id="cms-icon-sport" class="z-icon">🏃</span><div><div class="z-item-title">Telesný rozvoj</div><div class="z-item-desc">Šport, pohyb, zdravý životný štýl</div></div></div>
+        <div class="z-item"><span id="cms-icon-intellect" class="z-icon">🔬</span><div><div class="z-item-title">Intelektuálny rozvoj</div><div class="z-item-desc">Zvedavosť, pokusy, objavovanie</div></div></div>
       </div>
       <!-- ZVEDAVA EXPAND -->
       <div style="margin-top:36px;text-align:center;">
@@ -1135,14 +1137,14 @@ button{outline:none;border:none;}
   <div class="section-inner"><div style="max-width:860px;margin:0 auto;">
     <div class="contact-cards fade-in">
       <div class="contact-card blue">
-        <div class="contact-icon">📍</div>
+        <div class="contact-icon" id="cms-icon-adresa">📍</div>
         <div class="contact-body">
           <div class="contact-label">Adresa</div>
           <div class="contact-value" id="cms-address">Sečovská 144/3, 821 02 Bratislava, Ružinov</div>
         </div>
       </div>
       <a class="contact-card yellow" href="tel:0918607935">
-          <div class="contact-icon">📞</div>
+          <div class="contact-icon" id="cms-icon-telefon">📞</div>
           <div class="contact-body">
             <div class="contact-label">Telefón</div>
             <div class="cms-phone contact-value">0918 607 935</div>
@@ -1150,7 +1152,7 @@ button{outline:none;border:none;}
           </div>
       </a>
       <a class="contact-card green" href="/cdn-cgi/l/email-protection#bdd4d3dbd2fdced6d2d1d6dc90cbded4d8d1d6dc93ced6">
-          <div class="contact-icon">✉️</div>
+          <div class="contact-icon" id="cms-icon-email">✉️</div>
           <div class="contact-body">
             <div class="contact-label">E-mail</div>
             <div class="cms-email contact-value"><span class="__cf_email__" data-cfemail="3f565159507f4c545053545e12495c565a53545e114c54">[email&#160;protected]</span></div>
@@ -1158,7 +1160,7 @@ button{outline:none;border:none;}
           </div>
       </a>
       <div class="contact-card sky">
-        <div class="contact-icon">🕐</div>
+        <div class="contact-icon" id="cms-icon-hodiny">🕐</div>
         <div class="contact-body">
           <div class="contact-label">Prevádzková doba</div>
           <div class="contact-value" id="cms-hours">Pondelok – Piatok, 7:00 – 17:00</div>
@@ -1443,6 +1445,15 @@ async function loadCMS() {
       if (s.contact_email) { document.querySelectorAll('.cms-email').forEach(el => { el.textContent = s.contact_email; el.href = 'mailto:'+s.contact_email; }); }
       if (s.contact_hours) { const el = document.getElementById('cms-hours'); if(el) el.textContent = s.contact_hours; }
       // O nás
+      // Section icons (contact + program z-items)
+      const _iconMap = {adresa:'📍',email:'✉️',telefon:'📞',hodiny:'🕐',social:'🐝',kreativ:'🎨',sport:'🏃',intellect:'🔬'};
+      Object.keys(_iconMap).forEach(k => {
+        const val = s['icon_'+k]; if(!val) return;
+        const el = document.getElementById('cms-icon-'+k); if(!el) return;
+        el.innerHTML = `<img src="${val}" style="width:100%;height:100%;object-fit:contain;" alt=""/>`;
+        el.dataset.hasImg = '1';
+      });
+
       if (s.onas_p1) { const el = document.getElementById('cms-onas-p1'); if(el) el.innerHTML = s.onas_p1; }
       if (s.onas_p2) { const el = document.getElementById('cms-onas-p2'); if(el) el.innerHTML = s.onas_p2; }
       if (s.onas_extra_p1) { const el = document.getElementById('cms-onas-extra-p1'); if(el) el.innerHTML = s.onas_extra_p1; }

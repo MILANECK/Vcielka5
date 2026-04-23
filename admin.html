@@ -287,6 +287,49 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
       </div>
 
       <div class="card">
+        <div class="card-title">🖼️ Ikonky programu Zvedavá Včielka</div>
+        <p style="font-size:12px;color:#888;margin-bottom:18px;">Obrázky ikon pre 4 oblasti rozvoja (zobrazené v sekcii Program). Nahranie prebehne okamžite.</p>
+        <div class="two-col">
+          <div>
+            <label style="font-size:12px;font-weight:600;color:#555;display:block;margin-bottom:8px;">🐝 Sociálno-emocionálny rozvoj</label>
+            <div id="icon-preview-social" style="width:64px;height:64px;border-radius:14px;background:#FFF9E0;display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:8px;overflow:hidden;">🐝</div>
+            <div style="display:flex;gap:6px;">
+              <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:4px;background:#D9EFFF;color:#1A5FA8;font-family:'Quicksand',sans-serif;font-size:11px;font-weight:700;padding:6px 8px;border-radius:50px;cursor:pointer;">
+                <input type="file" accept="image/*" style="display:none;" onchange="uploadSectionIcon(this,'icon_social')"/>🖼️ Nahrať</label>
+              <button class="btn-danger" style="padding:5px 10px;font-size:11px;" onclick="removeSectionIcon('icon_social')">🗑️</button>
+            </div>
+          </div>
+          <div>
+            <label style="font-size:12px;font-weight:600;color:#555;display:block;margin-bottom:8px;">🎨 Kreatívne myslenie</label>
+            <div id="icon-preview-kreativ" style="width:64px;height:64px;border-radius:14px;background:#FFF9E0;display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:8px;overflow:hidden;">🎨</div>
+            <div style="display:flex;gap:6px;">
+              <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:4px;background:#D9EFFF;color:#1A5FA8;font-family:'Quicksand',sans-serif;font-size:11px;font-weight:700;padding:6px 8px;border-radius:50px;cursor:pointer;">
+                <input type="file" accept="image/*" style="display:none;" onchange="uploadSectionIcon(this,'icon_kreativ')"/>🖼️ Nahrať</label>
+              <button class="btn-danger" style="padding:5px 10px;font-size:11px;" onclick="removeSectionIcon('icon_kreativ')">🗑️</button>
+            </div>
+          </div>
+          <div>
+            <label style="font-size:12px;font-weight:600;color:#555;display:block;margin-bottom:8px;">🏃 Telesný rozvoj</label>
+            <div id="icon-preview-sport" style="width:64px;height:64px;border-radius:14px;background:#FFF9E0;display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:8px;overflow:hidden;">🏃</div>
+            <div style="display:flex;gap:6px;">
+              <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:4px;background:#D9EFFF;color:#1A5FA8;font-family:'Quicksand',sans-serif;font-size:11px;font-weight:700;padding:6px 8px;border-radius:50px;cursor:pointer;">
+                <input type="file" accept="image/*" style="display:none;" onchange="uploadSectionIcon(this,'icon_sport')"/>🖼️ Nahrať</label>
+              <button class="btn-danger" style="padding:5px 10px;font-size:11px;" onclick="removeSectionIcon('icon_sport')">🗑️</button>
+            </div>
+          </div>
+          <div>
+            <label style="font-size:12px;font-weight:600;color:#555;display:block;margin-bottom:8px;">🔬 Intelektuálny rozvoj</label>
+            <div id="icon-preview-intellect" style="width:64px;height:64px;border-radius:14px;background:#FFF9E0;display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:8px;overflow:hidden;">🔬</div>
+            <div style="display:flex;gap:6px;">
+              <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:4px;background:#D9EFFF;color:#1A5FA8;font-family:'Quicksand',sans-serif;font-size:11px;font-weight:700;padding:6px 8px;border-radius:50px;cursor:pointer;">
+                <input type="file" accept="image/*" style="display:none;" onchange="uploadSectionIcon(this,'icon_intellect')"/>🖼️ Nahrať</label>
+              <button class="btn-danger" style="padding:5px 10px;font-size:11px;" onclick="removeSectionIcon('icon_intellect')">🗑️</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
         <div class="card-title">📜 Povinné predprimárne vzdelávanie</div>
         <p style="font-size:12px;color:#888;margin-bottom:14px;">Krátky úryvok sa zobrazí na hlavnej stránke. Celý text sa zobrazí na samostatnej podstránke <strong>ppv.html</strong> po kliknutí na tlačidlo „Čítať viac →".</p>
         <div class="field">
@@ -376,6 +419,48 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
         </div>
         <div class="field"><label>🕐 Prevádzková doba</label><input type="text" id="contact_hours"/></div>
         <button class="btn-save" onclick="saveSettings(['contact_address','contact_phone','contact_email','contact_hours'])">💾 Uložiť kontakt</button>
+      </div>
+      <div class="card">
+        <div class="card-title">🖼️ Ikonky kontaktných kariet</div>
+        <p style="font-size:12px;color:#888;margin-bottom:18px;">Nahrajte obrázky ikon pre každú kontaktnú kartu. Nahranie prebehne okamžite.</p>
+        <div class="two-col">
+          <div>
+            <label style="font-size:12px;font-weight:600;color:#555;display:block;margin-bottom:8px;">📍 Adresa</label>
+            <div id="icon-preview-adresa" style="width:64px;height:64px;border-radius:14px;background:#f0f6ff;display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:8px;overflow:hidden;">📍</div>
+            <div style="display:flex;gap:6px;">
+              <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:4px;background:#D9EFFF;color:#1A5FA8;font-family:'Quicksand',sans-serif;font-size:11px;font-weight:700;padding:6px 8px;border-radius:50px;cursor:pointer;">
+                <input type="file" accept="image/*" style="display:none;" onchange="uploadSectionIcon(this,'icon_adresa')"/>🖼️ Nahrať</label>
+              <button class="btn-danger" style="padding:5px 10px;font-size:11px;" onclick="removeSectionIcon('icon_adresa')">🗑️</button>
+            </div>
+          </div>
+          <div>
+            <label style="font-size:12px;font-weight:600;color:#555;display:block;margin-bottom:8px;">📞 Telefón</label>
+            <div id="icon-preview-telefon" style="width:64px;height:64px;border-radius:14px;background:#f0f6ff;display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:8px;overflow:hidden;">📞</div>
+            <div style="display:flex;gap:6px;">
+              <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:4px;background:#D9EFFF;color:#1A5FA8;font-family:'Quicksand',sans-serif;font-size:11px;font-weight:700;padding:6px 8px;border-radius:50px;cursor:pointer;">
+                <input type="file" accept="image/*" style="display:none;" onchange="uploadSectionIcon(this,'icon_telefon')"/>🖼️ Nahrať</label>
+              <button class="btn-danger" style="padding:5px 10px;font-size:11px;" onclick="removeSectionIcon('icon_telefon')">🗑️</button>
+            </div>
+          </div>
+          <div>
+            <label style="font-size:12px;font-weight:600;color:#555;display:block;margin-bottom:8px;">✉️ E-mail</label>
+            <div id="icon-preview-email" style="width:64px;height:64px;border-radius:14px;background:#f0f6ff;display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:8px;overflow:hidden;">✉️</div>
+            <div style="display:flex;gap:6px;">
+              <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:4px;background:#D9EFFF;color:#1A5FA8;font-family:'Quicksand',sans-serif;font-size:11px;font-weight:700;padding:6px 8px;border-radius:50px;cursor:pointer;">
+                <input type="file" accept="image/*" style="display:none;" onchange="uploadSectionIcon(this,'icon_email')"/>🖼️ Nahrať</label>
+              <button class="btn-danger" style="padding:5px 10px;font-size:11px;" onclick="removeSectionIcon('icon_email')">🗑️</button>
+            </div>
+          </div>
+          <div>
+            <label style="font-size:12px;font-weight:600;color:#555;display:block;margin-bottom:8px;">🕐 Prevádzková doba</label>
+            <div id="icon-preview-hodiny" style="width:64px;height:64px;border-radius:14px;background:#f0f6ff;display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:8px;overflow:hidden;">🕐</div>
+            <div style="display:flex;gap:6px;">
+              <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:4px;background:#D9EFFF;color:#1A5FA8;font-family:'Quicksand',sans-serif;font-size:11px;font-weight:700;padding:6px 8px;border-radius:50px;cursor:pointer;">
+                <input type="file" accept="image/*" style="display:none;" onchange="uploadSectionIcon(this,'icon_hodiny')"/>🖼️ Nahrať</label>
+              <button class="btn-danger" style="padding:5px 10px;font-size:11px;" onclick="removeSectionIcon('icon_hodiny')">🗑️</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -615,8 +700,8 @@ async function loadPage(name) {
   if (name === 'skolka') { loadSkolka(); return; }
   if (name === 'skolka_pw') { loadSkolkaPw(); return; }
   if (name === 'hero') await loadSettings(['hero_title','hero_subtitle','hero_photo']);
-  if (name === 'onas') await loadSettings(['onas_p1','onas_p2','onas_extra_p1','onas_extra_p2','onas_list','ppv_intro','ppv_extra','program_text']);
-  if (name === 'contact') await loadSettings(['contact_address','contact_phone','contact_email','contact_hours']);
+  if (name === 'onas') await loadSettings(['onas_p1','onas_p2','onas_extra_p1','onas_extra_p2','onas_list','ppv_intro','ppv_extra','program_text','icon_social','icon_kreativ','icon_sport','icon_intellect']);
+  if (name === 'contact') await loadSettings(['contact_address','contact_phone','contact_email','contact_hours','icon_adresa','icon_telefon','icon_email','icon_hodiny']);
   if (name === 'pricing') await loadSettings(['price_full_amount','price_full_detail','price_half_amount','price_half_detail']);
   if (name === 'activities') await loadActivities();
   if (name === 'news') await loadNews();
@@ -632,6 +717,12 @@ async function loadSettings(keys) {
   const { data } = await db.from('settings').select('*').in('key', keys);
   if (!data) return;
   data.forEach(row => {
+    // Section icon previews
+    if (row.key.startsWith('icon_') && row.value) {
+      const prev = document.getElementById('icon-preview-' + row.key.replace('icon_',''));
+      if (prev) { prev.innerHTML = `<img src="${row.value}" style="width:100%;height:100%;object-fit:contain;padding:6px;" alt=""/>`; }
+      return;
+    }
     const el = document.getElementById(row.key);
     if (el) {
       if (el.hasAttribute('contenteditable')) el.innerHTML = row.value || '';
@@ -869,6 +960,31 @@ async function removeActivityIcon(id) {
   await db.from('activities').update({ icon: '', updated_at: new Date().toISOString() }).eq('id', id);
   toast('Ikona odstránená');
   loadActivities();
+}
+
+const _sectionIconDefaults = {
+  icon_adresa:'📍', icon_telefon:'📞', icon_email:'✉️', icon_hodiny:'🕐',
+  icon_social:'🐝', icon_kreativ:'🎨', icon_sport:'🏃', icon_intellect:'🔬'
+};
+
+async function uploadSectionIcon(input, key) {
+  const file = input.files[0]; if (!file) return;
+  toast('Nahrávam ikonu…');
+  const path = `icons/${key}_${Date.now()}.${file.name.split('.').pop()}`;
+  const { error: upErr } = await db.storage.from('vcielka').upload(path, file, { upsert: true });
+  if (upErr) { toast('Chyba nahrávania', 'error'); return; }
+  const { data: { publicUrl } } = db.storage.from('vcielka').getPublicUrl(path);
+  await db.from('settings').upsert({ key, value: publicUrl, updated_at: new Date().toISOString() }, { onConflict: 'key' });
+  const prev = document.getElementById('icon-preview-' + key.replace('icon_',''));
+  if (prev) prev.innerHTML = `<img src="${publicUrl}" style="width:100%;height:100%;object-fit:contain;padding:6px;" alt=""/>`;
+  toast('✅ Ikona nahratá!');
+}
+
+async function removeSectionIcon(key) {
+  await db.from('settings').upsert({ key, value: '', updated_at: new Date().toISOString() }, { onConflict: 'key' });
+  const prev = document.getElementById('icon-preview-' + key.replace('icon_',''));
+  if (prev) { prev.innerHTML = ''; prev.textContent = _sectionIconDefaults[key] || '🔵'; }
+  toast('Ikona odstránená');
 }
 
 async function uploadActivityPopupPhoto(input, id) {
