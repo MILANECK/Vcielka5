@@ -86,7 +86,8 @@ button{outline:none;border:none;}
   box-shadow:0 2px 20px rgba(26,95,168,.08);
   height:64px;
 }
-.nav-logo{display:flex;align-items:center;gap:0;}
+.nav-logo{display:flex;align-items:center;gap:0;transition:transform .2s;}
+.nav-logo:hover{transform:scale(1.08);}
 .nav-logo img{height:50px;width:auto;object-fit:contain;}
 .nav-logo-text{display:none;}
 .nav-logo-sub{display:none;}
@@ -121,13 +122,15 @@ button{outline:none;border:none;}
 /* fullscreen background image */
 .hero-bg-img{
   position:absolute;
-  inset:0;
+  left:0;
+  top:-18%;
   width:100%;
-  height:100%;
+  height:136%;
   object-fit:cover;
   object-position:center top;
   display:block;
   z-index:0;
+  will-change:transform;
 }
 /* dark gradient overlay for text readability */
 .hero-overlay{
@@ -215,7 +218,11 @@ button{outline:none;border:none;}
 .service-card.clickable{cursor:pointer;}
 .act-popup-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:5000!important;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
 .act-popup-overlay.open{display:flex!important;}
-.act-popup{background:#fff;border-radius:28px;max-width:540px;width:100%;max-height:85vh;overflow-y:auto;position:relative;animation:popupIn .3s ease;}
+.act-popup{background:#fff;border-radius:28px;max-width:680px;width:100%;max-height:85vh;overflow-y:auto;position:relative;animation:popupIn .3s ease;}
+.act-popup::-webkit-scrollbar{width:5px;}
+.act-popup::-webkit-scrollbar-track{background:transparent;margin:28px 0;}
+.act-popup::-webkit-scrollbar-thumb{background:#ddd;border-radius:10px;}
+.act-popup::-webkit-scrollbar-thumb:hover{background:#bbb;}
 .act-popup-header{padding:28px 28px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
 .act-popup-close{background:#F0F0F0;border:none;border-radius:50%;width:36px;height:36px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;line-height:1;}
 .act-popup-body{padding:16px 28px 32px;font-family:'Inter',sans-serif;font-size:15px;color:#444;line-height:1.75;}
@@ -439,7 +446,11 @@ button{outline:none;border:none;}
 /* ===== NEWS POPUP ===== */
 .news-popup-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:5000!important;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
 .news-popup-overlay.open{display:flex!important;}
-.news-popup{background:#fff;border-radius:28px;max-width:620px;width:100%;max-height:88vh;overflow-y:auto;position:relative;animation:popupIn .3s ease;}
+.news-popup{background:#fff;border-radius:28px;max-width:760px;width:100%;max-height:88vh;overflow-y:auto;position:relative;animation:popupIn .3s ease;}
+.news-popup::-webkit-scrollbar{width:5px;}
+.news-popup::-webkit-scrollbar-track{background:transparent;margin:28px 0;}
+.news-popup::-webkit-scrollbar-thumb{background:#ddd;border-radius:10px;}
+.news-popup::-webkit-scrollbar-thumb:hover{background:#bbb;}
 @keyframes popupIn{from{transform:scale(.94) translateY(20px);opacity:0;}to{transform:scale(1) translateY(0);opacity:1;}}
 .news-popup-header{height:200px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;border-radius:28px 28px 0 0;overflow:hidden;position:relative;}
 .news-popup-header img{width:100%;height:100%;object-fit:cover;}
@@ -464,7 +475,7 @@ button{outline:none;border:none;}
   animation:heroBlobFloat 5s ease-in-out infinite alternate;
   transition:transform .2s;
 }
-.hero-news-blob:hover{transform:scale(1.04);}
+.hero-news-blob:hover{transform:scale(1.1);}
 @keyframes heroBlobFloat{
   0%{transform:translateY(0);}
   100%{transform:translateY(-10px);}
@@ -522,19 +533,14 @@ button{outline:none;border:none;}
 @media(max-width:900px){.gallery-popup-grid{grid-template-columns:repeat(3,1fr);gap:8px;}}
 @media(max-width:600px){.gallery-popup-grid{grid-template-columns:repeat(2,1fr);gap:8px;}}
 
-/* ===== UČEBNÉ OSNOVY POPUP ===== */
-.ucebne-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:9999!important;padding:24px 16px 40px;overflow-y:auto;backdrop-filter:blur(4px);align-items:center;justify-content:center;}
-.ucebne-overlay.open{display:flex;}
-.ucebne-modal{background:#fff;border-radius:24px;width:100%;max-width:960px;padding:28px 28px 36px;margin:0;position:relative;}
-.ucebne-modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
-.ucebne-modal-logo{display:flex;align-items:center;gap:12px;}
-.ucebne-modal-logo img{height:42px;width:auto;}
-.ucebne-modal-logo-title{font-family:'Quicksand',sans-serif;font-size:18px;font-weight:700;color:#1a1a1a;line-height:1.2;}
-.ucebne-modal-logo-sub{font-family:'Inter',sans-serif;font-size:11px;color:#bbb;margin-top:1px;}
-.ucebne-modal-close{background:#f0f0f0;color:#555;border:none;border-radius:50%;width:40px;height:40px;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.2s;}
-.ucebne-modal-close:hover{background:#e0e0e0;color:#111;}
+/* ===== UČEBNÉ OSNOVY INLINE ===== */
+.ucebne-arrow{display:inline-block;transition:transform .35s;margin-left:6px;font-size:15px;line-height:1;}
+.ucebne-btn.open .ucebne-arrow{transform:rotate(180deg);}
+.ucebne-inline-wrap{padding:28px 16px 32px;position:relative;border-radius:24px;overflow:hidden;}
+.ucebne-inline-wrap::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 900px 700px at 50% 40%,rgba(0,0,0,.07) 0%,transparent 68%);pointer-events:none;}
+#ucebneInlineText.open{max-height:5000px;opacity:1;}
 .ucebne-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
-.ucebne-card{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,.07);display:flex;flex-direction:column;}
+.ucebne-card{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 4px 24px rgba(26,95,168,.08);display:flex;flex-direction:column;}
 .ucebne-bubble{border-radius:14px 14px 0 0;padding:14px 12px 12px;text-align:center;}
 .ucebne-bubble .umonth{font-family:'Nunito',sans-serif;font-size:15px;font-weight:900;line-height:1.1;}
 .ucebne-unit{padding:10px 12px 8px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;border-bottom:1.5px solid #f5f2ee;line-height:1.4;font-family:'Nunito',sans-serif;}
@@ -650,7 +656,14 @@ button{outline:none;border:none;}
 .about-text-inner p:last-child{margin-bottom:0;}
 
 /* ===== O NÁS SECTION ===== */
-.onas-body{max-width:720px;margin:0 auto;text-align:center;}
+.onas-body{max-width:760px;margin:0 auto;text-align:center;}
+.onas-card{background:#fff;border-radius:24px;padding:36px 44px 28px;box-shadow:0 4px 24px rgba(26,95,168,.08);margin-bottom:28px;text-align:center;}
+@media(max-width:600px){.onas-card{padding:24px 20px 20px;}}
+/* subtle card shadow — all rounded carriers */
+.service-card,.news-card,.contact-card,.price-card,.why-item,.z-item,.gallery-item,.testi-card,.map-wrap,.about-text-inner{box-shadow:0 4px 24px rgba(26,95,168,.08);}
+@keyframes cloudDriftA{0%,100%{transform:translateX(0) translateY(0);}30%{transform:translateX(28px) translateY(-10px);}65%{transform:translateX(-12px) translateY(8px);}}
+@keyframes cloudDriftB{0%,100%{transform:translateX(0) translateY(0);}40%{transform:translateX(-24px) translateY(12px);}75%{transform:translateX(18px) translateY(-6px);}}
+@keyframes cloudDriftC{0%,100%{transform:translateX(0) translateY(0) scale(1);}50%{transform:translateX(16px) translateY(-14px) scale(1.06);}}
 .onas-body p{font-family:'Inter',sans-serif;font-size:16px;color:#444;line-height:1.78;margin-bottom:16px;}
 .onas-expand{max-height:0;overflow:hidden;transition:max-height .45s ease-out;}
 .onas-expand.open{max-height:3000px;}
@@ -777,6 +790,7 @@ button{outline:none;border:none;}
     <a href="#aktuality">Aktuality</a>
     <a href="#cennik">Cenník</a>
     <a href="skolka.html" class="nav-vs">🔐 Virtuálna škôlka</a>
+    <a href="#kontakt">Na stiahnutie</a>
     <a href="#kontakt" class="nav-cta">Kontakt</a>
   </nav>
   <div class="nav-burger" id="burger" aria-label="Menu">
@@ -794,6 +808,7 @@ button{outline:none;border:none;}
   <a href="#aktuality" class="menu-link">Aktuality</a>
   <a href="#cennik" class="menu-link">Cenník</a>
   <a href="skolka.html" class="menu-link">🔐 Virtuálna škôlka</a>
+  <a href="#kontakt" class="menu-link">Na stiahnutie</a>
   <a href="#kontakt" class="nav-cta menu-link">Kontakt</a>
 </div>
 
@@ -863,29 +878,36 @@ button{outline:none;border:none;}
      O NÁS
 =========================== -->
 <section class="section bg-yellow-pale" id="o-nas" style="position:relative;padding-bottom:48px;">
-  <div class="section-center fade-in">
+  <!-- clouds -->
+  <div style="position:absolute;top:6%;right:2%;width:190px;opacity:0.45;pointer-events:none;z-index:0;animation:cloudDriftA 9s ease-in-out infinite;"><svg viewBox="0 0 198.9 90.1" xmlns="http://www.w3.org/2000/svg"><path d="M142.2,47.3c0-18.8-15.3-34.1-34.1-34.1-8.2,0-15.7,2.9-21.6,7.6C77.8,8.2,63.5,0,47.2,0,21.1,0,0,21.1,0,47.2v13c0,16.5,13.4,29.9,29.9,29.9h139.1c16.5,0,29.9-13.4,29.9-29.9,0,0,0-11.9-56.7-12.9Z" fill="#fff"/></svg></div>
+  <div style="position:absolute;top:42%;left:-1%;width:150px;opacity:0.4;pointer-events:none;z-index:0;animation:cloudDriftB 12s ease-in-out infinite 1.5s;"><svg viewBox="0 0 218.2 104.9" xmlns="http://www.w3.org/2000/svg"><path d="M126.1,13.2c-8.2,0-15.7,2.9-21.6,7.6C95.8,8.2,81.5,0,65.2,0,39.1,0,18,21.1,18,47.2c0,1.3,0,2.5.1,3.8C7.8,53,0,61.8,0,72.5c0,9.6,6.2,17.5,14.8,21.3,5.6,2.5,12.1,3.5,18.9,3,5.4,5,12.6,8.1,20.5,8.1h134.1c16.5,0,29.9-13.4,29.9-29.9v-15.9c0-23-5.7-45.1-92.1-45.9Z" fill="#fff"/></svg></div>
+  <div style="position:absolute;bottom:10%;right:4%;width:105px;opacity:0.45;pointer-events:none;z-index:0;animation:cloudDriftC 10s ease-in-out infinite 3s;"><svg viewBox="0 0 74.6 41.8" xmlns="http://www.w3.org/2000/svg"><path d="M50.3,5.3c-3.3,0-6.2,1.1-8.6,3C38.2,3.3,32.5,0,26,0,15.7,0,7.2,8.4,7.2,18.8v1.5c-4.1.8-7.2,4.3-7.2,8.6,0,3.8,2.5,7,5.9,8.5,2.2,1,4.8,1.4,7.5,1.2,2.2,2,5.1,3.2,8.2,3.2h41.1c6.6,0,11.9-5.3,11.9-11.9,0-16.2-8.4-24.6-24.3-24.6Z" fill="#fff"/></svg></div>
+  <div style="position:absolute;bottom:18%;left:28%;width:72px;opacity:0.35;pointer-events:none;z-index:0;animation:cloudDriftA 14s ease-in-out infinite 5s;"><svg viewBox="0 0 74.6 41.8" xmlns="http://www.w3.org/2000/svg"><path d="M50.3,5.3c-3.3,0-6.2,1.1-8.6,3C38.2,3.3,32.5,0,26,0,15.7,0,7.2,8.4,7.2,18.8v1.5c-4.1.8-7.2,4.3-7.2,8.6,0,3.8,2.5,7,5.9,8.5,2.2,1,4.8,1.4,7.5,1.2,2.2,2,5.1,3.2,8.2,3.2h41.1c6.6,0,11.9-5.3,11.9-11.9,0-16.2-8.4-24.6-24.3-24.6Z" fill="#fff"/></svg></div>
+  <div class="section-center fade-in" style="position:relative;z-index:1;">
     <span class="label">O nás</span>
     <h2>Kto sme</h2>
   </div>
-  <div class="onas-body fade-in">
-    <p id="cms-onas-p1">Sme súkromná materská škola s 20-ročnou tradíciou, kde sa stretáva odborná starostlivosť s rodinnou atmosférou a deťom ponúkame rozmanité možnosti predprimárneho vzdelávania.</p>
-    <p id="cms-onas-p2">Hlavným cieľom výchovy a vzdelávania je umožniť deťom hravou formou, na základe ich prirodzenej zvedavosti, dosiahnuť optimálnu kognitívnu, senzomotorickú a sociálno-emocionálnu úroveň ako základ pre ďalšie vzdelávanie v základnej škole a pre život v spoločnosti – v súlade s individuálnymi a vekovými osobitosťami detí.</p>
-    <div class="onas-expand" id="onasExpand">
-      <p id="cms-onas-extra-p1">K materskej škole patrí priestranný, oplotený areál so školským dvorom, ktorý ponúka deťom bezpečné a podnetné prostredie na hry a rôzne aktivity. Nachádza sa na Sečovskej ulici č. 3 v mestskej časti Bratislava-Ružinov.</p>
-      <p id="cms-onas-extra-p2">Naša materská škola vznikla v roku 2006 a od roku 2010 je zaradená do siete škôl a školských zariadení SR. Garantujeme predprimárne vzdelávanie v zmysle príslušnej platnej legislatívy:</p>
-      <ul id="cms-onas-list">
-        <li>zariadenie spĺňa štátne vzdelávacie štandardy a je kontrolované Ministerstvom školstva,</li>
-        <li>učitelia s odborným vzdelaním a praxou v oblasti predprimárneho vzdelávania,</li>
-        <li>plynulý prechod detí do základnej školy v rámci jednotného systému,</li>
-        <li>pravidelné kontroly a dodržiavanie hygienických a bezpečnostných noriem.</li>
-      </ul>
-    </div>
-    <button class="onas-toggle" id="onasBtn" onclick="toggleOnas()">
-      <div class="onas-chevrons">
-        <svg viewBox="0 0 24 13" width="28" height="15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 2 L12 11 L22 2" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="onas-body fade-in" style="position:relative;z-index:1;">
+    <div class="onas-card">
+      <p id="cms-onas-p1">Sme súkromná materská škola s 20-ročnou tradíciou, kde sa stretáva odborná starostlivosť s rodinnou atmosférou a deťom ponúkame rozmanité možnosti predprimárneho vzdelávania.</p>
+      <p id="cms-onas-p2">Hlavným cieľom výchovy a vzdelávania je umožniť deťom hravou formou, na základe ich prirodzenej zvedavosti, dosiahnuť optimálnu kognitívnu, senzomotorickú a sociálno-emocionálnu úroveň ako základ pre ďalšie vzdelávanie v základnej škole a pre život v spoločnosti – v súlade s individuálnymi a vekovými osobitosťami detí.</p>
+      <div class="onas-expand" id="onasExpand">
+        <p id="cms-onas-extra-p1">K materskej škole patrí priestranný, oplotený areál so školským dvorom, ktorý ponúka deťom bezpečné a podnetné prostredie na hry a rôzne aktivity. Nachádza sa na Sečovskej ulici č. 3 v mestskej časti Bratislava-Ružinov.</p>
+        <p id="cms-onas-extra-p2">Naša materská škola vznikla v roku 2006 a od roku 2010 je zaradená do siete škôl a školských zariadení SR. Garantujeme predprimárne vzdelávanie v zmysle príslušnej platnej legislatívy:</p>
+        <ul id="cms-onas-list">
+          <li>zariadenie spĺňa štátne vzdelávacie štandardy a je kontrolované Ministerstvom školstva,</li>
+          <li>učitelia s odborným vzdelaním a praxou v oblasti predprimárneho vzdelávania,</li>
+          <li>plynulý prechod detí do základnej školy v rámci jednotného systému,</li>
+          <li>pravidelné kontroly a dodržiavanie hygienických a bezpečnostných noriem.</li>
+        </ul>
       </div>
-      <span class="onas-toggle-label" id="onasBtnLabel">Čítať viac</span>
-    </button>
+      <button class="onas-toggle" id="onasBtn" onclick="toggleOnas()">
+        <div class="onas-chevrons">
+          <svg viewBox="0 0 24 13" width="28" height="15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 2 L12 11 L22 2" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <span class="onas-toggle-label" id="onasBtnLabel">Čítať viac</span>
+      </button>
+    </div>
 
     <!-- Povinné predprimárne vzdelávanie -->
     <div class="ppv-section fade-in">
@@ -944,22 +966,39 @@ button{outline:none;border:none;}
         <div class="z-item"><span style="font-size:24px;">🔬</span><div><div class="z-item-title">Intelektuálny rozvoj</div><div class="z-item-desc">Zvedavosť, pokusy, objavovanie</div></div></div>
       </div>
       <!-- ZVEDAVA EXPAND -->
-      <div style="margin-top:24px;text-align:center;">
+      <div style="margin-top:36px;text-align:center;">
         <div style="display:inline-flex;gap:12px;flex-wrap:wrap;justify-content:center;">
           <button class="about-expand-btn" id="zvedavaBtn" onclick="toggleZvedava()" style="font-size:14px;">
             Viac o programe <span class="arrow">↓</span>
           </button>
-          <button class="ucebne-btn" onclick="openUcebneOsnovy()">
+          <button class="ucebne-btn" id="ucebneBtn" onclick="toggleUcebneInline()">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-            Učebné osnovy
+            Učebné osnovy<span class="ucebne-arrow">↓</span>
           </button>
         </div>
-        <div class="about-text" id="zvedavaText">
+        <div class="about-text" id="zvedavaText" style="margin-top:32px;">
           <div class="about-text-inner" style="background:rgba(255,255,255,.65);max-width:700px;margin:0 auto;text-align:left;">
             <p>Výchovno-vzdelávací proces v našej materskej škole prebieha v súlade so školským vzdelávacím programom „Zvedavá včielka". Tento program je spracovaný na základe štátneho vzdelávacieho programu a zohľadňuje špecifiká našej školy.</p>
             <p>Učebné osnovy sú systematicky rozpracované do 10 obsahových celkov a 41 tém, ktoré sa navzájom prepájajú, dopĺňajú a tvoria ucelený systém. Sú zostavené tak, aby rešpektovali podmienky školy, reflektovali náročnosť jednotlivých období školského roka a podporovali harmonický rozvoj detí na optimálnej kognitívnej, senzomotorickej a sociálno-emocionálnej úrovni.</p>
             <p>Každý obsahový celok integruje všetky vzdelávacie oblasti – jazyk a komunikáciu, matematiku a prácu s informáciami, človeka a spoločnosť, človeka a prírodu, človeka a svet práce, umenie a kultúru, zdravie a pohyb.</p>
             <p>V učebných osnovách sú zapracované výkonové štandardy a výkonové úrovne.</p>
+          </div>
+        </div>
+        <div class="about-text" id="ucebneInlineText" style="margin-top:32px;">
+          <div class="ucebne-inline-wrap">
+            <div class="ucebne-grid">
+              <div class="ucebne-card ucm-sep"><div class="ucebne-bubble"><div class="umonth">September</div></div><div class="ucebne-unit">Vitaj v škôlke</div><ul class="ucebne-topics"><li>Naša škôlka Včielka</li><li>Naša trieda</li><li>Moji kamaráti</li><li>Moja rodina</li></ul></div>
+              <div class="ucebne-card ucm-okt"><div class="ucebne-bubble"><div class="umonth">Október</div></div><div class="ucebne-unit">Farebná jeseň</div><ul class="ucebne-topics"><li>Jeseň a počasie</li><li>Stromy okolo nás</li><li>Vitamínový košík ovocia</li><li>Veľký kôš zeleniny</li></ul></div>
+              <div class="ucebne-card ucm-nov"><div class="ucebne-bubble"><div class="umonth">November</div></div><div class="ucebne-unit">Zdravie a bezpečnosť</div><ul class="ucebne-topics"><li>Zdravá výživa</li><li>Ľudské telo</li><li>Profesie</li><li>Bezpečnosť na ceste</li><li>Dopravné prostriedky</li></ul></div>
+              <div class="ucebne-card ucm-dec"><div class="ucebne-bubble"><div class="umonth">December</div></div><div class="ucebne-unit">Vianočná zima</div><ul class="ucebne-topics"><li>Privítanie Mikuláša</li><li>Zima a jej čaro</li><li>Pri vianočnom stromčeku</li><li>Živá a neživá príroda</li><li>Predmety a ich vlastnosti</li></ul></div>
+              <div class="ucebne-card ucm-jan"><div class="ucebne-bubble"><div class="umonth">Január</div></div><div class="ucebne-unit">Zasnežená krajina</div><ul class="ucebne-topics"><li>Živá a neživá príroda</li><li>Predmety a ich vlastnosti</li><li>Zvieratká v zime</li><li>Vtáčiky v zime</li></ul></div>
+              <div class="ucebne-row-sep"></div>
+              <div class="ucebne-card ucm-feb"><div class="ucebne-bubble"><div class="umonth">Február</div></div><div class="ucebne-unit">Radovánky rok čo rok</div><ul class="ucebne-topics"><li>Veselý karneval</li><li>Deň a noc, Dnes/včera/zajtra</li><li>Dni v týždni a mesiace v roku</li><li>Naša Zem vo vesmíre</li></ul></div>
+              <div class="ucebne-card ucm-mar"><div class="ucebne-bubble"><div class="umonth">Marec</div></div><div class="ucebne-unit">Rozprávková jar</div><ul class="ucebne-topics"><li>Krajina rozprávok</li><li>Pozdrav jari</li><li>Jarná záhradka</li><li>Na gazdovskom dvore</li></ul></div>
+              <div class="ucebne-card ucm-apr"><div class="ucebne-bubble"><div class="umonth">Apríl</div></div><div class="ucebne-unit">Cestou necestou</div><ul class="ucebne-topics"><li>Príroda okolo nás</li><li>Putovanie vody</li><li>Pri rybníku a vo vode</li><li>Chrobáčiky v tráve</li></ul></div>
+              <div class="ucebne-card ucm-maj"><div class="ucebne-bubble"><div class="umonth">Máj</div></div><div class="ucebne-unit">Ja a môj svet</div><ul class="ucebne-topics"><li>Lúka plná kvetov</li><li>Moja mamka mamička</li><li>Naše Slovensko</li><li>Naša Bratislava</li></ul></div>
+              <div class="ucebne-card ucm-jun"><div class="ucebne-bubble"><div class="umonth">Jún</div></div><div class="ucebne-unit">Veselé leto</div><ul class="ucebne-topics"><li>Deti sveta</li><li>Letom svetom</li><li>Podmorský svet</li><li>Exotické zvieratá</li><li>Rozlúčka so škôlkou</li></ul></div>
+            </div>
           </div>
         </div>
       </div>
@@ -1223,7 +1262,7 @@ button{outline:none;border:none;}
     </div>
     <div class="act-popup-body" id="actPopupText"></div>
     <div id="actPopupImgWrap" style="display:none;padding:0 28px 28px;">
-      <img id="actPopupImg" src="" alt="" style="width:100%;border-radius:16px;object-fit:cover;max-height:280px;display:block;"/>
+      <img id="actPopupImg" src="" alt="" style="width:100%;height:auto;border-radius:16px;display:block;"/>
     </div>
   </div>
 </div>
@@ -1738,20 +1777,69 @@ function closeActPopup(){
   if(ov){ ov.classList.remove('open'); document.body.style.overflow=''; }
 }
 
-// ===== UČEBNÉ OSNOVY POPUP =====
-function openUcebneOsnovy(){
-  const ov = document.getElementById('ucebneOverlay');
-  if(ov){ ov.classList.add('open'); document.body.style.overflow='hidden'; }
+// ===== UČEBNÉ OSNOVY INLINE =====
+function toggleUcebneInline(){
+  const btn  = document.getElementById('ucebneBtn');
+  const text = document.getElementById('ucebneInlineText');
+  if(!btn || !text) return;
+  const isOpen = text.classList.contains('open');
+  // close the other accordion if open
+  if(!isOpen){
+    document.getElementById('zvedavaText')?.classList.remove('open');
+    document.getElementById('zvedavaBtn')?.classList.remove('open');
+  }
+  text.classList.toggle('open', !isOpen);
+  btn.classList.toggle('open', !isOpen);
+  if(!isOpen) setTimeout(()=>{ text.scrollIntoView({behavior:'smooth', block:'nearest'}); }, 100);
 }
 function closeUcebneOsnovy(){
-  const ov = document.getElementById('ucebneOverlay');
-  if(ov){ ov.classList.remove('open'); document.body.style.overflow=''; }
+  document.getElementById('ucebneInlineText')?.classList.remove('open');
+  document.getElementById('ucebneBtn')?.classList.remove('open');
 }
 
 // Close all with Escape
 document.addEventListener('keydown', e=>{
   if(e.key==='Escape'){ closeLightbox(); closeFullGallery(); closeNewsPopup(); closeActPopup(); closeUcebneOsnovy(); }
 });
+
+// ===== HERO PARALLAX =====
+(function(){
+  const bg = document.getElementById('cms-hero-bg');
+  const hero = document.querySelector('.hero');
+  if(!bg || !hero) return;
+  function onScroll(){
+    const sy = window.scrollY;
+    if(sy > hero.offsetHeight) return;
+    bg.style.transform = 'translateY(' + (sy * 0.22) + 'px)';
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+})();
+
+// ===== MOUSE-FOLLOW BEE (O NÁS section only) =====
+(function(){
+  const bee = document.getElementById('mouseFollowBee');
+  if(!bee) return;
+  // target the yellow O nás section (second #o-nas)
+  const onas = document.querySelector('section.bg-yellow-pale');
+  let mx = 0, my = 0, cx = 0, cy = 0, visible = false, raf;
+  function lerp(a,b,t){ return a+(b-a)*t; }
+  function tick(){
+    cx = lerp(cx, mx, 0.07);
+    cy = lerp(cy, my, 0.07);
+    bee.style.left = cx + 'px';
+    bee.style.top  = cy + 'px';
+    raf = requestAnimationFrame(tick);
+  }
+  document.addEventListener('mousemove', e=>{
+    mx = e.clientX;
+    my = e.clientY;
+    if(!onas){ bee.style.opacity='0'; return; }
+    const r = onas.getBoundingClientRect();
+    const inside = e.clientY >= r.top && e.clientY <= r.bottom && e.clientX >= r.left && e.clientX <= r.right;
+    bee.style.opacity = inside ? '1' : '0';
+  });
+  tick();
+})();
 // Lightbox arrows
 document.addEventListener('DOMContentLoaded', function(){
   const lbPrev = document.getElementById('lbPrev');
@@ -1765,140 +1853,9 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 </script>
 
-<!-- ===== UČEBNÉ OSNOVY POPUP ===== -->
-<div class="ucebne-overlay" id="ucebneOverlay" onclick="if(event.target===this)closeUcebneOsnovy()">
-  <div class="ucebne-modal">
-    <div class="ucebne-modal-header">
-      <div class="ucebne-modal-logo">
-        <img src="vcielka_logo2.png" alt="Včielka"/>
-        <div>
-          <div class="ucebne-modal-logo-title">Učebné osnovy</div>
-          <div class="ucebne-modal-logo-sub">Školský vzdelávací program „Zvedavá včielka"</div>
-        </div>
-      </div>
-      <button class="ucebne-modal-close" onclick="closeUcebneOsnovy()">✕</button>
-    </div>
-    <div class="ucebne-grid">
-
-      <!-- ROW 1: Sep – Jan -->
-      <div class="ucebne-card ucm-sep">
-        <div class="ucebne-bubble"><div class="umonth">September</div></div>
-        <div class="ucebne-unit">Vitaj v škôlke</div>
-        <ul class="ucebne-topics">
-          <li>Naša škôlka Včielka</li>
-          <li>Naša trieda</li>
-          <li>Moji kamaráti</li>
-          <li>Moja rodina</li>
-        </ul>
-      </div>
-
-      <div class="ucebne-card ucm-okt">
-        <div class="ucebne-bubble"><div class="umonth">Október</div></div>
-        <div class="ucebne-unit">Farebná jeseň</div>
-        <ul class="ucebne-topics">
-          <li>Jeseň a počasie</li>
-          <li>Stromy okolo nás</li>
-          <li>Vitamínový košík ovocia</li>
-          <li>Veľký kôš zeleniny</li>
-        </ul>
-      </div>
-
-      <div class="ucebne-card ucm-nov">
-        <div class="ucebne-bubble"><div class="umonth">November</div></div>
-        <div class="ucebne-unit">Zdravie a bezpečnosť</div>
-        <ul class="ucebne-topics">
-          <li>Zdravá výživa</li>
-          <li>Ľudské telo</li>
-          <li>Profesie</li>
-          <li>Bezpečnosť na ceste</li>
-          <li>Dopravné prostriedky</li>
-        </ul>
-      </div>
-
-      <div class="ucebne-card ucm-dec">
-        <div class="ucebne-bubble"><div class="umonth">December</div></div>
-        <div class="ucebne-unit">Vianočná zima</div>
-        <ul class="ucebne-topics">
-          <li>Privítanie Mikuláša</li>
-          <li>Zima a jej čaro</li>
-          <li>Pri vianočnom stromčeku</li>
-          <li>Živá a neživá príroda</li>
-          <li>Predmety a ich vlastnosti</li>
-        </ul>
-      </div>
-
-      <div class="ucebne-card ucm-jan">
-        <div class="ucebne-bubble"><div class="umonth">Január</div></div>
-        <div class="ucebne-unit">Zasnežená krajina</div>
-        <ul class="ucebne-topics">
-          <li>Živá a neživá príroda</li>
-          <li>Predmety a ich vlastnosti</li>
-          <li>Zvieratká v zime</li>
-          <li>Vtáčiky v zime</li>
-        </ul>
-      </div>
-
-      <div class="ucebne-row-sep"></div>
-
-      <!-- ROW 2: Feb – Jún -->
-      <div class="ucebne-card ucm-feb">
-        <div class="ucebne-bubble"><div class="umonth">Február</div></div>
-        <div class="ucebne-unit">Radovánky rok čo rok</div>
-        <ul class="ucebne-topics">
-          <li>Veselý karneval</li>
-          <li>Deň a noc, Dnes/včera/zajtra</li>
-          <li>Dni v týždni a mesiace v roku</li>
-          <li>Naša Zem vo vesmíre</li>
-        </ul>
-      </div>
-
-      <div class="ucebne-card ucm-mar">
-        <div class="ucebne-bubble"><div class="umonth">Marec</div></div>
-        <div class="ucebne-unit">Rozprávková jar</div>
-        <ul class="ucebne-topics">
-          <li>Krajina rozprávok</li>
-          <li>Pozdrav jari</li>
-          <li>Jarná záhradka</li>
-          <li>Na gazdovskom dvore</li>
-        </ul>
-      </div>
-
-      <div class="ucebne-card ucm-apr">
-        <div class="ucebne-bubble"><div class="umonth">Apríl</div></div>
-        <div class="ucebne-unit">Cestou necestou</div>
-        <ul class="ucebne-topics">
-          <li>Príroda okolo nás</li>
-          <li>Putovanie vody</li>
-          <li>Pri rybníku a vo vode</li>
-          <li>Chrobáčiky v tráve</li>
-        </ul>
-      </div>
-
-      <div class="ucebne-card ucm-maj">
-        <div class="ucebne-bubble"><div class="umonth">Máj</div></div>
-        <div class="ucebne-unit">Ja a môj svet</div>
-        <ul class="ucebne-topics">
-          <li>Lúka plná kvetov</li>
-          <li>Moja mamka mamička</li>
-          <li>Naše Slovensko</li>
-          <li>Naša Bratislava</li>
-        </ul>
-      </div>
-
-      <div class="ucebne-card ucm-jun">
-        <div class="ucebne-bubble"><div class="umonth">Jún</div></div>
-        <div class="ucebne-unit">Veselé leto</div>
-        <ul class="ucebne-topics">
-          <li>Deti sveta</li>
-          <li>Letom svetom</li>
-          <li>Podmorský svet</li>
-          <li>Exotické zvieratá</li>
-          <li>Rozlúčka so škôlkou</li>
-        </ul>
-      </div>
-
-    </div>
-  </div>
+<!-- mouse-follow bee logo -->
+<div id="mouseFollowBee" style="position:fixed;pointer-events:none;z-index:8000;opacity:0;transition:opacity .4s;transform:translate(-50%,-50%);top:0;left:0;">
+  <img src="vcielka_logo2.png" alt="" style="width:44px;height:auto;filter:drop-shadow(0 3px 10px rgba(0,0,0,.18));"/>
 </div>
 
 </body>

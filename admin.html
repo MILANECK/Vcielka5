@@ -90,9 +90,13 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
 .fmt-btn.b{font-weight:900;font-style:normal;}
 .fmt-btn.i{font-style:italic;}
 .fmt-sep{width:1px;background:#C8E6FA;margin:2px 2px;}
-.fake-textarea{width:100%;min-height:75px;padding:8px 10px;border:1.5px solid #C8E6FA;border-radius:10px;font-family:'Inter',sans-serif;font-size:14px;color:#333;background:#fff;outline:none;line-height:1.6;box-sizing:border-box;cursor:text;}
+.fake-textarea{width:100%;min-height:75px;padding:8px 10px;border:1.5px solid #C8E6FA;border-radius:10px;font-family:'Inter',sans-serif;font-size:14px;color:#333;background:#fff;outline:none;line-height:1.6;box-sizing:border-box;cursor:text;overflow-y:auto;resize:vertical;}
 .fake-textarea:focus{border-color:#1A5FA8;box-shadow:0 0 0 3px rgba(26,95,168,.08);}
 .fake-textarea[data-tall]{min-height:110px;}
+.drag-handle{cursor:grab;font-size:20px;color:#c0cfe8;user-select:none;padding:0 2px;line-height:1;margin-right:4px;}
+.drag-handle:active{cursor:grabbing;}
+.activity-card.drag-over{border-color:#1A5FA8!important;background:#EEF4FF!important;box-shadow:0 0 0 3px rgba(26,95,168,.15);}
+.activity-card[draggable="true"]{transition:opacity .2s,box-shadow .2s;}
 
 /* NEWS ITEMS */
 .news-item{background:#F8FBFF;border:1.5px solid #E0ECFF;border-radius:16px;padding:20px;margin-bottom:14px;}
@@ -620,14 +624,57 @@ function fmtWrap(btn) {
   }
 }
 
+// ===== ACTIVITY DRAG-TO-REORDER =====
+let _dragActId = null;
+function actDragStart(e, id) {
+  _dragActId = id;
+  e.dataTransfer.effectAllowed = 'move';
+  setTimeout(() => { if(e.target) e.target.style.opacity='0.45'; }, 0);
+}
+function actDragEnd(e) {
+  e.target.style.opacity = '';
+  document.querySelectorAll('.activity-card').forEach(c => c.classList.remove('drag-over'));
+}
+function actDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  e.currentTarget.classList.add('drag-over');
+}
+function actDragLeave(e) {
+  e.currentTarget.classList.remove('drag-over');
+}
+async function actDrop(e, targetId) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  if (_dragActId === null || _dragActId === targetId) return;
+  const { data } = await db.from('activities').select('id,sort_order').order('sort_order');
+  if (!data) return;
+  const ids = data.map(a => a.id);
+  const fromIdx = ids.indexOf(_dragActId);
+  const toIdx   = ids.indexOf(targetId);
+  if (fromIdx === -1 || toIdx === -1) return;
+  ids.splice(fromIdx, 1);
+  ids.splice(toIdx, 0, _dragActId);
+  await Promise.all(ids.map((id, i) => db.from('activities').update({ sort_order: i + 1 }).eq('id', id)));
+  _dragActId = null;
+  toast('✅ Poradie uložené!');
+  loadActivities();
+}
+
 // ===== ACTIVITIES =====
 async function loadActivities() {
   const { data } = await db.from('activities').select('*').order('sort_order');
   if (!data) return;
   const grid = document.getElementById('activitiesGrid');
   grid.innerHTML = data.map(a => `
-    <div class="activity-card">
+    <div class="activity-card" draggable="true"
+      ondragstart="actDragStart(event,${a.id})"
+      ondragend="actDragEnd(event)"
+      ondragover="actDragOver(event)"
+      ondragleave="actDragLeave(event)"
+      ondrop="actDrop(event,${a.id})">
       <div class="activity-card-header">
+        <span class="drag-handle" title="Presunúť">⠿</span>
         <span class="activity-card-icon">${a.icon}</span>
         <button class="btn-danger" style="padding:5px 10px;font-size:11px;" onclick="deleteActivity(${a.id})">🗑️ Odstrániť</button>
       </div>
