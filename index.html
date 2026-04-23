@@ -819,6 +819,11 @@ button{outline:none;border:none;}
 </div>
 </div>
 
+<!-- wave stats→o-nas -->
+<svg class="wave" viewBox="0 0 1440 55" preserveAspectRatio="none" style="display:block;margin-bottom:-2px;background:#FFFDF8;" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0,35 C360,5 720,55 1080,20 C1260,5 1380,42 1440,30 L1440,55 L0,55Z" fill="#FFF9E0"/>
+</svg>
+
 <!-- ===========================
      O NÁS
 =========================== -->
@@ -1546,6 +1551,7 @@ function toggleAbout(){
   if(!isOpen){
     setTimeout(()=>{ text.scrollIntoView({behavior:'smooth', block:'nearest'}); }, 100);
   }
+}
 
 // ===== O NÁS TOGGLE =====
 function toggleOnas(){
@@ -1567,8 +1573,6 @@ function togglePpv(){
   const open = area.classList.toggle('open');
   btn.classList.toggle('open', open);
   lbl.textContent = open ? 'Menej' : 'Viac';
-}
-
 }
 
 // ===== SCROLL TO NEWS =====
