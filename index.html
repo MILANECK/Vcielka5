@@ -1728,7 +1728,7 @@ function openActPopup(idx){
   document.getElementById('actPopupText').innerHTML = (a.popup_text||'').replace(/\n/g,'<br>');
   const imgWrap = document.getElementById('actPopupImgWrap');
   const img = document.getElementById('actPopupImg');
-  if(a.photo_url && imgWrap && img){ img.src = a.photo_url; imgWrap.style.display='block'; }
+  if(a.popup_photo_url && imgWrap && img){ img.src = a.popup_photo_url; imgWrap.style.display='block'; }
   else if(imgWrap){ imgWrap.style.display='none'; }
   const ov = document.getElementById('actPopupOverlay');
   if(ov){ ov.classList.add('open'); document.body.style.overflow='hidden'; }

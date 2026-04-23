@@ -90,6 +90,9 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
 .fmt-btn.b{font-weight:900;font-style:normal;}
 .fmt-btn.i{font-style:italic;}
 .fmt-sep{width:1px;background:#C8E6FA;margin:2px 2px;}
+.fake-textarea{width:100%;min-height:75px;padding:8px 10px;border:1.5px solid #C8E6FA;border-radius:10px;font-family:'Inter',sans-serif;font-size:14px;color:#333;background:#fff;outline:none;line-height:1.6;box-sizing:border-box;cursor:text;}
+.fake-textarea:focus{border-color:#1A5FA8;box-shadow:0 0 0 3px rgba(26,95,168,.08);}
+.fake-textarea[data-tall]{min-height:110px;}
 
 /* NEWS ITEMS */
 .news-item{background:#F8FBFF;border:1.5px solid #E0ECFF;border-radius:16px;padding:20px;margin-bottom:14px;}
@@ -597,18 +600,24 @@ async function saveSettings(keys) {
 
 // ===== FORMATTING TOOLBAR =====
 function fmtWrap(btn) {
-  const ta = btn.closest('.fmt-wrap').querySelector('textarea');
-  if (!ta) return;
-  const open = btn.dataset.open, close = btn.dataset.close;
-  const s = ta.selectionStart, e = ta.selectionEnd;
-  const sel = ta.value.substring(s, e);
-  if (!sel) { ta.focus(); return; }
-  const replacement = open + sel + close;
-  ta.value = ta.value.substring(0, s) + replacement + ta.value.substring(e);
-  ta.selectionStart = s;
-  ta.selectionEnd = s + replacement.length;
-  ta.focus();
-  ta.dispatchEvent(new Event('change'));
+  const editor = btn.closest('.fmt-wrap').querySelector('[contenteditable]');
+  if (!editor) return;
+  const action = btn.dataset.action, size = btn.dataset.size;
+  if (action === 'bold') {
+    document.execCommand('bold', false, null);
+  } else if (action === 'italic') {
+    document.execCommand('italic', false, null);
+  } else if (size) {
+    const sel = window.getSelection();
+    if (!sel || !sel.rangeCount || sel.isCollapsed) return;
+    const range = sel.getRangeAt(0);
+    if (!editor.contains(range.commonAncestorContainer)) return;
+    const frag = range.extractContents();
+    const span = document.createElement('span');
+    span.style.fontSize = size;
+    span.appendChild(frag);
+    range.insertNode(span);
+  }
 }
 
 // ===== ACTIVITIES =====
@@ -644,25 +653,41 @@ async function loadActivities() {
       </div>
       <div class="field fmt-wrap"><label>Krátky popis (na karte)</label>
         <div class="fmt-toolbar">
-          <button class="fmt-btn b" type="button" data-open="&lt;strong&gt;" data-close="&lt;/strong&gt;" onclick="fmtWrap(this)">B</button>
-          <button class="fmt-btn i" type="button" data-open="&lt;em&gt;" data-close="&lt;/em&gt;" onclick="fmtWrap(this)">I</button>
+          <button class="fmt-btn b" type="button" data-action="bold" onmousedown="event.preventDefault();fmtWrap(this)">B</button>
+          <button class="fmt-btn i" type="button" data-action="italic" onmousedown="event.preventDefault();fmtWrap(this)">I</button>
           <div class="fmt-sep"></div>
-          <button class="fmt-btn" type="button" data-open="&lt;span style=&quot;font-size:0.82em&quot;&gt;" data-close="&lt;/span&gt;" onclick="fmtWrap(this)">S</button>
-          <button class="fmt-btn" type="button" data-open="&lt;span style=&quot;font-size:1em&quot;&gt;" data-close="&lt;/span&gt;" onclick="fmtWrap(this)">M</button>
-          <button class="fmt-btn" type="button" data-open="&lt;span style=&quot;font-size:1.2em&quot;&gt;" data-close="&lt;/span&gt;" onclick="fmtWrap(this)">L</button>
+          <button class="fmt-btn" type="button" data-size="0.82em" onmousedown="event.preventDefault();fmtWrap(this)">S</button>
+          <button class="fmt-btn" type="button" data-size="1em" onmousedown="event.preventDefault();fmtWrap(this)">M</button>
+          <button class="fmt-btn" type="button" data-size="1.2em" onmousedown="event.preventDefault();fmtWrap(this)">L</button>
         </div>
-        <textarea onchange="updateActivity(${a.id},'description',this.value)">${a.description||''}</textarea>
+        <div class="fake-textarea" contenteditable="true" onblur="updateActivity(${a.id},'description',this.innerHTML)">${a.description||''}</div>
       </div>
       <div class="field fmt-wrap"><label>Text popupu „Viac" (dlhší popis)</label>
         <div class="fmt-toolbar">
-          <button class="fmt-btn b" type="button" data-open="&lt;strong&gt;" data-close="&lt;/strong&gt;" onclick="fmtWrap(this)">B</button>
-          <button class="fmt-btn i" type="button" data-open="&lt;em&gt;" data-close="&lt;/em&gt;" onclick="fmtWrap(this)">I</button>
+          <button class="fmt-btn b" type="button" data-action="bold" onmousedown="event.preventDefault();fmtWrap(this)">B</button>
+          <button class="fmt-btn i" type="button" data-action="italic" onmousedown="event.preventDefault();fmtWrap(this)">I</button>
           <div class="fmt-sep"></div>
-          <button class="fmt-btn" type="button" data-open="&lt;span style=&quot;font-size:0.82em&quot;&gt;" data-close="&lt;/span&gt;" onclick="fmtWrap(this)">S</button>
-          <button class="fmt-btn" type="button" data-open="&lt;span style=&quot;font-size:1em&quot;&gt;" data-close="&lt;/span&gt;" onclick="fmtWrap(this)">M</button>
-          <button class="fmt-btn" type="button" data-open="&lt;span style=&quot;font-size:1.2em&quot;&gt;" data-close="&lt;/span&gt;" onclick="fmtWrap(this)">L</button>
+          <button class="fmt-btn" type="button" data-size="0.82em" onmousedown="event.preventDefault();fmtWrap(this)">S</button>
+          <button class="fmt-btn" type="button" data-size="1em" onmousedown="event.preventDefault();fmtWrap(this)">M</button>
+          <button class="fmt-btn" type="button" data-size="1.2em" onmousedown="event.preventDefault();fmtWrap(this)">L</button>
         </div>
-        <textarea style="min-height:100px;" onchange="updateActivity(${a.id},'popup_text',this.value)">${a.popup_text||''}</textarea>
+        <div class="fake-textarea" data-tall contenteditable="true" onblur="updateActivity(${a.id},'popup_text',this.innerHTML)">${a.popup_text||''}</div>
+      </div>
+      <div class="field"><label>Foto do popupu (pod textom)</label>
+        ${a.popup_photo_url
+          ? `<img style="width:100%;height:100px;object-fit:cover;border-radius:10px;margin-bottom:8px;" src="${a.popup_photo_url}" alt=""/>
+             <div style="display:flex;gap:8px;">
+               <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:#D9EFFF;color:#1A5FA8;font-family:'Quicksand',sans-serif;font-size:12px;font-weight:700;padding:7px 12px;border-radius:50px;cursor:pointer;">
+                 <input type="file" accept="image/*" style="display:none;" onchange="uploadActivityPopupPhoto(this,${a.id})"/>
+                 📷 Zmeniť foto popupu
+               </label>
+               <button class="btn-danger" style="flex:1;" onclick="removeActivityPopupPhoto(${a.id})">🗑️ Odstrániť</button>
+             </div>`
+          : `<label style="display:flex;align-items:center;justify-content:center;gap:8px;background:#E0ECFF;border-radius:10px;height:80px;cursor:pointer;border:2px dashed #C8E6FA;">
+               <input type="file" accept="image/*" style="display:none;" onchange="uploadActivityPopupPhoto(this,${a.id})"/>
+               📷 Nahrať foto do popupu
+             </label>`
+        }
       </div>
       <div class="field"><label>Farba karty</label>
         <select onchange="updateActivity(${a.id},'color',this.value)">
@@ -714,6 +739,23 @@ async function uploadActivityPhoto(input, id) {
 
 async function removeActivityPhoto(id) {
   await db.from('activities').update({ photo_url: '' }).eq('id', id);
+  toast('Fotografia odstránená');
+  loadActivities();
+}
+
+async function uploadActivityPopupPhoto(input, id) {
+  const file = input.files[0]; if (!file) return;
+  const path = `activities/popup_${id}_${Date.now()}.${file.name.split('.').pop()}`;
+  const { error: upErr } = await db.storage.from('vcielka').upload(path, file, { upsert: true });
+  if (upErr) { toast('Chyba nahrávania', 'error'); return; }
+  const { data: { publicUrl } } = db.storage.from('vcielka').getPublicUrl(path);
+  await db.from('activities').update({ popup_photo_url: publicUrl }).eq('id', id);
+  toast('✅ Fotografia nahratá!');
+  loadActivities();
+}
+
+async function removeActivityPopupPhoto(id) {
+  await db.from('activities').update({ popup_photo_url: '' }).eq('id', id);
   toast('Fotografia odstránená');
   loadActivities();
 }
