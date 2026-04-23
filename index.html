@@ -523,9 +523,9 @@ button{outline:none;border:none;}
 @media(max-width:600px){.gallery-popup-grid{grid-template-columns:repeat(2,1fr);gap:8px;}}
 
 /* ===== UČEBNÉ OSNOVY POPUP ===== */
-.ucebne-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:9999!important;padding:24px 16px 40px;overflow-y:auto;backdrop-filter:blur(4px);}
-.ucebne-overlay.open{display:block;}
-.ucebne-modal{background:#fff;border-radius:24px;width:100%;max-width:960px;padding:28px 28px 36px;margin:0 auto;position:relative;}
+.ucebne-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:9999!important;padding:24px 16px 40px;overflow-y:auto;backdrop-filter:blur(4px);align-items:center;justify-content:center;}
+.ucebne-overlay.open{display:flex;}
+.ucebne-modal{background:#fff;border-radius:24px;width:100%;max-width:960px;padding:28px 28px 36px;margin:0;position:relative;}
 .ucebne-modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
 .ucebne-modal-logo{display:flex;align-items:center;gap:12px;}
 .ucebne-modal-logo img{height:42px;width:auto;}
@@ -552,8 +552,8 @@ button{outline:none;border:none;}
 .ucm-apr .ucebne-bubble{background:#c8f5e0;} .ucm-apr .umonth{color:#1a6b4a;} .ucm-apr .ucebne-unit{color:#1a6b4a;}
 .ucm-maj .ucebne-bubble{background:#ffe0cc;} .ucm-maj .umonth{color:#a04a10;} .ucm-maj .ucebne-unit{color:#b85818;}
 .ucm-jun .ucebne-bubble{background:#fffacc;} .ucm-jun .umonth{color:#6e6000;} .ucm-jun .ucebne-unit{color:#857200;}
-.ucebne-btn{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.9);color:#2E7A4E;font-family:'Quicksand',sans-serif;font-size:13px;font-weight:700;padding:10px 20px;border-radius:50px;border:2px solid rgba(46,122,78,.25);cursor:pointer;transition:.2s;}
-.ucebne-btn:hover{background:#fff;border-color:#2E7A4E;}
+.ucebne-btn{display:inline-flex;align-items:center;gap:8px;font-family:'Quicksand',sans-serif;font-size:15px;font-weight:700;color:#1A6640;background:rgba(255,255,255,.7);border:none;cursor:pointer;padding:10px 24px;border-radius:50px;transition:.25s;backdrop-filter:blur(6px);box-shadow:0 2px 12px rgba(26,95,168,.1);}
+.ucebne-btn:hover{background:#fff;box-shadow:0 4px 20px rgba(26,95,168,.15);}
 @media(max-width:720px){.ucebne-grid{grid-template-columns:repeat(2,1fr);} .ucebne-row-sep{display:none;}}
 @media(max-width:420px){.ucebne-grid{gap:8px;}}
 
@@ -813,7 +813,7 @@ button{outline:none;border:none;}
   <div style="width:100%;max-width:1100px;margin:0 auto;padding:0 0 0 48px;" class="hero-wrapper">
   <div class="hero-content fade-in">
     <div class="hero-badge">🐝 Ružinov, Bratislava</div>
-    <h1 id="cms-hero-title">Kde detičky <em>rastú</em><br>a objavujú svet</h1>
+    <h1 id="cms-hero-title">Kde deti <em>rastú</em><br>a objavujú svet</h1>
     <p class="hero-desc" id="cms-hero-subtitle">Súkromná materská škola s odborným tímom, bohatým programom <strong>Zvedavá Včielka</strong> a láskyplným prostredím pre deti od 2,5 do 6 rokov.</p>
     <div class="hero-btns">
       <a href="#sluzby" class="btn btn-primary">Zistiť viac o škôlke</a>
@@ -1222,6 +1222,9 @@ button{outline:none;border:none;}
       <button class="act-popup-close" onclick="closeActPopup()">✕</button>
     </div>
     <div class="act-popup-body" id="actPopupText"></div>
+    <div id="actPopupImgWrap" style="display:none;padding:0 28px 28px;">
+      <img id="actPopupImg" src="" alt="" style="width:100%;border-radius:16px;object-fit:cover;max-height:280px;display:block;"/>
+    </div>
   </div>
 </div>
 
@@ -1723,6 +1726,10 @@ function openActPopup(idx){
   document.getElementById('actPopupIcon').textContent = a.icon||'';
   document.getElementById('actPopupTitle').textContent = a.title||'';
   document.getElementById('actPopupText').innerHTML = (a.popup_text||'').replace(/\n/g,'<br>');
+  const imgWrap = document.getElementById('actPopupImgWrap');
+  const img = document.getElementById('actPopupImg');
+  if(a.photo_url && imgWrap && img){ img.src = a.photo_url; imgWrap.style.display='block'; }
+  else if(imgWrap){ imgWrap.style.display='none'; }
   const ov = document.getElementById('actPopupOverlay');
   if(ov){ ov.classList.add('open'); document.body.style.overflow='hidden'; }
 }

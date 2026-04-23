@@ -82,6 +82,14 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
 .activity-photo{width:100%;height:100px;object-fit:cover;border-radius:10px;margin-bottom:10px;display:block;}
 .activity-photo-placeholder{width:100%;height:100px;background:#E0ECFF;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;font-size:28px;cursor:pointer;border:2px dashed #C8E6FA;position:relative;}
 .activity-photo-placeholder input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+/* FORMATTING TOOLBAR */
+.fmt-wrap{position:relative;}
+.fmt-toolbar{display:flex;gap:4px;margin-bottom:5px;flex-wrap:wrap;}
+.fmt-btn{background:#E0ECFF;border:none;border-radius:6px;padding:3px 9px;font-family:'Quicksand',sans-serif;font-size:12px;font-weight:700;cursor:pointer;color:#1A5FA8;transition:.15s;line-height:1.6;}
+.fmt-btn:hover{background:#C8E6FA;}
+.fmt-btn.b{font-weight:900;font-style:normal;}
+.fmt-btn.i{font-style:italic;}
+.fmt-sep{width:1px;background:#C8E6FA;margin:2px 2px;}
 
 /* NEWS ITEMS */
 .news-item{background:#F8FBFF;border:1.5px solid #E0ECFF;border-radius:16px;padding:20px;margin-bottom:14px;}
@@ -587,6 +595,22 @@ async function saveSettings(keys) {
   error ? toast('Chyba pri ukladaní', 'error') : toast('✅ Uložené!');
 }
 
+// ===== FORMATTING TOOLBAR =====
+function fmtWrap(btn) {
+  const ta = btn.closest('.fmt-wrap').querySelector('textarea');
+  if (!ta) return;
+  const open = btn.dataset.open, close = btn.dataset.close;
+  const s = ta.selectionStart, e = ta.selectionEnd;
+  const sel = ta.value.substring(s, e);
+  if (!sel) { ta.focus(); return; }
+  const replacement = open + sel + close;
+  ta.value = ta.value.substring(0, s) + replacement + ta.value.substring(e);
+  ta.selectionStart = s;
+  ta.selectionEnd = s + replacement.length;
+  ta.focus();
+  ta.dispatchEvent(new Event('change'));
+}
+
 // ===== ACTIVITIES =====
 async function loadActivities() {
   const { data } = await db.from('activities').select('*').order('sort_order');
@@ -609,7 +633,7 @@ async function loadActivities() {
            </div>`
         : `<label style="display:flex;align-items:center;justify-content:center;gap:8px;background:#E0ECFF;border-radius:10px;height:100px;margin-bottom:10px;cursor:pointer;border:2px dashed #C8E6FA;">
              <input type="file" accept="image/*" style="display:none;" onchange="uploadActivityPhoto(this,${a.id})"/>
-             📷 Nahrať foto
+             📷 Nahrať foto (zobrazí sa v popupe)
            </label>`
       }
       <div class="field"><label>Emoji ikona</label>
@@ -618,10 +642,26 @@ async function loadActivities() {
       <div class="field"><label>Názov</label>
         <input type="text" value="${a.title}" onchange="updateActivity(${a.id},'title',this.value)"/>
       </div>
-      <div class="field"><label>Krátky popis (na karte)</label>
+      <div class="field fmt-wrap"><label>Krátky popis (na karte)</label>
+        <div class="fmt-toolbar">
+          <button class="fmt-btn b" type="button" data-open="&lt;strong&gt;" data-close="&lt;/strong&gt;" onclick="fmtWrap(this)">B</button>
+          <button class="fmt-btn i" type="button" data-open="&lt;em&gt;" data-close="&lt;/em&gt;" onclick="fmtWrap(this)">I</button>
+          <div class="fmt-sep"></div>
+          <button class="fmt-btn" type="button" data-open="&lt;span style=&quot;font-size:0.82em&quot;&gt;" data-close="&lt;/span&gt;" onclick="fmtWrap(this)">S</button>
+          <button class="fmt-btn" type="button" data-open="&lt;span style=&quot;font-size:1em&quot;&gt;" data-close="&lt;/span&gt;" onclick="fmtWrap(this)">M</button>
+          <button class="fmt-btn" type="button" data-open="&lt;span style=&quot;font-size:1.2em&quot;&gt;" data-close="&lt;/span&gt;" onclick="fmtWrap(this)">L</button>
+        </div>
         <textarea onchange="updateActivity(${a.id},'description',this.value)">${a.description||''}</textarea>
       </div>
-      <div class="field"><label>Text popupu „Viac" (dlhší popis)</label>
+      <div class="field fmt-wrap"><label>Text popupu „Viac" (dlhší popis)</label>
+        <div class="fmt-toolbar">
+          <button class="fmt-btn b" type="button" data-open="&lt;strong&gt;" data-close="&lt;/strong&gt;" onclick="fmtWrap(this)">B</button>
+          <button class="fmt-btn i" type="button" data-open="&lt;em&gt;" data-close="&lt;/em&gt;" onclick="fmtWrap(this)">I</button>
+          <div class="fmt-sep"></div>
+          <button class="fmt-btn" type="button" data-open="&lt;span style=&quot;font-size:0.82em&quot;&gt;" data-close="&lt;/span&gt;" onclick="fmtWrap(this)">S</button>
+          <button class="fmt-btn" type="button" data-open="&lt;span style=&quot;font-size:1em&quot;&gt;" data-close="&lt;/span&gt;" onclick="fmtWrap(this)">M</button>
+          <button class="fmt-btn" type="button" data-open="&lt;span style=&quot;font-size:1.2em&quot;&gt;" data-close="&lt;/span&gt;" onclick="fmtWrap(this)">L</button>
+        </div>
         <textarea style="min-height:100px;" onchange="updateActivity(${a.id},'popup_text',this.value)">${a.popup_text||''}</textarea>
       </div>
       <div class="field"><label>Farba karty</label>
