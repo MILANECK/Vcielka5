@@ -1315,6 +1315,13 @@ if(track){
   track.addEventListener('mouseleave',()=>isDown=false);
   track.addEventListener('mouseup',()=>isDown=false);
   track.addEventListener('mousemove',e=>{if(!isDown)return;e.preventDefault();const x=e.pageX-track.offsetLeft;track.scrollLeft=scrollL-(x-startX)*1.5;});
+  // wheel scrolls gallery horizontally on desktop
+  track.addEventListener('wheel',e=>{
+    if(window.matchMedia('(hover:hover)').matches){
+      e.preventDefault();
+      track.scrollBy({left:e.deltaY*2,behavior:'auto'});
+    }
+  },{passive:false});
 }
 
 

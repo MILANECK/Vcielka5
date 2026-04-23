@@ -150,11 +150,10 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#c8d8e4;color:#1a2a3a
 .zoom-pct{font-size:12px;font-weight:700;color:#5a7a9a;min-width:36px;text-align:center}
 
 /* Collapsible panel */
-.panel-collapse-btn{background:none;border:none;font-size:16px;cursor:pointer;color:#5a7a9a;
-  width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-  line-height:1;flex-shrink:0}
+.panel-collapse-btn{background:none;border:none;font-size:20px;cursor:pointer;color:#5a7a9a;
+  width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  line-height:1;flex-shrink:0;touch-action:manipulation}
 .panel-collapse-btn:hover{background:rgba(0,94,159,.1)}
-.panel-hdr{cursor:pointer}
 
 /* ── Item toolbar ── */
 #item-tb{display:none;position:fixed;bottom:86px;left:50%;transform:translateX(-50%);
@@ -320,9 +319,9 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#c8d8e4;color:#1a2a3a
 </div>
 
 <div id="photos-panel">
-  <div class="panel-hdr" onclick="collapsePanel(event)">
+  <div class="panel-hdr">
     <span class="panel-hdr-title"><svg class="icon"><use href="#icon-camera"/></svg> Fotografie</span>
-    <button class="panel-collapse-btn" id="panel-collapse-btn" title="Zbaliť/Rozbaliť">▾</button>
+    <button class="panel-collapse-btn" id="panel-collapse-btn" onclick="collapsePanel(event)" title="Zbaliť/Rozbaliť">▾</button>
     <button class="panel-close" onclick="event.stopPropagation();togglePanel()">✕</button>
   </div>
   <div id="panel-body">
@@ -476,7 +475,7 @@ function tapPlace(pid){
 
 let panBodyCollapsed = false;
 function collapsePanel(e){
-  if(e && e.target.closest('.panel-close')) return;
+  if(e){ e.stopPropagation(); e.preventDefault(); }
   panBodyCollapsed = !panBodyCollapsed;
   document.getElementById('panel-body').style.display = panBodyCollapsed ? 'none' : '';
   document.getElementById('panel-collapse-btn').textContent = panBodyCollapsed ? '▸' : '▾';
@@ -784,11 +783,11 @@ async function sbImport(){
   }
   function endDrag(){ dragging = false; hdr.style.cursor = 'grab'; }
 
-  hdr.addEventListener('mousedown',  e => { e.preventDefault(); startDrag(e.clientX, e.clientY); });
+  hdr.addEventListener('mousedown',  e => { if(e.target.closest('button')) return; e.preventDefault(); startDrag(e.clientX, e.clientY); });
   window.addEventListener('mousemove', e => moveDrag(e.clientX, e.clientY));
   window.addEventListener('mouseup',   endDrag);
 
-  hdr.addEventListener('touchstart',  e => { e.preventDefault(); const t=e.touches[0]; startDrag(t.clientX, t.clientY); }, {passive:false});
+  hdr.addEventListener('touchstart',  e => { if(e.target.closest('button')) return; e.preventDefault(); const t=e.touches[0]; startDrag(t.clientX, t.clientY); }, {passive:false});
   window.addEventListener('touchmove', e => { if(!dragging)return; e.preventDefault(); const t=e.touches[0]; moveDrag(t.clientX,t.clientY); }, {passive:false});
   window.addEventListener('touchend',  endDrag);
 })();
