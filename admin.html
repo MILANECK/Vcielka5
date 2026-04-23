@@ -209,32 +209,81 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
 
       <div class="card">
         <div class="card-title">✏️ Viditeľné texty (vždy zobrazené)</div>
-        <div class="field">
+        <div class="field fmt-wrap">
           <label>1. odstavec</label>
-          <textarea id="onas_p1" style="min-height:90px;" placeholder="Sme súkromná materská škola..."></textarea>
+          <div class="fmt-toolbar">
+            <button class="fmt-btn b" type="button" data-action="bold" onmousedown="event.preventDefault();fmtWrap(this)">B</button>
+            <button class="fmt-btn i" type="button" data-action="italic" onmousedown="event.preventDefault();fmtWrap(this)">I</button>
+            <div class="fmt-sep"></div>
+            <button class="fmt-btn" type="button" data-size="0.82em" onmousedown="event.preventDefault();fmtWrap(this)">S</button>
+            <button class="fmt-btn" type="button" data-size="1em" onmousedown="event.preventDefault();fmtWrap(this)">M</button>
+            <button class="fmt-btn" type="button" data-size="1.2em" onmousedown="event.preventDefault();fmtWrap(this)">L</button>
+          </div>
+          <div class="fake-textarea" id="onas_p1" contenteditable="true"></div>
         </div>
-        <div class="field">
+        <div class="field fmt-wrap">
           <label>2. odstavec</label>
-          <textarea id="onas_p2" style="min-height:90px;" placeholder="Hlavným cieľom výchovy a vzdelávania..."></textarea>
+          <div class="fmt-toolbar">
+            <button class="fmt-btn b" type="button" data-action="bold" onmousedown="event.preventDefault();fmtWrap(this)">B</button>
+            <button class="fmt-btn i" type="button" data-action="italic" onmousedown="event.preventDefault();fmtWrap(this)">I</button>
+            <div class="fmt-sep"></div>
+            <button class="fmt-btn" type="button" data-size="0.82em" onmousedown="event.preventDefault();fmtWrap(this)">S</button>
+            <button class="fmt-btn" type="button" data-size="1em" onmousedown="event.preventDefault();fmtWrap(this)">M</button>
+            <button class="fmt-btn" type="button" data-size="1.2em" onmousedown="event.preventDefault();fmtWrap(this)">L</button>
+          </div>
+          <div class="fake-textarea" id="onas_p2" contenteditable="true" data-tall></div>
         </div>
         <button class="btn-save" onclick="saveSettings(['onas_p1','onas_p2'])">💾 Uložiť</button>
       </div>
 
       <div class="card">
         <div class="card-title">📂 Rozbaľovací obsah (po kliknutí „Čítať viac")</div>
-        <div class="field">
+        <div class="field fmt-wrap">
           <label>3. odstavec</label>
-          <textarea id="onas_extra_p1" style="min-height:90px;" placeholder="K materskej škole patrí..."></textarea>
+          <div class="fmt-toolbar">
+            <button class="fmt-btn b" type="button" data-action="bold" onmousedown="event.preventDefault();fmtWrap(this)">B</button>
+            <button class="fmt-btn i" type="button" data-action="italic" onmousedown="event.preventDefault();fmtWrap(this)">I</button>
+            <div class="fmt-sep"></div>
+            <button class="fmt-btn" type="button" data-size="0.82em" onmousedown="event.preventDefault();fmtWrap(this)">S</button>
+            <button class="fmt-btn" type="button" data-size="1em" onmousedown="event.preventDefault();fmtWrap(this)">M</button>
+            <button class="fmt-btn" type="button" data-size="1.2em" onmousedown="event.preventDefault();fmtWrap(this)">L</button>
+          </div>
+          <div class="fake-textarea" id="onas_extra_p1" contenteditable="true"></div>
         </div>
-        <div class="field">
+        <div class="field fmt-wrap">
           <label>4. odstavec</label>
-          <textarea id="onas_extra_p2" style="min-height:90px;" placeholder="Naša materská škola vznikla..."></textarea>
+          <div class="fmt-toolbar">
+            <button class="fmt-btn b" type="button" data-action="bold" onmousedown="event.preventDefault();fmtWrap(this)">B</button>
+            <button class="fmt-btn i" type="button" data-action="italic" onmousedown="event.preventDefault();fmtWrap(this)">I</button>
+            <div class="fmt-sep"></div>
+            <button class="fmt-btn" type="button" data-size="0.82em" onmousedown="event.preventDefault();fmtWrap(this)">S</button>
+            <button class="fmt-btn" type="button" data-size="1em" onmousedown="event.preventDefault();fmtWrap(this)">M</button>
+            <button class="fmt-btn" type="button" data-size="1.2em" onmousedown="event.preventDefault();fmtWrap(this)">L</button>
+          </div>
+          <div class="fake-textarea" id="onas_extra_p2" contenteditable="true"></div>
         </div>
         <div class="field">
           <label>Odrážky (každá položka na nový riadok)</label>
           <textarea id="onas_list" style="min-height:130px;" placeholder="zariadenie spĺňa štátne vzdelávacie štandardy...&#10;učitelia s odborným vzdelaním a praxou...&#10;plynulý prechod detí do základnej školy...&#10;pravidelné kontroly a dodržiavanie noriem..."></textarea>
         </div>
         <button class="btn-save" onclick="saveSettings(['onas_extra_p1','onas_extra_p2','onas_list'])">💾 Uložiť</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🐝 Zvedavá Včielka — text programu</div>
+        <p style="font-size:12px;color:#888;margin-bottom:14px;">Text sa zobrazí po kliknutí na „Viac o programe" v sekcii <strong>Program</strong> na hlavnej stránke. Podporuje tučné a kurzívne formátovanie.</p>
+        <div class="field fmt-wrap">
+          <div class="fmt-toolbar">
+            <button class="fmt-btn b" type="button" data-action="bold" onmousedown="event.preventDefault();fmtWrap(this)">B</button>
+            <button class="fmt-btn i" type="button" data-action="italic" onmousedown="event.preventDefault();fmtWrap(this)">I</button>
+            <div class="fmt-sep"></div>
+            <button class="fmt-btn" type="button" data-size="0.82em" onmousedown="event.preventDefault();fmtWrap(this)">S</button>
+            <button class="fmt-btn" type="button" data-size="1em" onmousedown="event.preventDefault();fmtWrap(this)">M</button>
+            <button class="fmt-btn" type="button" data-size="1.2em" onmousedown="event.preventDefault();fmtWrap(this)">L</button>
+          </div>
+          <div class="fake-textarea" id="program_text" contenteditable="true" data-tall style="min-height:160px;"></div>
+        </div>
+        <button class="btn-save" onclick="saveSettings(['program_text'])">💾 Uložiť</button>
       </div>
 
       <div class="card">
@@ -566,7 +615,7 @@ async function loadPage(name) {
   if (name === 'skolka') { loadSkolka(); return; }
   if (name === 'skolka_pw') { loadSkolkaPw(); return; }
   if (name === 'hero') await loadSettings(['hero_title','hero_subtitle','hero_photo']);
-  if (name === 'onas') await loadSettings(['onas_p1','onas_p2','onas_extra_p1','onas_extra_p2','onas_list','ppv_intro','ppv_extra']);
+  if (name === 'onas') await loadSettings(['onas_p1','onas_p2','onas_extra_p1','onas_extra_p2','onas_list','ppv_intro','ppv_extra','program_text']);
   if (name === 'contact') await loadSettings(['contact_address','contact_phone','contact_email','contact_hours']);
   if (name === 'pricing') await loadSettings(['price_full_amount','price_full_detail','price_half_amount','price_half_detail']);
   if (name === 'activities') await loadActivities();
@@ -584,8 +633,10 @@ async function loadSettings(keys) {
   if (!data) return;
   data.forEach(row => {
     const el = document.getElementById(row.key);
-    if (el) el.value = row.value || '';
-    // hero photo preview
+    if (el) {
+      if (el.hasAttribute('contenteditable')) el.innerHTML = row.value || '';
+      else el.value = row.value || '';
+    }
     if (row.key === 'hero_photo' && row.value) {
       const prev = document.getElementById('hero_photo_preview');
       if (prev) { prev.src = row.value; prev.style.display = 'block'; }
@@ -594,7 +645,11 @@ async function loadSettings(keys) {
 }
 
 async function saveSettings(keys) {
-  const upserts = keys.map(k => ({ key: k, value: document.getElementById(k)?.value || '', updated_at: new Date().toISOString() }));
+  const upserts = keys.map(k => {
+    const el = document.getElementById(k);
+    const value = el?.hasAttribute('contenteditable') ? (el.innerHTML || '') : (el?.value || '');
+    return { key: k, value, updated_at: new Date().toISOString() };
+  });
   const { error } = await db.from('settings').upsert(upserts, { onConflict: 'key' });
   error ? toast('Chyba pri ukladaní', 'error') : toast('✅ Uložené!');
 }
@@ -672,7 +727,7 @@ async function loadActivities() {
       ondrop="actDrop(event,${a.id})">
       <div class="activity-card-header">
         <span class="drag-handle" title="Presunúť">⠿</span>
-        <span class="activity-card-icon">${a.icon}</span>
+        <span class="activity-card-icon">${a.icon && a.icon.startsWith('http') ? `<img src="${a.icon}" style="width:28px;height:28px;object-fit:contain;border-radius:6px;vertical-align:middle;"/>` : a.icon}</span>
         <button class="btn-danger" style="padding:5px 10px;font-size:11px;" onclick="deleteActivity(${a.id})">🗑️ Odstrániť</button>
       </div>
       ${a.photo_url
@@ -689,8 +744,19 @@ async function loadActivities() {
              📷 Nahrať foto (zobrazí sa v popupe)
            </label>`
       }
-      <div class="field"><label>Emoji ikona</label>
-        <input type="text" value="${a.icon}" onchange="updateActivity(${a.id},'icon',this.value)" style="font-size:20px;text-align:center;"/>
+      <div class="field"><label>Ikonka aktivity</label>
+        ${a.icon && a.icon.startsWith('http')
+          ? `<div style="display:flex;align-items:center;gap:10px;padding:10px;background:#f0f6ff;border-radius:12px;margin-bottom:8px;">
+               <img src="${a.icon}" style="width:54px;height:54px;object-fit:contain;border-radius:12px;background:#fff;padding:3px;box-shadow:0 2px 8px rgba(0,0,0,.08);"/>
+               <span style="flex:1;font-family:'Quicksand',sans-serif;font-size:12px;font-weight:600;color:#5a8ab0;">Obrázková ikona</span>
+               <button class="btn-danger" style="padding:5px 12px;font-size:11px;" onclick="removeActivityIcon(${a.id})">🗑️ Odstrániť</button>
+             </div>`
+          : `<input type="text" value="${a.icon}" onchange="updateActivity(${a.id},'icon',this.value)" style="font-size:22px;text-align:center;width:100%;margin-bottom:8px;padding:8px 14px;border:1.5px solid #E0ECFF;border-radius:12px;font-family:'Inter',sans-serif;outline:none;"/>`
+        }
+        <label style="display:flex;align-items:center;justify-content:center;gap:6px;background:#D9EFFF;color:#1A5FA8;font-family:'Quicksand',sans-serif;font-size:12px;font-weight:700;padding:8px 14px;border-radius:50px;cursor:pointer;width:100%;">
+          <input type="file" accept="image/*" style="display:none;" onchange="uploadActivityIcon(this,${a.id})"/>
+          🖼️ Nahrať obrázok ikony
+        </label>
       </div>
       <div class="field"><label>Názov</label>
         <input type="text" value="${a.title}" onchange="updateActivity(${a.id},'title',this.value)"/>
@@ -784,6 +850,24 @@ async function uploadActivityPhoto(input, id) {
 async function removeActivityPhoto(id) {
   await db.from('activities').update({ photo_url: '' }).eq('id', id);
   toast('Fotografia odstránená');
+  loadActivities();
+}
+
+async function uploadActivityIcon(input, id) {
+  const file = input.files[0]; if (!file) return;
+  toast('Nahrávam ikonu…');
+  const path = `activities/icon_${id}_${Date.now()}.${file.name.split('.').pop()}`;
+  const { error: upErr } = await db.storage.from('vcielka').upload(path, file, { upsert: true });
+  if (upErr) { toast('Chyba nahrávania ikony', 'error'); return; }
+  const { data: { publicUrl } } = db.storage.from('vcielka').getPublicUrl(path);
+  await db.from('activities').update({ icon: publicUrl, updated_at: new Date().toISOString() }).eq('id', id);
+  toast('✅ Ikona nahratá!');
+  loadActivities();
+}
+
+async function removeActivityIcon(id) {
+  await db.from('activities').update({ icon: '', updated_at: new Date().toISOString() }).eq('id', id);
+  toast('Ikona odstránená');
   loadActivities();
 }
 

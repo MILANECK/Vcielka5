@@ -816,7 +816,7 @@ button{outline:none;border:none;}
 <!-- ===========================
      HERO
 =========================== -->
-<section class="hero" id="o-nas">
+<section class="hero" id="home">
 
   <!-- fullscreen background photo -->
   <img id="cms-hero-bg" class="hero-bg-img" src="" alt="Hero" style="display:none;"/>
@@ -978,7 +978,7 @@ button{outline:none;border:none;}
           </button>
         </div>
         <div class="about-text" id="zvedavaText" style="margin-top:32px;">
-          <div class="about-text-inner" style="background:rgba(255,255,255,.65);max-width:700px;margin:0 auto;text-align:left;">
+          <div id="cms-program-text" class="about-text-inner" style="background:rgba(255,255,255,.65);max-width:700px;margin:0 auto;text-align:left;">
             <p>Výchovno-vzdelávací proces v našej materskej škole prebieha v súlade so školským vzdelávacím programom „Zvedavá včielka". Tento program je spracovaný na základe štátneho vzdelávacieho programu a zohľadňuje špecifiká našej školy.</p>
             <p>Učebné osnovy sú systematicky rozpracované do 10 obsahových celkov a 41 tém, ktoré sa navzájom prepájajú, dopĺňajú a tvoria ucelený systém. Sú zostavené tak, aby rešpektovali podmienky školy, reflektovali náročnosť jednotlivých období školského roka a podporovali harmonický rozvoj detí na optimálnej kognitívnej, senzomotorickej a sociálno-emocionálnej úrovni.</p>
             <p>Každý obsahový celok integruje všetky vzdelávacie oblasti – jazyk a komunikáciu, matematiku a prácu s informáciami, človeka a spoločnosť, človeka a prírodu, človeka a svet práce, umenie a kultúru, zdravie a pohyb.</p>
@@ -1256,7 +1256,7 @@ button{outline:none;border:none;}
   <div class="act-popup">
     <div class="act-popup-header">
       <div>
-        <div id="actPopupIcon" style="font-size:36px;margin-bottom:6px;"></div>
+        <div id="actPopupIcon" style="font-size:40px;margin-bottom:10px;line-height:1;"></div>
         <div id="actPopupTitle" style="font-family:'Quicksand',sans-serif;font-size:20px;font-weight:700;color:#1a1a1a;"></div>
       </div>
       <button class="act-popup-close" onclick="closeActPopup()">✕</button>
@@ -1443,10 +1443,11 @@ async function loadCMS() {
       if (s.contact_email) { document.querySelectorAll('.cms-email').forEach(el => { el.textContent = s.contact_email; el.href = 'mailto:'+s.contact_email; }); }
       if (s.contact_hours) { const el = document.getElementById('cms-hours'); if(el) el.textContent = s.contact_hours; }
       // O nás
-      if (s.onas_p1) { const el = document.getElementById('cms-onas-p1'); if(el) el.textContent = s.onas_p1; }
-      if (s.onas_p2) { const el = document.getElementById('cms-onas-p2'); if(el) el.textContent = s.onas_p2; }
-      if (s.onas_extra_p1) { const el = document.getElementById('cms-onas-extra-p1'); if(el) el.textContent = s.onas_extra_p1; }
-      if (s.onas_extra_p2) { const el = document.getElementById('cms-onas-extra-p2'); if(el) el.textContent = s.onas_extra_p2; }
+      if (s.onas_p1) { const el = document.getElementById('cms-onas-p1'); if(el) el.innerHTML = s.onas_p1; }
+      if (s.onas_p2) { const el = document.getElementById('cms-onas-p2'); if(el) el.innerHTML = s.onas_p2; }
+      if (s.onas_extra_p1) { const el = document.getElementById('cms-onas-extra-p1'); if(el) el.innerHTML = s.onas_extra_p1; }
+      if (s.onas_extra_p2) { const el = document.getElementById('cms-onas-extra-p2'); if(el) el.innerHTML = s.onas_extra_p2; }
+      if (s.program_text) { const el = document.getElementById('cms-program-text'); if(el) el.innerHTML = s.program_text; }
       if (s.onas_list) { const el = document.getElementById('cms-onas-list'); if(el) el.innerHTML = s.onas_list.split('\n').filter(l=>l.trim()).map(l=>`<li>${l.trim()}</li>`).join(''); }
       // PPV
       if (s.ppv_intro) { const el = document.getElementById('cms-ppv-intro'); if(el) el.textContent = s.ppv_intro; }
@@ -1468,7 +1469,7 @@ async function loadCMS() {
       const grid = document.getElementById('cms-activities');
       if (grid) grid.innerHTML = acts.map((a, i) => `
         <div class="service-card ${a.color}${a.popup_text ? ' clickable' : ''}" ${a.popup_text ? `onclick="openActPopup(${i})"` : ''}>
-          <div class="service-img">${a.photo_url ? '<img src="'+a.photo_url+'" style="width:100%;height:100%;object-fit:cover;"/>' : a.icon}</div>
+          <div class="service-img">${a.photo_url ? '<img src="'+a.photo_url+'" style="width:100%;height:100%;object-fit:cover;"/>' : (a.icon && a.icon.startsWith('http') ? '<img src="'+a.icon+'" style="width:72px;height:72px;object-fit:contain;filter:drop-shadow(0 4px 12px rgba(0,0,0,.12));" alt=""/>' : a.icon)}</div>
           <div class="service-body">
             <h3>${a.title}</h3>
             <p>${a.description||''}</p>
@@ -1763,7 +1764,14 @@ function closeNewsPopup(){
 function openActPopup(idx){
   const a = (window._cmsActivities||[])[idx];
   if(!a) return;
-  document.getElementById('actPopupIcon').textContent = a.icon||'';
+  const _iconEl = document.getElementById('actPopupIcon');
+  if (a.icon && a.icon.startsWith('http')) {
+    _iconEl.innerHTML = `<img src="${a.icon}" style="width:96px;height:96px;object-fit:contain;border-radius:22px;filter:drop-shadow(0 6px 18px rgba(0,0,0,.14));" alt=""/>`;
+    _iconEl.style.fontSize = '';
+  } else {
+    _iconEl.textContent = a.icon||'';
+    _iconEl.style.fontSize = '40px';
+  }
   document.getElementById('actPopupTitle').textContent = a.title||'';
   document.getElementById('actPopupText').innerHTML = (a.popup_text||'').replace(/\n/g,'<br>');
   const imgWrap = document.getElementById('actPopupImgWrap');
