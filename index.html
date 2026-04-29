@@ -62,10 +62,10 @@ button{outline:none;border:none;}
   content:'';
   position:absolute;
   inset:0;
-  background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='180' height='180' filter='url(%23g)'/></svg>");
+  background-image:var(--grain-url);
   background-repeat:repeat;
-  background-size:180px 180px;
-  opacity:.038;
+  background-size:220px 220px;
+  opacity:.06;
   pointer-events:none;
   z-index:0;
 }
@@ -330,7 +330,7 @@ button{outline:none;border:none;}
    PRICING
 =========================== */
 .pricing-grid{display:grid;grid-template-columns:repeat(2,minmax(0,360px));gap:16px;justify-content:center;align-items:stretch;}
-.price-card{border-radius:var(--radius-card);overflow:hidden;}
+.price-card{border-radius:var(--radius-card);overflow:hidden;will-change:transform;cursor:default;}
 .price-header{padding:18px 20px;}
 .price-header.dark{background:rgba(255,255,255,.15);}
 .price-header.yellow{background:var(--yellow);}
@@ -550,11 +550,11 @@ button{outline:none;border:none;}
 /* ===== UČEBNÉ OSNOVY INLINE ===== */
 .ucebne-arrow{display:inline-block;transition:transform .35s;margin-left:6px;font-size:15px;line-height:1;}
 .ucebne-btn.open .ucebne-arrow{transform:rotate(180deg);}
-.ucebne-inline-wrap{padding:28px 28px 32px;position:relative;border-radius:24px;}
+.ucebne-inline-wrap{padding:20px 20px 24px;position:relative;border-radius:24px;}
 .ucebne-inline-wrap::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 900px 700px at 50% 40%,rgba(0,0,0,.07) 0%,transparent 68%);pointer-events:none;}
 #ucebneInlineText.open{max-height:5000px;opacity:1;}
 .ucebne-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
-.ucebne-card{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 4px 24px rgba(26,95,168,.08);display:flex;flex-direction:column;}
+.ucebne-card{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 2px 10px rgba(26,95,168,.09);display:flex;flex-direction:column;}
 .ucebne-bubble{border-radius:14px 14px 0 0;padding:14px 12px 12px;text-align:center;}
 .ucebne-bubble .umonth{font-family:'Nunito',sans-serif;font-size:15px;font-weight:900;line-height:1.1;}
 .ucebne-unit{padding:10px 12px 8px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;border-bottom:1.5px solid #f5f2ee;line-height:1.4;font-family:'Nunito',sans-serif;}
@@ -572,6 +572,12 @@ button{outline:none;border:none;}
 .ucm-apr .ucebne-bubble{background:#c8f5e0;} .ucm-apr .umonth{color:#1a6b4a;} .ucm-apr .ucebne-unit{color:#1a6b4a;}
 .ucm-maj .ucebne-bubble{background:#ffe0cc;} .ucm-maj .umonth{color:#a04a10;} .ucm-maj .ucebne-unit{color:#b85818;}
 .ucm-jun .ucebne-bubble{background:#fffacc;} .ucm-jun .umonth{color:#6e6000;} .ucm-jun .ucebne-unit{color:#857200;}
+#ucebneInlineText{
+  transition:max-height .5s cubic-bezier(.4,0,.2,1),opacity .4s,padding .5s cubic-bezier(.4,0,.2,1);
+}
+#ucebneInlineText.open{
+  padding:18px 0;
+}
 .ucebne-btn{display:inline-flex;align-items:center;gap:8px;font-family:'Quicksand',sans-serif;font-size:15px;font-weight:700;color:#1A6640;background:rgba(255,255,255,.7);border:none;cursor:pointer;padding:10px 24px;border-radius:50px;transition:.25s;backdrop-filter:blur(6px);box-shadow:0 2px 12px rgba(26,95,168,.1);}
 .ucebne-btn:hover{background:#fff;box-shadow:0 4px 20px rgba(26,95,168,.15);}
 @media(max-width:720px){.ucebne-grid{grid-template-columns:repeat(2,1fr);} .ucebne-row-sep{display:none;}}
@@ -1878,6 +1884,46 @@ document.addEventListener('DOMContentLoaded', function(){
   });
   tick();
 });
+// ===== GRAIN TEXTURE =====
+(function(){
+  var cv=document.createElement('canvas');
+  cv.width=cv.height=220;
+  var cx=cv.getContext('2d');
+  var id=cx.createImageData(220,220);
+  var d=id.data;
+  for(var i=0;i<d.length;i+=4){
+    var v=(Math.random()*255)|0;
+    d[i]=d[i+1]=d[i+2]=v;
+    d[i+3]=255;
+  }
+  cx.putImageData(id,0,0);
+  cv.toBlob(function(b){
+    document.documentElement.style.setProperty('--grain-url','url('+URL.createObjectURL(b)+')');
+  });
+})();
+
+// ===== PRICE CARD 3D TILT =====
+document.querySelectorAll('.price-card').forEach(function(card) {
+  card.addEventListener('mouseenter', function() {
+    card.style.transition = 'transform 0.08s linear, box-shadow 0.08s linear';
+  });
+  card.addEventListener('mousemove', function(e) {
+    var r = card.getBoundingClientRect();
+    var x = (e.clientX - r.left - r.width  / 2) / r.width;
+    var y = (e.clientY - r.top  - r.height / 2) / r.height;
+    card.style.transform =
+      'perspective(900px) rotateX(' + (-y * 7) + 'deg) rotateY(' + (x * 7) + 'deg) translateY(-6px) scale(1.012)';
+    card.style.boxShadow =
+      (-x * 18) + 'px ' + (y * 10 + 14) + 'px 40px rgba(0,0,0,.18)';
+  });
+  card.addEventListener('mouseleave', function() {
+    card.style.transition = 'transform 0.55s cubic-bezier(.03,.98,.52,.99), box-shadow 0.55s ease';
+    card.style.transform = '';
+    card.style.boxShadow = '';
+    setTimeout(function() { card.style.transition = ''; }, 580);
+  });
+});
+
 // Lightbox arrows
 document.addEventListener('DOMContentLoaded', function(){
   const lbPrev = document.getElementById('lbPrev');
