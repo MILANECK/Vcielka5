@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Virtuálna Školka — Včielka</title>
+<title>Virtuálna Škôlka — Včielka</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
 <style>
@@ -29,8 +29,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#dce8f4;min-height:10
 /* Header */
 .vs-header{background:rgba(255,255,255,.88);backdrop-filter:blur(14px);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 14px rgba(0,0,0,.08)}
 .vs-header-logo{display:flex;align-items:center;gap:12px}
-.vs-logo-circle{width:52px;height:52px;border-radius:50%;background:#fdc003;display:flex;align-items:center;justify-content:center;padding:7px;box-shadow:0 3px 12px rgba(253,192,3,.38);overflow:hidden}
-.vs-logo-circle img{width:100%;height:auto}
+.vs-logo-circle{width:52px;height:52px;min-width:52px;aspect-ratio:1;border-radius:50%;background:#fdc003;display:flex;align-items:center;justify-content:center;padding:7px;box-shadow:0 3px 12px rgba(253,192,3,.38);overflow:hidden;flex-shrink:0}
+.vs-logo-circle img{width:100%;height:100%;object-fit:contain}
 .vs-header-title{font-family:'Quicksand',sans-serif;font-weight:700;font-size:18px;color:#1A5FA8}
 .vs-header-title span{display:block;font-size:11px;color:#888;font-weight:500}
 .vs-header-actions{display:flex;align-items:center;gap:10px}
@@ -61,10 +61,22 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#dce8f4;min-height:10
 .gallery-header-title{font-family:'Quicksand',sans-serif;font-weight:700;font-size:18px;color:#fff}
 .gallery-close{background:rgba(255,255,255,.12);color:#fff;border:none;border-radius:50px;padding:10px 20px;font-family:'Quicksand',sans-serif;font-size:13px;font-weight:600;cursor:pointer}
 .gallery-close:hover{background:rgba(255,255,255,.22)}
-.gallery-grid-fs{flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;padding:16px 24px}
-.gallery-photo{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:1;cursor:pointer}
-.gallery-photo img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .2s}
+.gallery-grid-fs{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;padding:16px 24px;align-content:start}
+.gallery-photo{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:1;cursor:pointer;min-width:0;min-height:0}
+.gallery-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .2s}
 .gallery-photo:hover img{transform:scale(1.04)}
+@media(max-width:600px){
+  .vs-header{padding:10px 14px;gap:8px}
+  .vs-logo-circle{width:40px;height:40px;min-width:40px;padding:5px}
+  .vs-header-title{font-size:14px}
+  .vs-header-title span{font-size:10px}
+  .btn-editor{padding:9px 14px;font-size:12px;gap:5px}
+  .btn-logout{padding:8px 12px;font-size:11px}
+  .gallery-grid-fs{grid-template-columns:repeat(2,1fr);gap:6px;padding:10px 12px}
+  .gallery-header{padding:12px 14px}
+  .gallery-header-title{font-size:15px}
+  .gallery-close{padding:8px 14px;font-size:12px}
+}
 
 /* Lightbox */
 #lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:900;align-items:center;justify-content:center;flex-direction:column;gap:14px}
@@ -86,7 +98,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#dce8f4;min-height:10
 <div id="login-wrap">
   <div class="login-box">
     <div class="login-logo"><img src="VCIELKA_LOGO.png" alt="Včielka"/></div>
-    <h1>Virtuálna Školka</h1>
+    <h1>Virtuálna Škôlka</h1>
     <p>Materská škola Včielka · Prihlásenie pre rodičov</p>
     <input type="password" id="pw-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/>
     <button class="login-btn" onclick="doLogin()">🔐 Vstúpiť</button>
@@ -100,12 +112,12 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#dce8f4;min-height:10
     <div class="vs-header-logo">
       <div class="vs-logo-circle"><img src="VCIELKA_LOGO.png" alt="Včielka"/></div>
       <div class="vs-header-title">
-        Virtuálna Školka
+        Virtuálna Škôlka
         <span>Materská škola Včielka</span>
       </div>
     </div>
     <div class="vs-header-actions">
-      <a href="#" id="editor-link-header" class="btn-editor" target="_blank">🖼️ Otvoriť Editor rámčekov</a>
+      <a href="#" id="editor-link-header" class="btn-editor" target="_blank">Vytvor si rámik</a>
       <button class="btn-logout" onclick="doLogout()">Odhlásiť</button>
     </div>
   </div>
@@ -126,7 +138,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#dce8f4;min-height:10
       <button class="gallery-close" onclick="closeGallery()">← Späť</button>
       <span class="gallery-header-title" id="gallery-title">Fotografie</span>
     </div>
-    <a href="#" id="editor-link-gallery" class="btn-editor" target="_blank">🖼️ Otvoriť Editor</a>
+    <a href="#" id="editor-link-gallery" class="btn-editor" target="_blank">Vytvor si rámik</a>
   </div>
   <div id="gallery-grid-fs" class="gallery-grid-fs"></div>
 </div>

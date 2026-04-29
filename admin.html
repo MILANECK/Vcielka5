@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Správca webu – Včielka</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <link rel="icon" type="image/png" href="vcielka_logo2.png"/>
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
@@ -111,6 +112,22 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
 .gallery-item-del{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.6);color:#fff;border:none;border-radius:50%;width:26px;height:26px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;}
 .gallery-item.drag-over{outline:3px dashed #4A9FD4;outline-offset:2px;transform:scale(1.04);}
 .gallery-item.dragging{opacity:.35;}
+.gallery-item.sk-selected{outline:3px solid #1A5FA8;outline-offset:-3px;}
+.gallery-item.sk-selected .sk-check{background:#1A5FA8;border-color:#1A5FA8;color:#fff;}
+.sk-check{position:absolute;top:6px;left:6px;width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,.85);background:rgba(0,0,0,.28);display:flex;align-items:center;justify-content:center;font-size:11px;color:transparent;cursor:pointer;transition:.15s;z-index:2;}
+.sk-sel-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 0 4px;border-top:1px solid #E0ECFF;margin-top:10px;}
+.sk-dl-btn{display:inline-flex;align-items:center;gap:6px;background:#1A5FA8;color:#fff;font-family:'Quicksand',sans-serif;font-size:12px;font-weight:700;padding:8px 16px;border-radius:50px;border:none;cursor:pointer;opacity:.35;pointer-events:none;transition:.2s;}
+.sk-dl-btn.active{opacity:1;pointer-events:auto;}
+.sk-dl-btn.active:hover{background:#154e8a;}
+.sk-sel-count{font-family:'Quicksand',sans-serif;font-size:12px;color:#888;font-weight:600;min-width:80px;}
+.sk-sel-action{background:#f0f0f0;color:#333;font-family:'Quicksand',sans-serif;font-size:11px;font-weight:600;padding:6px 12px;border:none;border-radius:50px;cursor:pointer;}
+.sk-sel-action:hover{background:#ddd;}
+.storage-panel{background:#fff;border-radius:20px;padding:20px 24px;margin-bottom:20px;box-shadow:0 2px 16px rgba(26,95,168,.06);}
+.storage-bar-wrap{background:#E0ECFF;border-radius:50px;height:10px;overflow:hidden;margin:10px 0 6px;}
+.storage-bar-fill{height:100%;border-radius:50px;background:#1A5FA8;transition:width .6s ease;}
+.storage-bar-fill.warn{background:#F59E0B;}
+.storage-bar-fill.danger{background:#EF4444;}
+.folder-size-tag{font-size:11px;color:#6B7CB3;font-weight:600;}
 .gallery-upload{border:2px dashed #C8E6FA;border-radius:14px;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;transition:.2s;}
 .gallery-upload:hover{border-color:#4A9FD4;background:#F0F7FF;}
 .gallery-upload input{position:absolute;inset:0;opacity:0;cursor:pointer;}
@@ -190,7 +207,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
     </div>
     <div class="nav-divider"></div>
     <div class="nav-item" onclick="showPage('skolka')" id="nav-skolka">
-      <span class="icon">📸</span> Virtuálna Školka
+      <span class="icon">📸</span> Virtuálna Škôlka
     </div>
     <div class="nav-item" onclick="showPage('skolka_pw')" id="nav-skolka_pw">
       <span class="icon">🔑</span> VS Heslo
@@ -587,12 +604,27 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
     <div class="section-page" id="page-skolka">
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:4px;">
         <div>
-          <div class="page-title">📸 Virtuálna Školka</div>
+          <div class="page-title">📸 Virtuálna Škôlka</div>
           <div class="page-sub" style="margin-bottom:0;">Spravujte priečinky a fotografie pre editor foto rámčekov</div>
         </div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <a href="skolka.html" target="_blank" class="btn-save" style="text-decoration:none;display:inline-flex;align-items:center;gap:7px;">🔐 Virtuálna Školka (verejná)</a>
+          <a href="skolka.html" target="_blank" class="btn-save" style="text-decoration:none;display:inline-flex;align-items:center;gap:7px;">🔐 Virtuálna Škôlka (verejná)</a>
           <a href="vcielka_editor.html" target="_blank" class="btn-add" style="text-decoration:none;display:inline-flex;align-items:center;gap:7px;">🖼️ Otvoriť Editor</a>
+        </div>
+      </div>
+
+      <!-- Storage info panel -->
+      <div class="storage-panel" id="sk_storage_panel">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px;">
+          <span style="font-family:'Quicksand',sans-serif;font-weight:700;font-size:13px;color:#1a1a1a;">💾 Využitý priestor – Virtuálna Škôlka</span>
+          <span style="font-family:'Quicksand',sans-serif;font-size:13px;font-weight:700;color:#1A5FA8;" id="sk_storage_pct">—</span>
+        </div>
+        <div class="storage-bar-wrap">
+          <div class="storage-bar-fill" id="sk_storage_bar" style="width:0%;"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:#888;font-family:'Quicksand',sans-serif;font-weight:600;">
+          <span id="sk_storage_used">Načítavam…</span>
+          <span>Limit: 1 024 MB (Free tier)</span>
         </div>
       </div>
 
@@ -631,7 +663,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
 
     <!-- VS HESLO -->
     <div class="section-page" id="page-skolka_pw">
-      <div class="page-title">🔑 Heslo pre Virtuálnu Školku</div>
+      <div class="page-title">🔑 Heslo pre Virtuálnu Škôlku</div>
       <div class="page-sub">Nastavte prístupové heslo pre rodičov na stránke skolka.html</div>
       <div class="card" style="max-width:480px;">
         <div class="card-title">🔐 Prístupové heslo</div>
@@ -1372,21 +1404,27 @@ async function loadSkolka() {
   const { data: folders, error } = await db.from('skolka_folders').select('*').order('created_at', { ascending: false });
   if (error || !folders?.length) {
     list.innerHTML = '<div style="color:#888;font-size:13px;padding:20px;">Žiadne priečinky. Vytvorte prvý priečinok vyššie.</div>';
+    updateSkolkaStorageBar(0);
     return;
   }
   list.innerHTML = '';
+  let totalBytes = 0;
   for (const f of folders) {
-    // count photos
-    const { data: files } = await db.storage.from('vcielka').list('skolka/' + f.id, { limit: 100 });
-    const count = (files || []).filter(x => x.name !== '.keep').length;
+    const { data: files } = await db.storage.from('vcielka').list('skolka/' + f.id, { limit: 1000 });
+    const photos = (files || []).filter(x => x.name !== '.keep');
+    const count = photos.length;
+    const folderBytes = photos.reduce((s, x) => s + (x.metadata?.size || 0), 0);
+    totalBytes += folderBytes;
+    const folderMB = (folderBytes / 1048576).toFixed(1);
     const card = document.createElement('div');
     card.className = 'card';
     card.style.marginBottom = '16px';
+    card.dataset.folderName = f.name;
     card.innerHTML = `
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
         <div>
           <div style="font-family:'Quicksand',sans-serif;font-weight:700;font-size:15px;">📁 ${f.name}</div>
-          <div style="font-size:12px;color:#888;margin-top:2px;">${count} fotografi${count===1?'a':'í'}</div>
+          <div style="font-size:12px;color:#888;margin-top:2px;">${count} fotografi${count===1?'a':'í'} · <span class="folder-size-tag">${folderMB} MB</span></div>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button class="btn-add" onclick="openSkolkaFolder('${f.id}','${f.name.replace(/'/g,"\'")}')">📷 Nahrať fotografie</button>
@@ -1394,10 +1432,32 @@ async function loadSkolka() {
         </div>
       </div>
       <div class="gallery-grid" id="skolka_grid_${f.id}" style="margin-top:4px;"></div>
+      <div class="sk-sel-bar" id="sk_selbar_${f.id}">
+        <span class="sk-sel-count" id="sk_selcount_${f.id}"></span>
+        <button class="sk-dl-btn" id="sk_dlbtn_${f.id}" onclick="downloadSkolkaSelected('${f.id}')">⬇ Stiahnuť fotky</button>
+        <button class="sk-dl-btn" id="sk_zipbtn_${f.id}" onclick="downloadSkolkaZip('${f.id}','${f.name.replace(/'/g,"\'")}')">📦 Stiahnuť ako ZIP</button>
+        <button class="sk-sel-action" onclick="selectAllSkolka('${f.id}')">Vybrať všetky</button>
+        <button class="sk-sel-action" onclick="clearSkolkaSelection('${f.id}')">Zrušiť výber</button>
+      </div>
     `;
     list.appendChild(card);
-    renderSkolkaGrid(f.id, files || []);
+    renderSkolkaGrid(f.id, photos);
   }
+  updateSkolkaStorageBar(totalBytes);
+}
+
+function updateSkolkaStorageBar(totalBytes) {
+  const LIMIT_BYTES = 1024 * 1048576;
+  const usedMB = (totalBytes / 1048576).toFixed(1);
+  const pct = Math.min((totalBytes / LIMIT_BYTES) * 100, 100);
+  const bar = document.getElementById('sk_storage_bar');
+  const pctEl = document.getElementById('sk_storage_pct');
+  const usedEl = document.getElementById('sk_storage_used');
+  if (!bar) return;
+  bar.style.width = pct.toFixed(1) + '%';
+  bar.className = 'storage-bar-fill' + (pct > 85 ? ' danger' : pct > 60 ? ' warn' : '');
+  pctEl.textContent = pct.toFixed(1) + '%';
+  usedEl.textContent = usedMB + ' MB využito';
 }
 
 function renderSkolkaGrid(folderId, files) {
@@ -1410,10 +1470,13 @@ function renderSkolkaGrid(folderId, files) {
   }
   grid.innerHTML = photos.map(p => {
     const { data: { publicUrl } } = db.storage.from('vcielka').getPublicUrl('skolka/' + folderId + '/' + p.name);
+    const safeName = p.name.replace(/'/g, "\\'");
+    const safeUrl = publicUrl.replace(/'/g, "\\'");
     return `
-      <div class="gallery-item">
+      <div class="gallery-item" data-name="${p.name}" data-url="${publicUrl}" onclick="toggleSkolkaSelect('${folderId}','${safeName}','${safeUrl}',this)">
+        <div class="sk-check">✓</div>
         <img src="${publicUrl}" alt="${p.name}" loading="lazy"/>
-        <button class="gallery-item-del" onclick="deleteSkolkaPhoto('${folderId}','${p.name}')">✕</button>
+        <button class="gallery-item-del" onclick="event.stopPropagation();deleteSkolkaPhoto('${folderId}','${safeName}')">✕</button>
       </div>`;
   }).join('');
 }
@@ -1500,6 +1563,75 @@ async function deleteSkolkaFolder(folderId, folderName) {
   loadSkolka();
 }
 
+
+// ===== SKOLKA SELECTION & DOWNLOAD =====
+const skolkaSelection = new Map(); // folderId -> Map<name, url>
+
+function toggleSkolkaSelect(folderId, name, url, el) {
+  if (!skolkaSelection.has(folderId)) skolkaSelection.set(folderId, new Map());
+  const sel = skolkaSelection.get(folderId);
+  if (sel.has(name)) { sel.delete(name); el.classList.remove('sk-selected'); }
+  else { sel.set(name, url); el.classList.add('sk-selected'); }
+  updateSelectionBar(folderId);
+}
+
+function selectAllSkolka(folderId) {
+  if (!skolkaSelection.has(folderId)) skolkaSelection.set(folderId, new Map());
+  const sel = skolkaSelection.get(folderId);
+  document.getElementById('skolka_grid_' + folderId)?.querySelectorAll('.gallery-item').forEach(el => {
+    sel.set(el.dataset.name, el.dataset.url);
+    el.classList.add('sk-selected');
+  });
+  updateSelectionBar(folderId);
+}
+
+function clearSkolkaSelection(folderId) {
+  skolkaSelection.set(folderId, new Map());
+  document.getElementById('skolka_grid_' + folderId)?.querySelectorAll('.gallery-item').forEach(el => el.classList.remove('sk-selected'));
+  updateSelectionBar(folderId);
+}
+
+function updateSelectionBar(folderId) {
+  const count = skolkaSelection.get(folderId)?.size || 0;
+  const countEl = document.getElementById('sk_selcount_' + folderId);
+  const dlBtn = document.getElementById('sk_dlbtn_' + folderId);
+  const zipBtn = document.getElementById('sk_zipbtn_' + folderId);
+  if (countEl) countEl.textContent = count > 0 ? count + (count === 1 ? ' vybraná' : count < 5 ? ' vybrané' : ' vybraných') : '';
+  dlBtn?.classList.toggle('active', count > 0);
+  zipBtn?.classList.toggle('active', count > 0);
+}
+
+async function downloadSkolkaSelected(folderId) {
+  const sel = skolkaSelection.get(folderId);
+  if (!sel?.size) return;
+  toast('Sťahujem ' + sel.size + ' fotografi…');
+  for (const [name, url] of sel) {
+    try {
+      const blob = await fetch(url).then(r => r.blob());
+      const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: name });
+      a.click();
+      URL.revokeObjectURL(a.href);
+      await new Promise(r => setTimeout(r, 300));
+    } catch(e) { console.error('Download failed:', name, e); }
+  }
+  toast('✅ Hotovo!');
+}
+
+async function downloadSkolkaZip(folderId, folderName) {
+  const sel = skolkaSelection.get(folderId);
+  if (!sel?.size) return;
+  toast('Pripravujem ZIP…');
+  const zip = new JSZip();
+  for (const [name, url] of sel) {
+    try { zip.file(name, await fetch(url).then(r => r.blob())); }
+    catch(e) { console.error('ZIP: skipping', name, e); }
+  }
+  const blob = await zip.generateAsync({ type: 'blob' });
+  const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: (folderName || 'fotky') + '.zip' });
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('✅ ZIP stiahnutý!');
+}
 
 // ===== VS HESLO =====
 async function loadSkolkaPw() {

@@ -16,7 +16,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#c8d8e4;color:#1a2a3a
 #canvas-wrap{position:relative;flex-shrink:0;display:flex;align-items:flex-start;justify-content:flex-start}
 #canvas{width:900px;height:503px;position:relative;overflow:hidden;border-radius:14px;
   box-shadow:0 20px 60px rgba(0,20,50,.3);transform-origin:top left;position:absolute;top:0;left:0;
-  background:#9aaabb;cursor:default;touch-action:none}
+  background:#9aaabb;cursor:default;touch-action:pan-x pan-y}
 .placed-photo{position:absolute;overflow:hidden;cursor:grab}
 .placed-photo img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;user-select:none}
 .placed-text{position:absolute;cursor:grab;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;
@@ -106,7 +106,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#c8d8e4;color:#1a2a3a
   box-shadow:0 2px 10px rgba(253,192,3,.35);transition:transform .12s}
 .magic-btn:active{transform:scale(.94)}
 #photo-count{font-size:11px;color:#7a9ab0;text-align:center}
-#photos-list{display:flex;flex-direction:column;gap:8px;overflow-y:auto;flex:1}
+#photos-list{display:flex;flex-direction:column;gap:8px;overflow-y:auto;flex:1;min-height:0}
 #photos-empty{color:#7a9ab0;font-size:11px;text-align:center;padding:12px 4px;line-height:1.9}
 .photo-thumb{position:relative;border-radius:11px;overflow:hidden;cursor:grab;
   border:2.5px solid transparent;flex-shrink:0;transition:border .1s}
@@ -270,6 +270,16 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#c8d8e4;color:#1a2a3a
   </div>
 </div>
 
+<!-- Mobile warning popup -->
+<div id="mobile-warn" style="display:none;position:fixed;inset:0;background:rgba(0,10,30,.88);z-index:3000;align-items:center;justify-content:center;backdrop-filter:blur(8px)">
+  <div style="background:#fff;border-radius:24px;padding:36px 28px;max-width:320px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.4)">
+    <div style="font-size:42px;margin-bottom:16px">💻</div>
+    <div style="font-weight:800;font-size:18px;color:#1a2a3a;margin-bottom:12px;line-height:1.3">Lepšie na počítači</div>
+    <div style="font-size:14px;color:#5a7a9a;margin-bottom:28px;line-height:1.65">Pre pohodlnejšiu prácu s naším obrázkovým pomocníkom odporúčame použiť radšej počítač ako mobil.</div>
+    <button onclick="document.getElementById('mobile-warn').style.display='none'" style="width:100%;padding:15px;border:none;border-radius:999px;background:#005e9f;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 4px 16px rgba(0,94,159,.35)">Rozumiem, pokračovať</button>
+  </div>
+</div>
+
 <!-- Template selector top-right -->
 <div id="float-template" style="position:fixed;top:14px;right:14px;z-index:200;display:flex;align-items:center;gap:8px">
   <div id="tpl-thumb-big" onclick="toggleMaskPicker()">
@@ -354,7 +364,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#c8d8e4;color:#1a2a3a
     <svg class="icon"><use href="#icon-refresh"/></svg>
   </button>
   <button id="save-btn" onclick="saveJPG()">
-    <svg class="icon"><use href="#icon-download"/></svg> Exportovať JPG
+    <svg class="icon"><use href="#icon-download"/></svg> Uložiť obrázok
   </button>
 </div>
 
@@ -600,7 +610,7 @@ async function saveJPG(){
     const logoImg=new Image();
     await new Promise(r=>{logoImg.onload=r;logoImg.onerror=r;logoImg.src=LOGO_SRC;});
     if(logoImg.naturalWidth){
-      const pad=24, circleR=64, cx=CW-pad-circleR, cy=pad+circleR;
+      const pad=16, circleR=22, cx=CW-pad-circleR, cy=CH-pad-circleR;
       // yellow circle badge
       ctx.save();
       ctx.beginPath();ctx.arc(cx,cy,circleR,0,Math.PI*2);
@@ -650,7 +660,7 @@ async function sbShowFolders(){
   sbSelected = [];
   sbCurrentFolder = null;
   document.getElementById('sb-back-btn').style.display = 'none';
-  document.getElementById('sb-title').textContent = '📁 Virtuálna Školka';
+  document.getElementById('sb-title').textContent = '📁 Virtuálna Škôlka';
   document.getElementById('sb-info').textContent = 'Vyberte priečinok';
   document.getElementById('sb-sel-count').textContent = '';
   document.getElementById('sb-pridat-btn').disabled = true;
@@ -800,8 +810,54 @@ async function init(){
   document.getElementById('canvas').style.background=mask().bg;
   document.getElementById('mask-overlay').src=mask().processed;
   initColors();renderMaskList();updateHints();applyScale();
+  // Show mobile warning on touch devices
+  if('ontouchstart' in window && window.innerWidth < 900){
+    document.getElementById('mobile-warn').style.display='flex';
+  }
 }
 init();
+
+// ── Touch pan + pinch-zoom on stage ──
+(function(){
+  const stage=document.getElementById('stage');
+  let pinchStart=0, pinchZoom=100;
+  let panT=null, panSX=0, panSY=0;
+
+  stage.addEventListener('touchstart',e=>{
+    if(e.touches.length===2){
+      // pinch start
+      const dx=e.touches[0].clientX-e.touches[1].clientX;
+      const dy=e.touches[0].clientY-e.touches[1].clientY;
+      pinchStart=Math.hypot(dx,dy);
+      pinchZoom=zoomPct;
+      e.preventDefault();
+    } else if(e.touches.length===1 && !moving){
+      // single-finger pan start
+      panT={x:e.touches[0].clientX, y:e.touches[0].clientY};
+      panSX=stage.scrollLeft; panSY=stage.scrollTop;
+    }
+  },{passive:false});
+
+  stage.addEventListener('touchmove',e=>{
+    if(e.touches.length===2){
+      e.preventDefault();
+      const dx=e.touches[0].clientX-e.touches[1].clientX;
+      const dy=e.touches[0].clientY-e.touches[1].clientY;
+      const dist=Math.hypot(dx,dy);
+      const nz=Math.max(40,Math.min(250,Math.round(pinchZoom*dist/pinchStart)));
+      const sl=document.getElementById('zoom-slider');
+      if(sl){sl.value=nz;}
+      handleZoom(nz);
+    } else if(e.touches.length===1 && panT && !moving){
+      const dx=e.touches[0].clientX-panT.x;
+      const dy=e.touches[0].clientY-panT.y;
+      stage.scrollLeft=panSX-dx;
+      stage.scrollTop=panSY-dy;
+    }
+  },{passive:false});
+
+  stage.addEventListener('touchend',()=>{ panT=null; },{passive:true});
+})();
 </script>
 
 <!-- Supabase photo picker -->
@@ -810,7 +866,7 @@ init();
     <div class="sb-head">
       <div style="display:flex;align-items:center;gap:10px">
         <button class="sb-back" id="sb-back-btn" style="display:none" onclick="sbShowFolders()">← Späť</button>
-        <span class="sb-title" id="sb-title">📁 Virtuálna Školka</span>
+        <span class="sb-title" id="sb-title">📁 Virtuálna Škôlka</span>
       </div>
       <button class="sb-close" onclick="sbClose()">✕</button>
     </div>

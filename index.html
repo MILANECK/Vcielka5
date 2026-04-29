@@ -11,12 +11,12 @@
 <link rel="icon" type="image/png" href="vcielka_logo2.png"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800;900&family=Quicksand:wght@500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Quicksand:wght@500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 /* ===== RESET & BASE ===== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{font-family:'Inter',sans-serif;background:#D9EFFF;color:#1a1a1a;overflow-x:hidden;font-size:16px;}
+body{font-family:'Inter',sans-serif;background:var(--blue-pale);color:#1a1a1a;overflow-x:hidden;font-size:16px;}
 img{max-width:100%;display:block;}
 a{text-decoration:none;color:inherit;}
 
@@ -24,17 +24,17 @@ a{text-decoration:none;color:inherit;}
 :root{
   --blue:#1A5FA8;
   --blue-light:#4A9FD4;
-  --blue-pale:#D9EFFF;
-  --blue-sky:#C8E6FA;
+  --blue-pale:#B3DFFF;
+  --blue-sky:#9AD6FE;
   --blue-card:#EEF7FF;
   --yellow:#F9C832;
-  --yellow-pale:#FFF9E0;
+  --yellow-pale:#FFF1B8;
   --yellow-card:#FFF8DC;
   --yellow-bright:#FFE87A;
-  --green-pale:#E2F5EC;
-  --green-card:#E2F5EC;
+  --green-pale:#BCF0D6;
+  --green-card:#BCF0D6;
   --green-bright:#B2E8C8;
-  --warm-white:#FFFDF8;
+  --warm-white:#FFF1D1;
   --navy:#0D3D6E;
   --text:#1a1a1a;
   --text-mid:#444;
@@ -45,7 +45,7 @@ a{text-decoration:none;color:inherit;}
 
 /* ===== TYPOGRAPHY ===== */
 h1,.h1{font-family:'Nunito',sans-serif;font-weight:700;}
-h2,.h2{font-family:'Nunito',sans-serif;font-weight:700;}
+h2,.h2{font-family:'Nunito',sans-serif;font-weight:900;}
 h3,.h3{font-family:'Quicksand',sans-serif;font-weight:700;}
 .label{font-family:'Quicksand',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;}
 .btn{font-family:'Quicksand',sans-serif;font-weight:700;border:none;outline:none;cursor:pointer;border-radius:50px;display:inline-block;}
@@ -61,9 +61,9 @@ button{outline:none;border:none;}
 @media(max-width:600px){.section{overflow:visible;}}
 .section-center{text-align:center;margin-bottom:32px;}
 .section-inner{max-width:1100px;margin:0 auto;width:100%;position:relative;z-index:2;}
-.section-center .label{color:#5590C4;display:block;margin-bottom:6px;}
-.section-center h2{font-size:clamp(28px,5vw,38px);color:var(--text);margin-bottom:10px;}
-.section-center .desc{font-family:'Inter',sans-serif;font-size:16px;color:var(--text-mid);line-height:1.72;max-width:500px;margin:0 auto;}
+.section-center .label{color:rgba(255,255,255,.68);display:block;margin-bottom:6px;}
+.section-center h2{font-size:clamp(28px,5vw,49px);font-weight:900;color:#fff;margin-bottom:10px;text-shadow:0 2px 18px rgba(0,20,60,.22),0 8px 44px rgba(0,20,60,.13);}
+.section-center .desc{font-family:'Inter',sans-serif;font-size:16px;color:rgba(255,255,255,.82);line-height:1.72;max-width:500px;margin:0 auto;}
 
 /* ===== LEAF DECORATIONS ===== */
 .leaf{position:absolute;pointer-events:none;opacity:.14;}
@@ -174,7 +174,7 @@ button{outline:none;border:none;}
 /* ===========================
    STATS
 =========================== */
-.stats{background:#FFFDF8;display:flex;flex-wrap:wrap;justify-content:center;}
+.stats{background:var(--warm-white);display:flex;flex-wrap:wrap;justify-content:center;}
 .stat{flex:1;min-width:100px;padding:14px 16px;text-align:center;border-right:1px solid rgba(0,0,0,.06);}
 .stat:last-child{border-right:none;}
 .stat-num{font-family:'Nunito',sans-serif;font-size:26px;font-weight:700;color:var(--blue);}
@@ -252,7 +252,7 @@ button{outline:none;border:none;}
 .tl-time{font-family:'Quicksand',sans-serif;font-size:12px;font-weight:700;color:#5590C4;margin-bottom:1px;}
 .tl-name{font-family:'Quicksand',sans-serif;font-size:15px;font-weight:700;color:#1a1a1a;}
 .tl-desc{font-family:'Inter',sans-serif;font-size:14px;color:var(--text-muted);}
-.z-item{background:rgba(255,255,255,.6);border-radius:18px;padding:14px 16px;display:flex;gap:12px;align-items:center;margin-bottom:10px;}
+.z-item{background:rgba(255,255,255,.6);border-radius:18px;padding:14px 16px;display:flex;gap:12px;align-items:center;margin-bottom:0;}
 .z-icon{font-size:24px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .z-icon img{width:40px;height:40px;object-fit:contain;filter:drop-shadow(0 3px 8px rgba(0,0,0,.13));}
 .z-item:last-child{margin-bottom:0;}
@@ -422,7 +422,7 @@ button{outline:none;border:none;}
 .container{max-width:1100px;margin:0 auto;width:100%;}
 
 .section > *:not([style*="position:absolute"]):not(.section-bg){max-width:1100px;margin-left:auto;margin-right:auto;}
-.section-center h2{font-size:clamp(24px,4vw,36px);}
+.section-center h2{font-size:clamp(24px,5vw,49px);}
 
 
 /* ===== LIGHTBOX ===== */
@@ -439,10 +439,6 @@ button{outline:none;border:none;}
 
 
 
-  33%{transform:translate(40px,-30px) scale(1.08) rotate(8deg);}
-  66%{transform:translate(-25px,45px) scale(0.95) rotate(-5deg);}
-  100%{transform:translate(30px,20px) scale(1.05) rotate(12deg);}
-}
 /* Make sure all sections sit above blobs */
 .nav,.hero,.stats,.section,.gallery-section,.footer,.wave{position:relative;z-index:1;} .gallery-popup-overlay,.news-popup-overlay,.lightbox{z-index:9999!important;}
 
@@ -574,8 +570,6 @@ button{outline:none;border:none;}
 
 
 
-  100%{transform:scale(1.15) translate(30px,-20px);}
-}
 /* pricing section blob */
 
 
@@ -852,7 +846,7 @@ button{outline:none;border:none;}
   <!-- white wave ON TOP of photo at bottom -->
   <div class="hero-wave">
     <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0,80 L0,40 Q360,0 720,40 Q1080,80 1440,40 L1440,80 Z" fill="#FFFDF8"/>
+      <path d="M0,80 L0,40 Q360,0 720,40 Q1080,80 1440,40 L1440,80 Z" fill="#FFF1D1"/>
     </svg>
   </div>
 </section>
@@ -874,8 +868,8 @@ button{outline:none;border:none;}
 </div>
 
 <!-- wave stats→o-nas -->
-<svg class="wave" viewBox="0 0 1440 55" preserveAspectRatio="none" style="display:block;margin-bottom:-2px;background:#FFFDF8;" xmlns="http://www.w3.org/2000/svg">
-  <path d="M0,35 C360,5 720,55 1080,20 C1260,5 1380,42 1440,30 L1440,55 L0,55Z" fill="#FFF9E0"/>
+<svg class="wave" viewBox="0 0 1440 55" preserveAspectRatio="none" style="display:block;margin-bottom:-2px;background:#FFF1D1;" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0,35 C360,5 720,55 1080,20 C1260,5 1380,42 1440,30 L1440,55 L0,55Z" fill="#FFF1B8"/>
 </svg>
 
 <!-- ===========================
@@ -893,17 +887,12 @@ button{outline:none;border:none;}
   </div>
   <div class="onas-body fade-in" style="position:relative;z-index:1;">
     <div class="onas-card">
-      <p id="cms-onas-p1">Sme súkromná materská škola s 20-ročnou tradíciou, kde sa stretáva odborná starostlivosť s rodinnou atmosférou a deťom ponúkame rozmanité možnosti predprimárneho vzdelávania.</p>
-      <p id="cms-onas-p2">Hlavným cieľom výchovy a vzdelávania je umožniť deťom hravou formou, na základe ich prirodzenej zvedavosti, dosiahnuť optimálnu kognitívnu, senzomotorickú a sociálno-emocionálnu úroveň ako základ pre ďalšie vzdelávanie v základnej škole a pre život v spoločnosti – v súlade s individuálnymi a vekovými osobitosťami detí.</p>
+      <p id="cms-onas-p1"></p>
+      <p id="cms-onas-p2"></p>
       <div class="onas-expand" id="onasExpand">
-        <p id="cms-onas-extra-p1">K materskej škole patrí priestranný, oplotený areál so školským dvorom, ktorý ponúka deťom bezpečné a podnetné prostredie na hry a rôzne aktivity. Nachádza sa na Sečovskej ulici č. 3 v mestskej časti Bratislava-Ružinov.</p>
-        <p id="cms-onas-extra-p2">Naša materská škola vznikla v roku 2006 a od roku 2010 je zaradená do siete škôl a školských zariadení SR. Garantujeme predprimárne vzdelávanie v zmysle príslušnej platnej legislatívy:</p>
-        <ul id="cms-onas-list">
-          <li>zariadenie spĺňa štátne vzdelávacie štandardy a je kontrolované Ministerstvom školstva,</li>
-          <li>učitelia s odborným vzdelaním a praxou v oblasti predprimárneho vzdelávania,</li>
-          <li>plynulý prechod detí do základnej školy v rámci jednotného systému,</li>
-          <li>pravidelné kontroly a dodržiavanie hygienických a bezpečnostných noriem.</li>
-        </ul>
+        <p id="cms-onas-extra-p1"></p>
+        <p id="cms-onas-extra-p2"></p>
+        <ul id="cms-onas-list"></ul>
       </div>
       <button class="onas-toggle" id="onasBtn" onclick="toggleOnas()">
         <div class="onas-chevrons">
@@ -923,8 +912,8 @@ button{outline:none;border:none;}
 </section>
 
 <!-- wave o-nas→services -->
-<svg class="wave" viewBox="0 0 1440 55" preserveAspectRatio="none" style="display:block;margin-bottom:-2px;background:#FFF9E0;" xmlns="http://www.w3.org/2000/svg">
-  <path d="M0,40 C280,5 600,55 900,22 C1100,5 1300,46 1440,28 L1440,55 L0,55Z" fill="#D9EFFF"/>
+<svg class="wave" viewBox="0 0 1440 55" preserveAspectRatio="none" style="display:block;margin-bottom:-2px;background:#FFF1B8;" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0,40 C280,5 600,55 900,22 C1100,5 1300,46 1440,28 L1440,55 L0,55Z" fill="#B3DFFF"/>
 </svg>
 
 <!-- ===========================
@@ -948,8 +937,8 @@ button{outline:none;border:none;}
 </section>
 
 <!-- wave services→schedule -->
-<svg class="wave" viewBox="0 0 1440 55" preserveAspectRatio="none" style="display:block;margin-bottom:-2px;background:#D9EFFF;" xmlns="http://www.w3.org/2000/svg">
-  <path d="M0,20 C300,55 650,0 950,36 C1150,58 1350,8 1440,26 L1440,55 L0,55Z" fill="#E2F5EC"/>
+<svg class="wave" viewBox="0 0 1440 55" preserveAspectRatio="none" style="display:block;margin-bottom:-2px;background:#B3DFFF;" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0,20 C300,55 650,0 950,36 C1150,58 1350,8 1440,26 L1440,55 L0,55Z" fill="#BCF0D6"/>
 </svg>
 
 <!-- ===========================
@@ -963,7 +952,7 @@ button{outline:none;border:none;}
         <h2>Zvedavá Včielka</h2>
         <p class="desc">Vzdelávací program špeciálne navrhnutý pre všestranný rozvoj predškolského dieťaťa.</p>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:700px;margin:0 auto;" class="fade-in">
+      <div style="display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:1fr;gap:12px;max-width:700px;margin:0 auto;" class="fade-in">
         <div class="z-item"><span id="cms-icon-social" class="z-icon">🐝</span><div><div class="z-item-title">Sociálno-emocionálny rozvoj</div><div class="z-item-desc">Empatia, komunikácia, spolupráca</div></div></div>
         <div class="z-item"><span id="cms-icon-kreativ" class="z-icon">🎨</span><div><div class="z-item-title">Kreatívne myslenie</div><div class="z-item-desc">Umenie, hudba, tvorivé hry</div></div></div>
         <div class="z-item"><span id="cms-icon-sport" class="z-icon">🏃</span><div><div class="z-item-title">Telesný rozvoj</div><div class="z-item-desc">Šport, pohyb, zdravý životný štýl</div></div></div>
@@ -1010,8 +999,8 @@ button{outline:none;border:none;}
 </section>
 
 <!-- wave schedule→gallery -->
-<svg class="wave" viewBox="0 0 1440 55" preserveAspectRatio="none" style="display:block;margin-bottom:-2px;background:#E2F5EC;" xmlns="http://www.w3.org/2000/svg">
-  <path d="M0,35 C400,5 800,55 1200,22 C1340,8 1410,40 1440,32 L1440,55 L0,55Z" fill="#D9EFFF"/>
+<svg class="wave" viewBox="0 0 1440 55" preserveAspectRatio="none" style="display:block;margin-bottom:-2px;background:#BCF0D6;" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0,35 C400,5 800,55 1200,22 C1340,8 1410,40 1440,32 L1440,55 L0,55Z" fill="#B3DFFF"/>
 </svg>
 
 <!-- ===========================
@@ -1054,8 +1043,8 @@ button{outline:none;border:none;}
 </section>
 
 <!-- wave gallery→news -->
-<svg class="wave" viewBox="0 0 1440 55" preserveAspectRatio="none" style="display:block;margin-bottom:-2px;background:#D9EFFF;" xmlns="http://www.w3.org/2000/svg">
-  <path d="M0,30 C300,5 700,55 1100,18 C1300,4 1400,40 1440,30 L1440,55 L0,55Z" fill="#FFFDF8"/>
+<svg class="wave" viewBox="0 0 1440 55" preserveAspectRatio="none" style="display:block;margin-bottom:-2px;background:#B3DFFF;" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0,30 C300,5 700,55 1100,18 C1300,4 1400,40 1440,30 L1440,55 L0,55Z" fill="#FFF1D1"/>
 </svg>
 
 <!-- ===========================
@@ -1087,13 +1076,13 @@ button{outline:none;border:none;}
   <!-- wave top -->
   <div style="position:absolute;top:-1px;left:0;width:100%;line-height:0;pointer-events:none;z-index:2;">
     <svg viewBox="0 0 1440 70" preserveAspectRatio="none" style="width:100%;display:block;" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0,0 L1440,0 L1440,18 C960,62 480,62 0,18 Z" fill="#FFFDF8"/>
+      <path d="M0,0 L1440,0 L1440,18 C960,62 480,62 0,18 Z" fill="#FFF1D1"/>
     </svg>
   </div>
   <!-- wave bottom -->
   <div style="position:absolute;bottom:-1px;left:0;width:100%;line-height:0;pointer-events:none;z-index:2;">
     <svg viewBox="0 0 1440 70" preserveAspectRatio="none" style="width:100%;display:block;" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0,70 L1440,70 L1440,70 L0,70 Z" fill="#D9EFFF"/>
+      <path d="M0,70 L1440,70 L1440,70 L0,70 Z" fill="#B3DFFF"/>
     </svg>
   </div>
     <div class="section-inner">
@@ -1181,7 +1170,7 @@ button{outline:none;border:none;}
 </section>
 
 <!-- wave contact→footer -->
-<svg class="wave" viewBox="0 0 1440 44" preserveAspectRatio="none" style="display:block;margin-bottom:-2px;background:#D9EFFF;" xmlns="http://www.w3.org/2000/svg">
+<svg class="wave" viewBox="0 0 1440 44" preserveAspectRatio="none" style="display:block;margin-bottom:-2px;background:#B3DFFF;" xmlns="http://www.w3.org/2000/svg">
   <path d="M0,20 C300,44 700,0 1100,30 C1300,42 1420,10 1440,18 L1440,46 L0,46Z" fill="#0D3D6E"/>
 </svg>
 
