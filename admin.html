@@ -146,6 +146,15 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
 
 /* LOGO UPLOAD */
 .logo-current{height:60px;margin-bottom:14px;display:block;}
+
+/* ── TOOLTIPS ── */
+[data-tip]{position:relative;}
+[data-tip]::before{content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%) translateY(4px);background:rgba(15,25,50,.93);color:#fff;padding:6px 11px;border-radius:8px;font-size:11.5px;font-weight:600;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .16s,transform .16s;z-index:9999;font-family:'Quicksand',sans-serif;box-shadow:0 3px 12px rgba(0,0,0,.22);}
+[data-tip]::after{content:'';position:absolute;bottom:calc(100% + 3px);left:50%;transform:translateX(-50%) translateY(4px);border:5px solid transparent;border-top-color:rgba(15,25,50,.93);pointer-events:none;opacity:0;transition:opacity .16s,transform .16s;z-index:9999;}
+[data-tip]:hover::before,[data-tip]:hover::after{opacity:1;transform:translateX(-50%) translateY(0);}
+[data-tip-r]::before{left:auto;right:0;transform:translateY(4px);}
+[data-tip-r]::after{left:auto;right:16px;transform:translateY(4px);}
+[data-tip-r]:hover::before,[data-tip-r]:hover::after{transform:translateY(0);}
 </style>
 </head>
 <body>
@@ -160,7 +169,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
     </div>
     <label>Heslo</label>
     <input type="password" id="passwordInput" placeholder="Zadajte heslo..." onkeydown="if(event.key==='Enter')doLogin()"/>
-    <button class="login-btn" onclick="doLogin()">Prihlásiť sa</button>
+    <button class="login-btn" data-tip="Prihlásiť sa do správcovského panela" onclick="doLogin()">Prihlásiť sa</button>
     <div class="login-error" id="loginError">Nesprávne heslo. Skúste znova.</div>
   </div>
 </div>
@@ -213,7 +222,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
       <span class="icon">🔑</span> VS Heslo
     </div>
     <div class="nav-divider"></div>
-    <button class="logout-btn" onclick="doLogout()"><span>🚪</span> Odhlásiť sa</button>
+    <button class="logout-btn" data-tip="Odhlásiť sa zo správcu" data-tip-r onclick="doLogout()"><span>🚪</span> Odhlásiť sa</button>
   </div>
 
   <!-- MAIN CONTENT -->
@@ -258,7 +267,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
           </div>
           <div class="fake-textarea" id="onas_p2" contenteditable="true" data-tall></div>
         </div>
-        <button class="btn-save" onclick="saveSettings(['onas_p1','onas_p2'])">💾 Uložiť</button>
+        <button class="btn-save" data-tip="Uložiť texty sekcie O nás" onclick="saveSettings(['onas_p1','onas_p2'])">💾 Uložiť</button>
       </div>
 
       <div class="card">
@@ -299,7 +308,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
           <label>Odrážky (každá položka na nový riadok)</label>
           <textarea id="onas_list" style="min-height:130px;" placeholder="zariadenie spĺňa štátne vzdelávacie štandardy...&#10;učitelia s odborným vzdelaním a praxou...&#10;plynulý prechod detí do základnej školy...&#10;pravidelné kontroly a dodržiavanie noriem..."></textarea>
         </div>
-        <button class="btn-save" onclick="saveSettings(['onas_extra_p1','onas_extra_p2','onas_list'])">💾 Uložiť</button>
+        <button class="btn-save" data-tip="Uložiť rozbaľovací obsah O nás" onclick="saveSettings(['onas_extra_p1','onas_extra_p2','onas_list'])">💾 Uložiť</button>
       </div>
 
       <div class="card">
@@ -320,7 +329,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
           </div>
           <div class="fake-textarea" id="program_text" contenteditable="true" data-tall style="min-height:160px;"></div>
         </div>
-        <button class="btn-save" onclick="saveSettings(['program_text'])">💾 Uložiť</button>
+        <button class="btn-save" data-tip="Uložiť text programu" onclick="saveSettings(['program_text'])">💾 Uložiť</button>
       </div>
 
       <div class="card">
@@ -333,7 +342,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
             <div style="display:flex;gap:6px;">
               <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:4px;background:#D9EFFF;color:#1A5FA8;font-family:'Quicksand',sans-serif;font-size:11px;font-weight:700;padding:6px 8px;border-radius:50px;cursor:pointer;">
                 <input type="file" accept="image/*" style="display:none;" onchange="uploadSectionIcon(this,'icon_social')"/>🖼️ Nahrať</label>
-              <button class="btn-danger" style="padding:5px 10px;font-size:11px;" onclick="removeSectionIcon('icon_social')">🗑️</button>
+              <button class="btn-danger" style="padding:5px 10px;font-size:11px;" data-tip="Odstrániť ikonku" onclick="removeSectionIcon('icon_social')">🗑️</button>
             </div>
           </div>
           <div>
@@ -342,7 +351,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
             <div style="display:flex;gap:6px;">
               <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:4px;background:#D9EFFF;color:#1A5FA8;font-family:'Quicksand',sans-serif;font-size:11px;font-weight:700;padding:6px 8px;border-radius:50px;cursor:pointer;">
                 <input type="file" accept="image/*" style="display:none;" onchange="uploadSectionIcon(this,'icon_kreativ')"/>🖼️ Nahrať</label>
-              <button class="btn-danger" style="padding:5px 10px;font-size:11px;" onclick="removeSectionIcon('icon_kreativ')">🗑️</button>
+              <button class="btn-danger" style="padding:5px 10px;font-size:11px;" data-tip="Odstrániť ikonku" onclick="removeSectionIcon('icon_kreativ')">🗑️</button>
             </div>
           </div>
           <div>
@@ -351,7 +360,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
             <div style="display:flex;gap:6px;">
               <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:4px;background:#D9EFFF;color:#1A5FA8;font-family:'Quicksand',sans-serif;font-size:11px;font-weight:700;padding:6px 8px;border-radius:50px;cursor:pointer;">
                 <input type="file" accept="image/*" style="display:none;" onchange="uploadSectionIcon(this,'icon_sport')"/>🖼️ Nahrať</label>
-              <button class="btn-danger" style="padding:5px 10px;font-size:11px;" onclick="removeSectionIcon('icon_sport')">🗑️</button>
+              <button class="btn-danger" style="padding:5px 10px;font-size:11px;" data-tip="Odstrániť ikonku" onclick="removeSectionIcon('icon_sport')">🗑️</button>
             </div>
           </div>
           <div>
@@ -360,7 +369,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
             <div style="display:flex;gap:6px;">
               <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:4px;background:#D9EFFF;color:#1A5FA8;font-family:'Quicksand',sans-serif;font-size:11px;font-weight:700;padding:6px 8px;border-radius:50px;cursor:pointer;">
                 <input type="file" accept="image/*" style="display:none;" onchange="uploadSectionIcon(this,'icon_intellect')"/>🖼️ Nahrať</label>
-              <button class="btn-danger" style="padding:5px 10px;font-size:11px;" onclick="removeSectionIcon('icon_intellect')">🗑️</button>
+              <button class="btn-danger" style="padding:5px 10px;font-size:11px;" data-tip="Odstrániť ikonku" onclick="removeSectionIcon('icon_intellect')">🗑️</button>
             </div>
           </div>
         </div>
@@ -377,7 +386,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
           <label>Celý text podstránky ppv.html (môže byť dlhý — podporuje nové riadky)</label>
           <textarea id="ppv_extra" style="min-height:260px;" placeholder="Tu vložte celý text o povinnom predprimárnom vzdelávaní..."></textarea>
         </div>
-        <button class="btn-save" onclick="saveSettings(['ppv_intro','ppv_extra'])">💾 Uložiť</button>
+        <button class="btn-save" data-tip="Uložiť text PPV sekcie" onclick="saveSettings(['ppv_intro','ppv_extra'])">💾 Uložiť</button>
       </div>
     </div>
 
@@ -389,7 +398,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
         <div class="card-title">✏️ Texty</div>
         <div class="field"><label>Hlavný nadpis</label><input type="text" id="hero_title" placeholder="Kde detičky rastú..."/></div>
         <div class="field"><label>Popis (krátky text pod nadpisom)</label><textarea id="hero_subtitle"></textarea></div>
-        <button class="btn-save" onclick="saveSettings(['hero_title','hero_subtitle'])">💾 Uložiť texty</button>
+        <button class="btn-save" data-tip="Uložiť titulok a podtitulok hero sekcie" onclick="saveSettings(['hero_title','hero_subtitle'])">💾 Uložiť texty</button>
       </div>
       <div class="card">
         <div class="card-title">📸 Hero fotografia</div>
@@ -406,7 +415,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
     <div class="section-page" id="page-activities">
       <div class="page-title">🎯 Aktivity</div>
       <div class="page-sub">Upravte názov, popis a fotografiu každej aktivity</div>
-      <button class="btn-add" onclick="addActivity()">+ Pridať aktivitu</button>
+      <button class="btn-add" data-tip="Pridať novú aktivitu na web" onclick="addActivity()">+ Pridať aktivitu</button>
       <div class="activity-grid" id="activitiesGrid">
         <div style="padding:40px;text-align:center;color:#888;">Načítavam...</div>
       </div>
@@ -416,7 +425,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
     <div class="section-page" id="page-news">
       <div class="page-title">📰 Novinky</div>
       <div class="page-sub">Pridávajte a upravujte aktuality zo škôlky</div>
-      <button class="btn-add" onclick="addNews()">+ Pridať novinku</button>
+      <button class="btn-add" data-tip="Pridať novú novinku na web" onclick="addNews()">+ Pridať novinku</button>
       <div id="newsList"></div>
     </div>
 
@@ -440,7 +449,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
     <div class="section-page" id="page-testimonials">
       <div class="page-title">💬 Referencie rodičov</div>
       <div class="page-sub">Pridávajte a upravujte hodnotenia rodičov</div>
-      <button class="btn-add" onclick="addTestimonial()">+ Pridať referenciu</button>
+      <button class="btn-add" data-tip="Pridať nové hodnotenie od rodiča" onclick="addTestimonial()">+ Pridať referenciu</button>
       <div id="testimonialsList"></div>
     </div>
 
@@ -455,7 +464,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
           <div class="field"><label>✉️ E-mail</label><input type="text" id="contact_email"/></div>
         </div>
         <div class="field"><label>🕐 Prevádzková doba</label><input type="text" id="contact_hours"/></div>
-        <button class="btn-save" onclick="saveSettings(['contact_address','contact_phone','contact_email','contact_hours'])">💾 Uložiť kontakt</button>
+        <button class="btn-save" data-tip="Uložiť kontaktné informácie" onclick="saveSettings(['contact_address','contact_phone','contact_email','contact_hours'])">💾 Uložiť kontakt</button>
       </div>
       <div class="card">
         <div class="card-title">🖼️ Ikonky kontaktných kariet</div>
@@ -467,7 +476,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
             <div style="display:flex;gap:6px;">
               <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:4px;background:#D9EFFF;color:#1A5FA8;font-family:'Quicksand',sans-serif;font-size:11px;font-weight:700;padding:6px 8px;border-radius:50px;cursor:pointer;">
                 <input type="file" accept="image/*" style="display:none;" onchange="uploadSectionIcon(this,'icon_adresa')"/>🖼️ Nahrať</label>
-              <button class="btn-danger" style="padding:5px 10px;font-size:11px;" onclick="removeSectionIcon('icon_adresa')">🗑️</button>
+              <button class="btn-danger" style="padding:5px 10px;font-size:11px;" data-tip="Odstrániť ikonku" onclick="removeSectionIcon('icon_adresa')">🗑️</button>
             </div>
           </div>
           <div>
@@ -476,7 +485,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
             <div style="display:flex;gap:6px;">
               <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:4px;background:#D9EFFF;color:#1A5FA8;font-family:'Quicksand',sans-serif;font-size:11px;font-weight:700;padding:6px 8px;border-radius:50px;cursor:pointer;">
                 <input type="file" accept="image/*" style="display:none;" onchange="uploadSectionIcon(this,'icon_telefon')"/>🖼️ Nahrať</label>
-              <button class="btn-danger" style="padding:5px 10px;font-size:11px;" onclick="removeSectionIcon('icon_telefon')">🗑️</button>
+              <button class="btn-danger" style="padding:5px 10px;font-size:11px;" data-tip="Odstrániť ikonku" onclick="removeSectionIcon('icon_telefon')">🗑️</button>
             </div>
           </div>
           <div>
@@ -485,7 +494,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
             <div style="display:flex;gap:6px;">
               <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:4px;background:#D9EFFF;color:#1A5FA8;font-family:'Quicksand',sans-serif;font-size:11px;font-weight:700;padding:6px 8px;border-radius:50px;cursor:pointer;">
                 <input type="file" accept="image/*" style="display:none;" onchange="uploadSectionIcon(this,'icon_email')"/>🖼️ Nahrať</label>
-              <button class="btn-danger" style="padding:5px 10px;font-size:11px;" onclick="removeSectionIcon('icon_email')">🗑️</button>
+              <button class="btn-danger" style="padding:5px 10px;font-size:11px;" data-tip="Odstrániť ikonku" onclick="removeSectionIcon('icon_email')">🗑️</button>
             </div>
           </div>
           <div>
@@ -494,7 +503,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
             <div style="display:flex;gap:6px;">
               <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:4px;background:#D9EFFF;color:#1A5FA8;font-family:'Quicksand',sans-serif;font-size:11px;font-weight:700;padding:6px 8px;border-radius:50px;cursor:pointer;">
                 <input type="file" accept="image/*" style="display:none;" onchange="uploadSectionIcon(this,'icon_hodiny')"/>🖼️ Nahrať</label>
-              <button class="btn-danger" style="padding:5px 10px;font-size:11px;" onclick="removeSectionIcon('icon_hodiny')">🗑️</button>
+              <button class="btn-danger" style="padding:5px 10px;font-size:11px;" data-tip="Odstrániť ikonku" onclick="removeSectionIcon('icon_hodiny')">🗑️</button>
             </div>
           </div>
         </div>
@@ -519,7 +528,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
         </div>
         <div class="field"><label>Detail (strava, podmienky...)</label><textarea id="price_half_detail"></textarea></div>
       </div>
-      <button class="btn-save" onclick="saveSettings(['price_full_amount','price_full_detail','price_half_amount','price_half_detail'])">💾 Uložiť cenník</button>
+      <button class="btn-save" data-tip="Uložiť ceny v cenníku" onclick="saveSettings(['price_full_amount','price_full_detail','price_half_amount','price_half_detail'])">💾 Uložiť cenník</button>
     </div>
 
 
@@ -530,7 +539,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
       <div class="card">
         <div class="card-title">📝 Popis škôlky (ľavý stĺpec)</div>
         <div class="field"><label>Text o škôlke</label><textarea id="footer_desc" style="min-height:90px;"></textarea></div>
-        <button class="btn-save" onclick="saveSettings(['footer_desc'])">💾 Uložiť</button>
+        <button class="btn-save" data-tip="Uložiť popis v pätičke" onclick="saveSettings(['footer_desc'])">💾 Uložiť</button>
       </div>
       <div class="card">
         <div class="card-title">🔗 Rýchle odkazy (stredný stĺpec)</div>
@@ -538,7 +547,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
         <div class="field"><label>Položky (každá na nový riadok, formát: Názov|#odkaz)</label>
           <textarea id="footer_links" style="min-height:160px;" placeholder="O nás|#o-nas&#10;Naše služby|#sluzby&#10;Galéria|#galeria&#10;Cenník|#cennik&#10;Kontakt|#kontakt"></textarea>
         </div>
-        <button class="btn-save" onclick="saveSettings(['footer_links_title','footer_links'])">💾 Uložiť</button>
+        <button class="btn-save" data-tip="Uložiť rýchle odkazy v pätičke" onclick="saveSettings(['footer_links_title','footer_links'])">💾 Uložiť</button>
       </div>
       <div class="card">
         <div class="card-title">📞 Kontakt v pätičke (pravý stĺpec)</div>
@@ -553,7 +562,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
         <div class="card-title">©️ Copyright text</div>
         <div class="field"><label>Text (ľavý)</label><input type="text" id="footer_copy_left" placeholder="© 2025 Materská škola Včielka · Všetky práva vyhradené"/></div>
         <div class="field"><label>Text (pravý)</label><input type="text" id="footer_copy_right" placeholder="Vytvorené s 🐝 láskou v Bratislave"/></div>
-        <button class="btn-save" onclick="saveSettings(['footer_copy_left','footer_copy_right'])">💾 Uložiť</button>
+        <button class="btn-save" data-tip="Uložiť copyright text" onclick="saveSettings(['footer_copy_left','footer_copy_right'])">💾 Uložiť</button>
       </div>
     </div>
 
@@ -577,7 +586,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
             <span id="docFileName" style="font-size:12px;color:#888;font-family:'Inter',sans-serif;">Žiadny súbor</span>
           </div>
         </div>
-        <button class="btn-save" onclick="uploadDocument()">📤 Nahrať dokument</button>
+        <button class="btn-save" data-tip="Nahrať nový súbor na stiahnutie" onclick="uploadDocument()">📤 Nahrať dokument</button>
       </div>
 
       <div id="documentsList">
@@ -636,7 +645,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
             <label>Názov priečinka</label>
             <input type="text" id="skolka_new_folder" placeholder="napr. Trieda Mackov · Jar 2025" onkeydown="if(event.key==='Enter')createSkolkaFolder()"/>
           </div>
-          <button class="btn-save" onclick="createSkolkaFolder()" style="margin-bottom:0;">📁 Vytvoriť priečinok</button>
+          <button class="btn-save" data-tip="Vytvoriť nový foto priečinok" onclick="createSkolkaFolder()" style="margin-bottom:0;">📁 Vytvoriť priečinok</button>
         </div>
       </div>
 
@@ -677,7 +686,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
           <input type="text" id="vs_pw_new" placeholder="Zadajte nové heslo…"/>
         </div>
         <div style="display:flex;gap:10px;align-items:center;margin-top:6px;flex-wrap:wrap;">
-          <button class="btn-save" onclick="saveSkolkaPw()">💾 Uložiť heslo</button>
+          <button class="btn-save" data-tip="Uložiť prístupové heslo pre rodičov" onclick="saveSkolkaPw()">💾 Uložiť heslo</button>
           <a href="skolka.html" target="_blank" class="btn-secondary" style="text-decoration:none;">🔐 Otvoriť stránku</a>
         </div>
       </div>
@@ -692,7 +701,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
           <label>Nová URL editora</label>
           <input type="text" id="editor_url_new" placeholder="napr. /vcielka_editor.html"/>
         </div>
-        <button class="btn-save" onclick="saveEditorUrl()">💾 Uložiť URL</button>
+        <button class="btn-save" data-tip="Uložiť URL adresu editora rámikov" onclick="saveEditorUrl()">💾 Uložiť URL</button>
       </div>
     </div>
   </div><!-- /main -->
@@ -874,7 +883,7 @@ async function loadActivities() {
       <div class="activity-card-header">
         <span class="drag-handle" title="Presunúť">⠿</span>
         <span class="activity-card-icon">${a.icon && a.icon.startsWith('http') ? `<img src="${a.icon}" style="width:28px;height:28px;object-fit:contain;border-radius:6px;vertical-align:middle;"/>` : a.icon}</span>
-        <button class="btn-danger" style="padding:5px 10px;font-size:11px;" onclick="deleteActivity(${a.id})">🗑️ Odstrániť</button>
+        <button class="btn-danger" style="padding:5px 10px;font-size:11px;" data-tip="Natrvalo odstrániť aktivitu" onclick="deleteActivity(${a.id})">🗑️ Odstrániť</button>
       </div>
       ${a.photo_url
         ? `<img class="activity-photo" src="${a.photo_url}" alt=""/>
@@ -883,7 +892,7 @@ async function loadActivities() {
                <input type="file" accept="image/*" style="display:none;" onchange="uploadActivityPhoto(this,${a.id})"/>
                📷 Zmeniť foto
              </label>
-             <button class="btn-danger" style="flex:1;" onclick="removeActivityPhoto(${a.id})">🗑️ Odstrániť foto</button>
+             <button class="btn-danger" style="flex:1;" data-tip="Odstrániť fotografiu aktivity" onclick="removeActivityPhoto(${a.id})">🗑️ Odstrániť foto</button>
            </div>`
         : `<label style="display:flex;align-items:center;justify-content:center;gap:8px;background:#E0ECFF;border-radius:10px;height:100px;margin-bottom:10px;cursor:pointer;border:2px dashed #C8E6FA;">
              <input type="file" accept="image/*" style="display:none;" onchange="uploadActivityPhoto(this,${a.id})"/>
@@ -895,7 +904,7 @@ async function loadActivities() {
           ? `<div style="display:flex;align-items:center;gap:10px;padding:10px;background:#f0f6ff;border-radius:12px;margin-bottom:8px;">
                <img src="${a.icon}" style="width:54px;height:54px;object-fit:contain;border-radius:12px;background:#fff;padding:3px;box-shadow:0 2px 8px rgba(0,0,0,.08);"/>
                <span style="flex:1;font-family:'Quicksand',sans-serif;font-size:12px;font-weight:600;color:#5a8ab0;">Obrázková ikona</span>
-               <button class="btn-danger" style="padding:5px 12px;font-size:11px;" onclick="removeActivityIcon(${a.id})">🗑️ Odstrániť</button>
+               <button class="btn-danger" style="padding:5px 12px;font-size:11px;" data-tip="Odstrániť obrázkovú ikonu" onclick="removeActivityIcon(${a.id})">🗑️ Odstrániť</button>
              </div>`
           : `<input type="text" value="${a.icon}" onchange="updateActivity(${a.id},'icon',this.value)" style="font-size:22px;text-align:center;width:100%;margin-bottom:8px;padding:8px 14px;border:1.5px solid #E0ECFF;border-radius:12px;font-family:'Inter',sans-serif;outline:none;"/>`
         }
@@ -937,7 +946,7 @@ async function loadActivities() {
                  <input type="file" accept="image/*" style="display:none;" onchange="uploadActivityPopupPhoto(this,${a.id})"/>
                  📷 Zmeniť foto popupu
                </label>
-               <button class="btn-danger" style="flex:1;" onclick="removeActivityPopupPhoto(${a.id})">🗑️ Odstrániť</button>
+               <button class="btn-danger" style="flex:1;" data-tip="Odstrániť foto z popupu" onclick="removeActivityPopupPhoto(${a.id})">🗑️ Odstrániť</button>
              </div>`
           : `<label style="display:flex;align-items:center;justify-content:center;gap:8px;background:#E0ECFF;border-radius:10px;height:80px;cursor:pointer;border:2px dashed #C8E6FA;">
                <input type="file" accept="image/*" style="display:none;" onchange="uploadActivityPopupPhoto(this,${a.id})"/>
@@ -1069,11 +1078,11 @@ async function loadNews() {
         <span style="font-family:'Quicksand',sans-serif;font-weight:700;">${n.title}</span>
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
           <button 
-            onclick="setFeaturedNews(${n.id}, ${!n.featured})"
+            data-tip="Zobraziť / skryť na hlavnej stránke" onclick="setFeaturedNews(${n.id}, ${!n.featured})"
             style="background:${n.featured ? '#F9C832' : '#EEF7FF'};color:${n.featured ? '#1a1a1a' : '#5590C4'};font-family:'Quicksand',sans-serif;font-size:12px;font-weight:700;padding:7px 14px;border:none;border-radius:50px;cursor:pointer;">
             ${n.featured ? '⭐ Na hlavnej stránke' : '☆ Zobraziť na hlavnej'}
           </button>
-          <button class="btn-danger" onclick="deleteNews(${n.id})">🗑️ Vymazať</button>
+          <button class="btn-danger" data-tip="Natrvalo vymazať novinku" onclick="deleteNews(${n.id})">🗑️ Vymazať</button>
         </div>
       </div>
       ${n.photo_url ? `<img class="news-photo" src="${n.photo_url}" alt=""/>` : ''}
@@ -1083,7 +1092,7 @@ async function loadNews() {
       <div class="field"><label>📸 Hlavná fotografia</label>
         ${n.photo_url ? `<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
           <img src="${n.photo_url}" style="height:70px;border-radius:8px;object-fit:cover;"/>
-          <button class="btn-danger" onclick="deleteNewsPhoto(${n.id},'photo_url')">🗑️ Odstrániť</button>
+          <button class="btn-danger" data-tip="Odstrániť hlavnú fotografiu" onclick="deleteNewsPhoto(${n.id},'photo_url')">🗑️ Odstrániť</button>
         </div>` : ''}
         <div class="img-upload" style="padding:14px;">
           <input type="file" accept="image/*" onchange="uploadNewsPhoto(this,${n.id},'photo_url')"/>
@@ -1093,7 +1102,7 @@ async function loadNews() {
       <div class="field"><label>📸 Fotografia 2 (voliteľná)</label>
         ${n.photo2_url ? `<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
           <img src="${n.photo2_url}" style="height:70px;border-radius:8px;object-fit:cover;"/>
-          <button class="btn-danger" onclick="deleteNewsPhoto(${n.id},'photo2_url')">🗑️ Odstrániť</button>
+          <button class="btn-danger" data-tip="Odstrániť fotografiu 2" onclick="deleteNewsPhoto(${n.id},'photo2_url')">🗑️ Odstrániť</button>
         </div>` : ''}
         <div class="img-upload" style="padding:14px;">
           <input type="file" accept="image/*" onchange="uploadNewsPhoto(this,${n.id},'photo2_url')"/>
@@ -1103,7 +1112,7 @@ async function loadNews() {
       <div class="field"><label>📸 Fotografia 3 (voliteľná)</label>
         ${n.photo3_url ? `<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
           <img src="${n.photo3_url}" style="height:70px;border-radius:8px;object-fit:cover;"/>
-          <button class="btn-danger" onclick="deleteNewsPhoto(${n.id},'photo3_url')">🗑️ Odstrániť</button>
+          <button class="btn-danger" data-tip="Odstrániť fotografiu 3" onclick="deleteNewsPhoto(${n.id},'photo3_url')">🗑️ Odstrániť</button>
         </div>` : ''}
         <div class="img-upload" style="padding:14px;">
           <input type="file" accept="image/*" onchange="uploadNewsPhoto(this,${n.id},'photo3_url')"/>
@@ -1208,7 +1217,7 @@ async function loadGallery() {
          ondragstart="galleryDragStart(event)" ondragover="galleryDragOver(event)"
          ondrop="galleryDrop(event)" ondragend="galleryDragEnd(event)">
       <img src="${g.photo_url}" alt="foto" loading="lazy" onerror="this.parentElement.style.background='#fee'"/>
-      <button class="gallery-item-del" onclick="deleteGalleryItem(${g.id})">✕</button>
+      <button class="gallery-item-del" data-tip="Odstrániť z galérie" onclick="deleteGalleryItem(${g.id})">✕</button>
     </div>
   `).join('');
 }
@@ -1258,7 +1267,7 @@ async function loadTestimonials() {
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
         <strong style="font-family:'Quicksand',sans-serif;">${t.author}</strong>
-        <button class="btn-danger" onclick="deleteTestimonial(${t.id})">🗑️ Vymazať</button>
+        <button class="btn-danger" data-tip="Natrvalo vymazať hodnotenie" onclick="deleteTestimonial(${t.id})">🗑️ Vymazať</button>
       </div>
       <div class="field"><label>Text hodnotenia</label>
         <textarea onchange="updateTestimonial(${t.id},'text',this.value)">${t.text}</textarea>
@@ -1333,7 +1342,7 @@ async function loadDocuments() {
             <a href="${d.file_url}" target="_blank" style="font-size:11px;color:#4A9FD4;">Otvoriť PDF →</a>
           </div>
         </div>
-        <button class="btn-danger" onclick="deleteDocument(${d.id}, '${d.file_url}')">🗑️ Vymazať</button>
+        <button class="btn-danger" data-tip="Natrvalo vymazať dokument" onclick="deleteDocument(${d.id}, '${d.file_url}')">🗑️ Vymazať</button>
       </div>
       <div class="two-col">
         <div class="field"><label>Názov dokumentu</label>
@@ -1427,17 +1436,17 @@ async function loadSkolka() {
           <div style="font-size:12px;color:#888;margin-top:2px;">${count} fotografi${count===1?'a':'í'} · <span class="folder-size-tag">${folderMB} MB</span></div>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button class="btn-add" onclick="openSkolkaFolder('${f.id}','${f.name.replace(/'/g,"\'")}')">📷 Nahrať fotografie</button>
-          <button class="btn-danger" onclick="deleteSkolkaFolder('${f.id}','${f.name.replace(/'/g,"\'")}')">🗑️ Vymazať priečinok</button>
+          <button class="btn-add" data-tip="Nahrať fotografie do priečinka" onclick="openSkolkaFolder('${f.id}','${f.name.replace(/'/g,"\'")}')">📷 Nahrať fotografie</button>
+          <button class="btn-danger" data-tip="Vymazať priečinok so všetkými fotkamy" onclick="deleteSkolkaFolder('${f.id}','${f.name.replace(/'/g,"\'")}')">🗑️ Vymazať priečinok</button>
         </div>
       </div>
       <div class="gallery-grid" id="skolka_grid_${f.id}" style="margin-top:4px;"></div>
       <div class="sk-sel-bar" id="sk_selbar_${f.id}">
         <span class="sk-sel-count" id="sk_selcount_${f.id}"></span>
-        <button class="sk-dl-btn" id="sk_dlbtn_${f.id}" onclick="downloadSkolkaSelected('${f.id}')">⬇ Stiahnuť fotky</button>
-        <button class="sk-dl-btn" id="sk_zipbtn_${f.id}" onclick="downloadSkolkaZip('${f.id}','${f.name.replace(/'/g,"\'")}')">📦 Stiahnuť ako ZIP</button>
-        <button class="sk-sel-action" onclick="selectAllSkolka('${f.id}')">Vybrať všetky</button>
-        <button class="sk-sel-action" onclick="clearSkolkaSelection('${f.id}')">Zrušiť výber</button>
+        <button class="sk-dl-btn" id="sk_dlbtn_${f.id}" data-tip="Stiahnuť vybrané fotografie" onclick="downloadSkolkaSelected('${f.id}')">⬇ Stiahnuť fotky</button>
+        <button class="sk-dl-btn" id="sk_zipbtn_${f.id}" data-tip="Stiahnuť vybrané ako ZIP archív" onclick="downloadSkolkaZip('${f.id}','${f.name.replace(/'/g,"\'")}')">📦 Stiahnuť ako ZIP</button>
+        <button class="sk-sel-action" data-tip="Vybrať všetky fotografie v priečinku" onclick="selectAllSkolka('${f.id}')">Vybrať všetky</button>
+        <button class="sk-sel-action" data-tip="Zrušiť výber fotografií" onclick="clearSkolkaSelection('${f.id}')">Zrušiť výber</button>
       </div>
     `;
     list.appendChild(card);
@@ -1476,7 +1485,7 @@ function renderSkolkaGrid(folderId, files) {
       <div class="gallery-item" data-name="${p.name}" data-url="${publicUrl}" onclick="toggleSkolkaSelect('${folderId}','${safeName}','${safeUrl}',this)">
         <div class="sk-check">✓</div>
         <img src="${publicUrl}" alt="${p.name}" loading="lazy"/>
-        <button class="gallery-item-del" onclick="event.stopPropagation();deleteSkolkaPhoto('${folderId}','${safeName}')">✕</button>
+        <button class="gallery-item-del" data-tip="Odstrániť fotografiu" onclick="event.stopPropagation();deleteSkolkaPhoto('${folderId}','${safeName}')">✕</button>
       </div>`;
   }).join('');
 }
@@ -1526,7 +1535,7 @@ async function uploadSkolkaPhotos(input) {
   const photos = (files2 || []).filter(x => x.name !== '.keep');
   grid.innerHTML = photos.map(p => {
     const { data: { publicUrl } } = db.storage.from('vcielka').getPublicUrl('skolka/' + currentSkolkaFolderId + '/' + p.name);
-    return `<div class="gallery-item"><img src="${publicUrl}" alt="${p.name}" loading="lazy"/><button class="gallery-item-del" onclick="deleteSkolkaPhotoModal('${p.name}')">✕</button></div>`;
+    return `<div class="gallery-item"><img src="${publicUrl}" alt="${p.name}" loading="lazy"/><button class="gallery-item-del" data-tip="Odstrániť fotografiu" onclick="deleteSkolkaPhotoModal('${p.name}')">✕</button></div>`;
   }).join('');
 }
 
@@ -1546,7 +1555,7 @@ async function deleteSkolkaPhotoModal(fileName) {
   const photos = (files || []).filter(x => x.name !== '.keep');
   grid.innerHTML = photos.map(p => {
     const { data: { publicUrl } } = db.storage.from('vcielka').getPublicUrl('skolka/' + currentSkolkaFolderId + '/' + p.name);
-    return `<div class="gallery-item"><img src="${publicUrl}" alt="${p.name}" loading="lazy"/><button class="gallery-item-del" onclick="deleteSkolkaPhotoModal('${p.name}')">✕</button></div>`;
+    return `<div class="gallery-item"><img src="${publicUrl}" alt="${p.name}" loading="lazy"/><button class="gallery-item-del" data-tip="Odstrániť fotografiu" onclick="deleteSkolkaPhotoModal('${p.name}')">✕</button></div>`;
   }).join('');
 }
 
@@ -1716,6 +1725,15 @@ if (sessionStorage.getItem('admin_auth') === '1') {
   document.getElementById('app').style.display = 'flex';
   initApp();
 }
+
+// ── TOOLTIP INIT ──
+function initTooltips(){
+  const fa={'bold':'Tučné písmo','italic':'Kurzíva','justifyLeft':'Zarovnať vľavo','justifyCenter':'Zarovnať na stred','justifyRight':'Zarovnať vpravo'};
+  const fs={'0.82em':'Malý text','1em':'Stredný text','1.2em':'Veľký text'};
+  document.querySelectorAll('[data-action]').forEach(el=>{if(!el.dataset.tip&&fa[el.dataset.action])el.dataset.tip=fa[el.dataset.action];});
+  document.querySelectorAll('[data-size]').forEach(el=>{if(!el.dataset.tip&&fs[el.dataset.size])el.dataset.tip=fs[el.dataset.size];});
+}
+document.addEventListener('DOMContentLoaded', initTooltips);
 </script>
 </body>
 </html>
