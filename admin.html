@@ -678,8 +678,8 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
         <div class="card-title">🔐 Prístupové heslo</div>
         <p style="font-size:13px;color:#888;margin-bottom:18px;">Toto heslo zadávajú rodičia pri vstupe do Virtuálnej Školky. Predvolené heslo: <strong>vcielka2025</strong></p>
         <div class="field">
-          <label>Aktuálne heslo</label>
-          <input type="text" id="vs_pw_current" placeholder="Načítavam…" readonly style="opacity:.6;"/>
+          <label>Aktuálne heslo (zadajte pre overenie)</label>
+          <input type="password" id="vs_pw_current" placeholder="Zadajte aktuálne heslo…"/>
         </div>
         <div class="field">
           <label>Nové heslo</label>
@@ -1644,14 +1644,9 @@ async function downloadSkolkaZip(folderId, folderName) {
 
 // ===== VS HESLO =====
 async function loadSkolkaPw() {
-  // also load editor URL
   const { data: eu } = await db.from('settings').select('value').eq('key','editor_url').single();
   const euel = document.getElementById('editor_url_current');
   if (euel) euel.value = eu?.value || 'vcielka_editor.html';
-
-  const { data } = await db.from('settings').select('value').eq('key','skolka_password').single();
-  const el = document.getElementById('vs_pw_current');
-  if (el) el.value = data?.value || 'vcielka2025';
 }
 
 async function saveEditorUrl() {
@@ -1664,10 +1659,13 @@ async function saveEditorUrl() {
 }
 
 async function saveSkolkaPw() {
+  const oldPw = document.getElementById('vs_pw_current').value.trim();
   const newPw = document.getElementById('vs_pw_new').value.trim();
+  if (!oldPw) { toast('Zadajte aktuálne heslo', 'error'); return; }
   if (!newPw) { toast('Zadajte nové heslo', 'error'); return; }
-  await db.from('settings').upsert({ key: 'skolka_password', value: newPw }, { onConflict: 'key' });
-  document.getElementById('vs_pw_current').value = newPw;
+  const { error } = await db.rpc('skolka_set_password', { old_pw: oldPw, new_pw: newPw });
+  if (error) { toast('❌ Nesprávne aktuálne heslo', 'error'); return; }
+  document.getElementById('vs_pw_current').value = '';
   document.getElementById('vs_pw_new').value = '';
   toast('✅ Heslo uložené!');
 }
@@ -1735,5 +1733,12 @@ function initTooltips(){
 }
 document.addEventListener('DOMContentLoaded', initTooltips);
 </script>
+
+<!-- cookie notice -->
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#F9C832;color:#0D3D6E;padding:14px 20px;z-index:9999;align-items:center;justify-content:center;gap:14px;font-family:'Quicksand',sans-serif;font-size:14px;font-weight:600;box-shadow:0 -2px 20px rgba(0,0,0,.15);flex-wrap:wrap;text-align:center;">
+  <span>Táto stránka používa nevyhnutné cookies pre prihlásenie a bezpečnosť. Prehliadaním súhlasíte. <a href="privacy.html" style="color:#1A5FA8;text-decoration:underline;">Zásady ochrany súkromia</a></span>
+  <button onclick="document.getElementById('cookie-banner').style.display='none';localStorage.setItem('cookie_ok','1');" style="background:#1A5FA8;color:#fff;border:none;border-radius:50px;padding:8px 22px;font-family:'Quicksand',sans-serif;font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap;flex-shrink:0;">Rozumiem</button>
+</div>
+<script>if(!localStorage.getItem('cookie_ok')){var b=document.getElementById('cookie-banner');b.style.display='flex';}</script>
 </body>
 </html>

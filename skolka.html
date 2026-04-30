@@ -211,28 +211,34 @@ const gallerySelection = new Map();
 async function doLogin() {
   const pw = document.getElementById('pw-input').value.trim();
   if (!pw) return;
-  const { data, error } = await db.from('settings').select('value').eq('key','skolka_password').single();
-  const correct = data?.value || 'vcielka2025';
-  if (pw === correct) {
-    sessionStorage.setItem('vs_auth','1');
-    document.getElementById('login-wrap').style.display='none';
-    document.getElementById('app').style.display='block';
-    loadFolders();
-    loadEditorUrl();
-  } else {
+  const { data: folders, error } = await db.rpc('skolka_get_folders', { pw });
+  if (error) {
     document.getElementById('login-error').style.display='block';
     setTimeout(()=>document.getElementById('login-error').style.display='none',3000);
+    return;
   }
+  sessionStorage.setItem('vs_auth','1');
+  sessionStorage.setItem('vs_pw', pw);
+  document.getElementById('login-wrap').style.display='none';
+  document.getElementById('app').style.display='block';
+  renderFolders(folders);
+  loadEditorUrl();
 }
 function doLogout() {
   sessionStorage.removeItem('vs_auth');
+  sessionStorage.removeItem('vs_pw');
   location.reload();
 }
 
 // ── FOLDERS ──
 async function loadFolders() {
+  const pw = sessionStorage.getItem('vs_pw') || '';
+  const { data: folders } = await db.rpc('skolka_get_folders', { pw });
+  renderFolders(folders);
+}
+
+async function renderFolders(folders) {
   const grid = document.getElementById('folders-grid');
-  const { data: folders } = await db.from('skolka_folders').select('*').order('created_at',{ascending:false});
   if (!folders?.length) {
     grid.innerHTML = '<div class="vs-empty">📭 Zatiaľ žiadne fotografie.<br><small>Administrátor pridá priečinky čoskoro.</small></div>';
     return;
@@ -322,7 +328,7 @@ async function loadEditorUrl() {
   const { data } = await db.from('settings').select('value').eq('key','editor_url').single();
   _editorUrl = data?.value || 'vcielka_editor.html';
   [document.getElementById('editor-link-header'), document.getElementById('editor-link-gallery')]
-    .forEach(el => { if(el) el.addEventListener('click', e => { e.preventDefault(); openEditorHint(); }); });
+    .forEach(el => { if(el) el.addEventListener('click', e => { e.preventDefault(); if(window.innerWidth < 768) { openEditorHint(); } else { window.open(_editorUrl, '_blank'); } }); });
 }
 function openEditorHint() {
   document.getElementById('editor-hint-overlay').classList.add('open');
@@ -401,5 +407,12 @@ if (sessionStorage.getItem('vs_auth')==='1') {
   loadFolders();
 }
 </script>
+
+<!-- cookie notice -->
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#F9C832;color:#0D3D6E;padding:14px 20px;z-index:9999;align-items:center;justify-content:center;gap:14px;font-family:'Quicksand',sans-serif;font-size:14px;font-weight:600;box-shadow:0 -2px 20px rgba(0,0,0,.15);flex-wrap:wrap;text-align:center;">
+  <span>Táto stránka používa nevyhnutné cookies pre prihlásenie a bezpečnosť. Prehliadaním súhlasíte. <a href="privacy.html" style="color:#1A5FA8;text-decoration:underline;">Zásady ochrany súkromia</a></span>
+  <button onclick="document.getElementById('cookie-banner').style.display='none';localStorage.setItem('cookie_ok','1');" style="background:#1A5FA8;color:#fff;border:none;border-radius:50px;padding:8px 22px;font-family:'Quicksand',sans-serif;font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap;flex-shrink:0;">Rozumiem</button>
+</div>
+<script>if(!localStorage.getItem('cookie_ok')){var b=document.getElementById('cookie-banner');b.style.display='flex';}</script>
 </body>
 </html>
