@@ -61,7 +61,7 @@ button{outline:none;border:none;}
 .gallery-section::before {
   content:'';
   position:absolute;
-  inset:0;
+  top:-70px; left:0; right:0; bottom:0;
   filter:url(#sg);
   background:rgba(128,128,128,0.001);
   opacity:0.07;
@@ -70,8 +70,7 @@ button{outline:none;border:none;}
 }
 
 /* ===== SECTION BASE ===== */
-.section{padding:56px 32px;position:relative;overflow:hidden;}
-@media(max-width:600px){.section{overflow:visible;}}
+.section{padding:56px 32px;position:relative;overflow:visible;}
 .section-center{text-align:center;margin-bottom:32px;}
 .section-inner{max-width:1100px;margin:0 auto;width:100%;position:relative;z-index:2;}
 .section-center .label{color:#1a1a1a;display:block;margin-bottom:6px;}
@@ -275,7 +274,7 @@ button{outline:none;border:none;}
 /* ===========================
    GALLERY
 =========================== */
-.gallery-section{padding:52px 0;position:relative;overflow:hidden;}
+.gallery-section{padding:52px 0;position:relative;overflow:visible;}
 .gallery-inner{overflow:hidden;}
 .gallery-header{padding:0 32px;display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;}
 .gallery-header .label{color:#5590C4;display:block;margin-bottom:5px;}
@@ -1110,7 +1109,7 @@ button{outline:none;border:none;}
   <!-- wave top -->
   <div style="position:absolute;top:-1px;left:0;width:100%;line-height:0;pointer-events:none;z-index:2;">
     <svg viewBox="0 0 1440 70" preserveAspectRatio="none" style="width:100%;display:block;" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0,0 L1440,0 L1440,18 C960,62 480,62 0,18 Z" fill="#FFF1D1"/>
+      <path d="M0,0 L1440,0 L1440,18 C960,62 480,62 0,18 Z" fill="#FFF1D1" filter="url(#wg)"/>
     </svg>
   </div>
   <!-- wave bottom -->
@@ -1904,30 +1903,50 @@ document.addEventListener('DOMContentLoaded', function(){
   tick();
 });
 // ===== GRAIN TEXTURE (wave paths) =====
-document.querySelectorAll('.wave path, .hero-wave path').forEach(function(p){
+document.querySelectorAll('.wave path').forEach(function(p){
   p.setAttribute('filter','url(#wg)');
 });
 
 // ===== PRICE CARD 3D TILT =====
 document.querySelectorAll('.price-card').forEach(function(card) {
-  card.addEventListener('mouseenter', function() {
-    card.style.transition = 'transform 0.08s linear, box-shadow 0.08s linear';
-  });
-  card.addEventListener('mousemove', function(e) {
+  var rx = 0, ry = 0, lf = 0;
+  var rxT = 0, ryT = 0, lfT = 0;
+  var raf = null;
+  var over = false;
+
+  function lerp(a, b, t){ return a + (b - a) * t; }
+
+  function tick() {
+    rx = lerp(rx, rxT, 0.1);
+    ry = lerp(ry, ryT, 0.1);
+    lf = lerp(lf, lfT, 0.1);
+    var sc = 1 + Math.abs(lf) * 0.0018;
+    card.style.transform =
+      'perspective(800px) rotateX('+rx+'deg) rotateY('+ry+'deg) translateY('+lf+'px) scale('+sc+')';
+    card.style.boxShadow =
+      (-ry * 2.2)+'px '+(rx * 1.4 + 20)+'px 52px rgba(0,0,0,'+(0.10 + Math.abs(lf)*0.009)+')';
+    if (over || Math.abs(rx)>0.05 || Math.abs(ry)>0.05 || Math.abs(lf)>0.05) {
+      raf = requestAnimationFrame(tick);
+    } else {
+      rx = ry = lf = 0;
+      card.style.transform = '';
+      card.style.boxShadow = '';
+      raf = null;
+    }
+  }
+
+  function go(){ if(!raf) raf = requestAnimationFrame(tick); }
+
+  card.addEventListener('mouseenter', function(){ over=true; lfT=-11; go(); });
+  card.addEventListener('mousemove', function(e){
     var r = card.getBoundingClientRect();
     var x = (e.clientX - r.left - r.width  / 2) / r.width;
     var y = (e.clientY - r.top  - r.height / 2) / r.height;
-    card.style.transform =
-      'perspective(900px) rotateX(' + (-y * 7) + 'deg) rotateY(' + (x * 7) + 'deg) translateY(-6px) scale(1.012)';
-    card.style.boxShadow =
-      (-x * 18) + 'px ' + (y * 10 + 14) + 'px 40px rgba(0,0,0,.18)';
+    rxT = -y * 14;
+    ryT =  x * 14;
+    go();
   });
-  card.addEventListener('mouseleave', function() {
-    card.style.transition = 'transform 0.55s cubic-bezier(.03,.98,.52,.99), box-shadow 0.55s ease';
-    card.style.transform = '';
-    card.style.boxShadow = '';
-    setTimeout(function() { card.style.transition = ''; }, 580);
-  });
+  card.addEventListener('mouseleave', function(){ over=false; rxT=0; ryT=0; lfT=0; go(); });
 });
 
 // Lightbox arrows
