@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Virtuálna Škôlka — Včielka</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -100,6 +101,23 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#dce8f4;min-height:10
 /* Loading */
 .vs-loading{text-align:center;padding:60px 20px;color:#7a9ab0;font-size:15px}
 .vs-empty{text-align:center;padding:60px 20px;color:#aab8c8;font-family:'Quicksand',sans-serif;font-size:16px}
+
+/* Select & download */
+.gallery-photo.sk-selected{outline:3px solid #fdc003;outline-offset:-3px;}
+.gallery-photo.sk-selected .sk-check{background:#fdc003;border-color:#fdc003;color:#1a2a3a;}
+.sk-check{position:absolute;top:8px;left:8px;width:26px;height:26px;border-radius:50%;border:2px solid rgba(255,255,255,.85);background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;font-size:12px;color:transparent;cursor:pointer;transition:.15s;z-index:2;}
+.sk-sel-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:14px 24px;background:rgba(0,0,0,.4);flex-shrink:0;}
+.sk-dl-btn{display:inline-flex;align-items:center;gap:6px;background:#fdc003;color:#1a2a3a;font-family:'Quicksand',sans-serif;font-size:13px;font-weight:700;padding:10px 18px;border-radius:50px;border:none;cursor:pointer;opacity:.35;pointer-events:none;transition:.2s;}
+.sk-dl-btn.active{opacity:1;pointer-events:auto;}
+.sk-dl-btn.active:hover{background:#e6b002;}
+.sk-sel-count{font-family:'Quicksand',sans-serif;font-size:13px;color:rgba(255,255,255,.75);font-weight:600;min-width:100px;}
+.sk-sel-action{background:rgba(255,255,255,.15);color:#fff;font-family:'Quicksand',sans-serif;font-size:12px;font-weight:600;padding:8px 14px;border:none;border-radius:50px;cursor:pointer;}
+.sk-sel-action:hover{background:rgba(255,255,255,.25);}
+@media(max-width:600px){
+  .sk-sel-bar{padding:10px 12px;gap:6px;}
+  .sk-dl-btn{font-size:12px;padding:8px 14px;}
+  .sk-sel-count{font-size:12px;}
+}
 </style>
 </head>
 <body>
@@ -160,6 +178,13 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#dce8f4;min-height:10
     <a href="#" id="editor-link-gallery" class="btn-editor" target="_blank">Vytvor si rámik</a>
   </div>
   <div id="gallery-grid-fs" class="gallery-grid-fs"></div>
+  <div class="sk-sel-bar">
+    <span class="sk-sel-count" id="sk-sel-count"></span>
+    <button class="sk-dl-btn" id="sk-dl-btn" onclick="downloadSkolkaSelected()">⬇ Stiahnuť fotky</button>
+    <button class="sk-dl-btn" id="sk-zip-btn" onclick="downloadSkolkaZip()">📦 Stiahnuť ako ZIP</button>
+    <button class="sk-sel-action" onclick="selectAllSkolka()">Vybrať všetky</button>
+    <button class="sk-sel-action" onclick="clearSkolkaSelection()">Zrušiť výber</button>
+  </div>
 </div>
 
 <!-- Lightbox -->
@@ -179,6 +204,8 @@ const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let lbPhotos = [], lbIdx = 0;
+let currentGalleryFolderName = '';
+const gallerySelection = new Map();
 
 // ── AUTH ──
 async function doLogin() {
@@ -235,23 +262,42 @@ async function loadFolders() {
 
 // ── GALLERY ──
 function openGallery(folderId, folderName, photos) {
+  currentGalleryFolderName = folderName;
   document.getElementById('gallery-title').textContent = folderName;
   const grid = document.getElementById('gallery-grid-fs');
   lbPhotos = [];
+  gallerySelection.clear();
+  updateGallerySelBar();
   grid.innerHTML = '';
   photos.forEach((p, idx) => {
     const { data:{publicUrl} } = db.storage.from('vcielka').getPublicUrl('skolka/'+folderId+'/'+p.name);
     lbPhotos.push(publicUrl);
     const div = document.createElement('div');
     div.className = 'gallery-photo';
-    div.innerHTML = `<img src="${publicUrl}" alt="${p.name}" loading="lazy"/>`;
-    div.onclick = () => openLb(idx);
+    div.dataset.name = p.name;
+    div.dataset.url = publicUrl;
+    const check = document.createElement('div');
+    check.className = 'sk-check';
+    check.textContent = '✓';
+    check.addEventListener('click', e => {
+      e.stopPropagation();
+      toggleSkolkaSelect(p.name, publicUrl, div);
+    });
+    div.appendChild(check);
+    const img = document.createElement('img');
+    img.src = publicUrl;
+    img.alt = p.name;
+    img.loading = 'lazy';
+    div.appendChild(img);
+    div.addEventListener('click', () => openLb(idx));
     grid.appendChild(div);
   });
   document.getElementById('gallery-overlay').classList.add('open');
 }
 function closeGallery() {
   document.getElementById('gallery-overlay').classList.remove('open');
+  gallerySelection.clear();
+  updateGallerySelBar();
 }
 
 // ── LIGHTBOX ──
@@ -284,6 +330,67 @@ function openEditorHint() {
 function editorHintOk() {
   document.getElementById('editor-hint-overlay').classList.remove('open');
   window.open(_editorUrl, '_blank');
+}
+
+// ── SELECT & DOWNLOAD ──
+function toggleSkolkaSelect(name, url, el) {
+  if (gallerySelection.has(name)) { gallerySelection.delete(name); el.classList.remove('sk-selected'); }
+  else { gallerySelection.set(name, url); el.classList.add('sk-selected'); }
+  updateGallerySelBar();
+}
+
+function selectAllSkolka() {
+  document.querySelectorAll('#gallery-grid-fs .gallery-photo').forEach(el => {
+    gallerySelection.set(el.dataset.name, el.dataset.url);
+    el.classList.add('sk-selected');
+  });
+  updateGallerySelBar();
+}
+
+function clearSkolkaSelection() {
+  gallerySelection.clear();
+  document.querySelectorAll('#gallery-grid-fs .gallery-photo').forEach(el => el.classList.remove('sk-selected'));
+  updateGallerySelBar();
+}
+
+function updateGallerySelBar() {
+  const count = gallerySelection.size;
+  const countEl = document.getElementById('sk-sel-count');
+  const dlBtn = document.getElementById('sk-dl-btn');
+  const zipBtn = document.getElementById('sk-zip-btn');
+  if (countEl) countEl.textContent = count > 0 ? count + (count===1 ? ' vybraná' : count<5 ? ' vybrané' : ' vybraných') : '';
+  dlBtn?.classList.toggle('active', count > 0);
+  zipBtn?.classList.toggle('active', count > 0);
+}
+
+async function downloadSkolkaSelected() {
+  if (!gallerySelection.size) return;
+  for (const [name, url] of gallerySelection) {
+    try {
+      const blob = await fetch(url).then(r => r.blob());
+      const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: name });
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(a.href);
+      await new Promise(r => setTimeout(r, 300));
+    } catch(e) { console.error('Download failed:', name, e); }
+  }
+}
+
+async function downloadSkolkaZip() {
+  if (!gallerySelection.size) return;
+  const zip = new JSZip();
+  for (const [name, url] of gallerySelection) {
+    try { zip.file(name, await fetch(url).then(r => r.blob())); }
+    catch(e) { console.error('ZIP: skipping', name, e); }
+  }
+  const blob = await zip.generateAsync({ type: 'blob' });
+  const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: (currentGalleryFolderName || 'fotky') + '.zip' });
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(a.href);
 }
 
 // ── BOOT ──
