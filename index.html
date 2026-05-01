@@ -108,17 +108,17 @@ button{outline:none;border:none;}
   position:fixed;
   top:0;left:0;right:0;
   padding:100px 40px 12vh;
-  background:linear-gradient(to bottom,#fff 52%,rgba(255,255,255,.48) 100%);
+  background:linear-gradient(to bottom,#fff 58%,rgba(255,255,255,.78) 100%);
   z-index:99;
   flex-direction:column;
   align-items:center;
   justify-content:flex-start;
   gap:22px;
-  border-radius:0 0 50% 50%/0 0 9vh 9vh;
+  border-radius:0 0 42% 58%/0 0 15vh 22vh;
   clip-path:circle(0px at calc(100% - 44px) 32px);
 }
-.nav-mobile.open{display:flex;animation:nmOpen .62s cubic-bezier(.22,1,.36,1) forwards;}
-.nav-mobile.closing{display:flex;animation:nmClose .38s cubic-bezier(.55,0,1,.45) forwards;}
+.nav-mobile.open{display:flex;animation:nmOpen .9s cubic-bezier(.4,0,.2,1) forwards;}
+.nav-mobile.closing{display:flex;animation:nmClose .55s cubic-bezier(.4,0,.2,1) forwards;}
 @keyframes nmOpen{
   from{clip-path:circle(0px at calc(100% - 44px) 32px);}
   to  {clip-path:circle(200% at calc(100% - 44px) 32px);}
@@ -132,8 +132,8 @@ button{outline:none;border:none;}
   color:var(--blue);opacity:0;transform:translateY(10px);transition:color .2s;
 }
 .nav-mobile.open .menu-link{
-  animation:nmItem .3s ease forwards;
-  animation-delay:calc(var(--i,0)*55ms + 210ms);
+  animation:nmItem .35s ease forwards;
+  animation-delay:calc(var(--i,0)*60ms + 280ms);
 }
 .nav-mobile.closing .menu-link,.nav-mobile.closing .nav-close{opacity:1;transform:none;}
 .nav-mobile .menu-link.nav-cta{font-size:17px;padding:11px 30px;margin-top:4px;opacity:0;}
