@@ -30,7 +30,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
 .app{display:none;min-height:100vh;}
 .sidebar{position:fixed;top:0;left:0;width:240px;height:100vh;background:#1A5FA8;padding:24px 16px;overflow-y:auto;z-index:10;}
 .sidebar-logo{display:flex;align-items:center;gap:10px;padding:8px 12px;margin-bottom:24px;flex-wrap:nowrap;}
-.sidebar-logo img{height:38px;filter:brightness(0) invert(1);}
+.sidebar-logo img{height:44px;filter:none;}
 .sidebar-logo span{font-family:'Quicksand',sans-serif;font-size:13px;font-weight:700;color:#fff;line-height:1.3;}
 .nav-item{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:12px;cursor:pointer;color:rgba(255,255,255,.75);font-family:'Quicksand',sans-serif;font-size:13px;font-weight:600;margin-bottom:4px;transition:.2s;}
 .nav-item:hover{background:rgba(255,255,255,.12);color:#fff;}
@@ -91,8 +91,11 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
 .fmt-btn.b{font-weight:900;font-style:normal;}
 .fmt-btn.i{font-style:italic;}
 .fmt-sep{width:1px;background:#C8E6FA;margin:2px 2px;}
-.fmt-select{background:#E0ECFF;border:none;border-radius:6px;padding:3px 6px;font-family:'Quicksand',sans-serif;font-size:12px;font-weight:700;cursor:pointer;color:#1A5FA8;outline:none;line-height:1.6;}
-.fmt-select:hover{background:#C8E6FA;}
+.fmt-lh{position:relative;display:inline-flex;}
+.fmt-lh-pop{display:none;position:absolute;top:calc(100% + 3px);left:0;background:#fff;border:1.5px solid #C8E6FA;border-radius:8px;box-shadow:0 4px 14px rgba(26,95,168,.12);z-index:200;overflow:hidden;min-width:52px;}
+.fmt-lh-pop.open{display:block;}
+.fmt-lh-opt{display:block;width:100%;padding:5px 10px;border:none;background:none;font-family:'Quicksand',sans-serif;font-size:12px;font-weight:700;color:#1A5FA8;cursor:pointer;text-align:center;transition:.12s;white-space:nowrap;}
+.fmt-lh-opt:hover{background:#EEF7FF;}
 .fake-textarea{width:100%;min-height:75px;padding:8px 10px;border:1.5px solid #C8E6FA;border-radius:10px;font-family:'Inter',sans-serif;font-size:14px;color:#333;background:#fff;outline:none;line-height:1.6;box-sizing:border-box;cursor:text;overflow-y:auto;resize:vertical;}
 .fake-textarea:focus{border-color:#1A5FA8;box-shadow:0 0 0 3px rgba(26,95,168,.08);}
 .fake-textarea[data-tall]{min-height:110px;}
@@ -254,7 +257,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
             <button class="fmt-btn" type="button" data-action="justifyCenter" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať na stred"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="2.5" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="1" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
             <button class="fmt-btn" type="button" data-action="justifyRight" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať vpravo"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="5" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="2" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
             <div class="fmt-sep"></div>
-            <select class="fmt-select" title="Riadkovanie" onmousedown="saveFmtSel(event,this)" onchange="fmtLineHeight(this)"><option value="">↕</option><option value="1.2">1.2×</option><option value="1.5">1.5×</option><option value="1.8">1.8×</option><option value="2.2">2.2×</option></select>
+            <div class="fmt-lh"><button class="fmt-btn" type="button" title="Riadkovanie" onmousedown="event.preventDefault();saveFmtSel(event,this);" onclick="toggleFmtLh(this)" style="padding:3px 7px;"><svg width="13" height="11" viewBox="0 0 13 11" fill="none"><rect x="4" y="0" width="9" height="1.5" rx=".75" fill="currentColor"/><rect x="4" y="4.75" width="9" height="1.5" rx=".75" fill="currentColor"/><rect x="4" y="9.5" width="9" height="1.5" rx=".75" fill="currentColor"/><path d="M1.5 2.5v6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M.5 4L1.5 2.5L2.5 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M.5 7L1.5 8.5L2.5 7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button><div class="fmt-lh-pop"><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'1.2')">1.2×</button><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'1.5')">1.5×</button><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'1.8')">1.8×</button><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'2.2')">2.2×</button></div></div>
           </div>
           <div class="fake-textarea" id="onas_p1" contenteditable="true"></div>
         </div>
@@ -272,7 +275,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
             <button class="fmt-btn" type="button" data-action="justifyCenter" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať na stred"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="2.5" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="1" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
             <button class="fmt-btn" type="button" data-action="justifyRight" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať vpravo"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="5" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="2" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
             <div class="fmt-sep"></div>
-            <select class="fmt-select" title="Riadkovanie" onmousedown="saveFmtSel(event,this)" onchange="fmtLineHeight(this)"><option value="">↕</option><option value="1.2">1.2×</option><option value="1.5">1.5×</option><option value="1.8">1.8×</option><option value="2.2">2.2×</option></select>
+            <div class="fmt-lh"><button class="fmt-btn" type="button" title="Riadkovanie" onmousedown="event.preventDefault();saveFmtSel(event,this);" onclick="toggleFmtLh(this)" style="padding:3px 7px;"><svg width="13" height="11" viewBox="0 0 13 11" fill="none"><rect x="4" y="0" width="9" height="1.5" rx=".75" fill="currentColor"/><rect x="4" y="4.75" width="9" height="1.5" rx=".75" fill="currentColor"/><rect x="4" y="9.5" width="9" height="1.5" rx=".75" fill="currentColor"/><path d="M1.5 2.5v6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M.5 4L1.5 2.5L2.5 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M.5 7L1.5 8.5L2.5 7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button><div class="fmt-lh-pop"><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'1.2')">1.2×</button><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'1.5')">1.5×</button><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'1.8')">1.8×</button><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'2.2')">2.2×</button></div></div>
           </div>
           <div class="fake-textarea" id="onas_p2" contenteditable="true" data-tall></div>
         </div>
@@ -295,7 +298,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
             <button class="fmt-btn" type="button" data-action="justifyCenter" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať na stred"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="2.5" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="1" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
             <button class="fmt-btn" type="button" data-action="justifyRight" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať vpravo"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="5" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="2" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
             <div class="fmt-sep"></div>
-            <select class="fmt-select" title="Riadkovanie" onmousedown="saveFmtSel(event,this)" onchange="fmtLineHeight(this)"><option value="">↕</option><option value="1.2">1.2×</option><option value="1.5">1.5×</option><option value="1.8">1.8×</option><option value="2.2">2.2×</option></select>
+            <div class="fmt-lh"><button class="fmt-btn" type="button" title="Riadkovanie" onmousedown="event.preventDefault();saveFmtSel(event,this);" onclick="toggleFmtLh(this)" style="padding:3px 7px;"><svg width="13" height="11" viewBox="0 0 13 11" fill="none"><rect x="4" y="0" width="9" height="1.5" rx=".75" fill="currentColor"/><rect x="4" y="4.75" width="9" height="1.5" rx=".75" fill="currentColor"/><rect x="4" y="9.5" width="9" height="1.5" rx=".75" fill="currentColor"/><path d="M1.5 2.5v6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M.5 4L1.5 2.5L2.5 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M.5 7L1.5 8.5L2.5 7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button><div class="fmt-lh-pop"><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'1.2')">1.2×</button><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'1.5')">1.5×</button><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'1.8')">1.8×</button><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'2.2')">2.2×</button></div></div>
           </div>
           <div class="fake-textarea" id="onas_extra_p1" contenteditable="true"></div>
         </div>
@@ -313,7 +316,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
             <button class="fmt-btn" type="button" data-action="justifyCenter" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať na stred"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="2.5" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="1" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
             <button class="fmt-btn" type="button" data-action="justifyRight" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať vpravo"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="5" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="2" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
             <div class="fmt-sep"></div>
-            <select class="fmt-select" title="Riadkovanie" onmousedown="saveFmtSel(event,this)" onchange="fmtLineHeight(this)"><option value="">↕</option><option value="1.2">1.2×</option><option value="1.5">1.5×</option><option value="1.8">1.8×</option><option value="2.2">2.2×</option></select>
+            <div class="fmt-lh"><button class="fmt-btn" type="button" title="Riadkovanie" onmousedown="event.preventDefault();saveFmtSel(event,this);" onclick="toggleFmtLh(this)" style="padding:3px 7px;"><svg width="13" height="11" viewBox="0 0 13 11" fill="none"><rect x="4" y="0" width="9" height="1.5" rx=".75" fill="currentColor"/><rect x="4" y="4.75" width="9" height="1.5" rx=".75" fill="currentColor"/><rect x="4" y="9.5" width="9" height="1.5" rx=".75" fill="currentColor"/><path d="M1.5 2.5v6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M.5 4L1.5 2.5L2.5 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M.5 7L1.5 8.5L2.5 7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button><div class="fmt-lh-pop"><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'1.2')">1.2×</button><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'1.5')">1.5×</button><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'1.8')">1.8×</button><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'2.2')">2.2×</button></div></div>
           </div>
           <div class="fake-textarea" id="onas_extra_p2" contenteditable="true"></div>
         </div>
@@ -340,7 +343,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
             <button class="fmt-btn" type="button" data-action="justifyCenter" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať na stred"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="2.5" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="1" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
             <button class="fmt-btn" type="button" data-action="justifyRight" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať vpravo"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="5" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="2" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
             <div class="fmt-sep"></div>
-            <select class="fmt-select" title="Riadkovanie" onmousedown="saveFmtSel(event,this)" onchange="fmtLineHeight(this)"><option value="">↕</option><option value="1.2">1.2×</option><option value="1.5">1.5×</option><option value="1.8">1.8×</option><option value="2.2">2.2×</option></select>
+            <div class="fmt-lh"><button class="fmt-btn" type="button" title="Riadkovanie" onmousedown="event.preventDefault();saveFmtSel(event,this);" onclick="toggleFmtLh(this)" style="padding:3px 7px;"><svg width="13" height="11" viewBox="0 0 13 11" fill="none"><rect x="4" y="0" width="9" height="1.5" rx=".75" fill="currentColor"/><rect x="4" y="4.75" width="9" height="1.5" rx=".75" fill="currentColor"/><rect x="4" y="9.5" width="9" height="1.5" rx=".75" fill="currentColor"/><path d="M1.5 2.5v6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M.5 4L1.5 2.5L2.5 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M.5 7L1.5 8.5L2.5 7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button><div class="fmt-lh-pop"><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'1.2')">1.2×</button><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'1.5')">1.5×</button><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'1.8')">1.8×</button><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'2.2')">2.2×</button></div></div>
           </div>
           <div class="fake-textarea" id="program_text" contenteditable="true" data-tall style="min-height:160px;"></div>
         </div>
@@ -407,7 +410,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
             <button class="fmt-btn" type="button" data-action="justifyCenter" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať na stred"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="2.5" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="1" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
             <button class="fmt-btn" type="button" data-action="justifyRight" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať vpravo"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="5" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="2" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
             <div class="fmt-sep"></div>
-            <select class="fmt-select" title="Riadkovanie" onmousedown="saveFmtSel(event,this)" onchange="fmtLineHeight(this)"><option value="">↕</option><option value="1.2">1.2×</option><option value="1.5">1.5×</option><option value="1.8">1.8×</option><option value="2.2">2.2×</option></select>
+            <div class="fmt-lh"><button class="fmt-btn" type="button" title="Riadkovanie" onmousedown="event.preventDefault();saveFmtSel(event,this);" onclick="toggleFmtLh(this)" style="padding:3px 7px;"><svg width="13" height="11" viewBox="0 0 13 11" fill="none"><rect x="4" y="0" width="9" height="1.5" rx=".75" fill="currentColor"/><rect x="4" y="4.75" width="9" height="1.5" rx=".75" fill="currentColor"/><rect x="4" y="9.5" width="9" height="1.5" rx=".75" fill="currentColor"/><path d="M1.5 2.5v6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M.5 4L1.5 2.5L2.5 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M.5 7L1.5 8.5L2.5 7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button><div class="fmt-lh-pop"><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'1.2')">1.2×</button><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'1.5')">1.5×</button><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'1.8')">1.8×</button><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'2.2')">2.2×</button></div></div>
           </div>
           <div class="fake-textarea" id="ppv_intro" contenteditable="true" style="min-height:120px;"></div>
         </div>
@@ -425,7 +428,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
             <button class="fmt-btn" type="button" data-action="justifyCenter" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať na stred"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="2.5" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="1" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
             <button class="fmt-btn" type="button" data-action="justifyRight" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať vpravo"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="5" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="2" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
             <div class="fmt-sep"></div>
-            <select class="fmt-select" title="Riadkovanie" onmousedown="saveFmtSel(event,this)" onchange="fmtLineHeight(this)"><option value="">↕</option><option value="1.2">1.2×</option><option value="1.5">1.5×</option><option value="1.8">1.8×</option><option value="2.2">2.2×</option></select>
+            <div class="fmt-lh"><button class="fmt-btn" type="button" title="Riadkovanie" onmousedown="event.preventDefault();saveFmtSel(event,this);" onclick="toggleFmtLh(this)" style="padding:3px 7px;"><svg width="13" height="11" viewBox="0 0 13 11" fill="none"><rect x="4" y="0" width="9" height="1.5" rx=".75" fill="currentColor"/><rect x="4" y="4.75" width="9" height="1.5" rx=".75" fill="currentColor"/><rect x="4" y="9.5" width="9" height="1.5" rx=".75" fill="currentColor"/><path d="M1.5 2.5v6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M.5 4L1.5 2.5L2.5 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M.5 7L1.5 8.5L2.5 7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button><div class="fmt-lh-pop"><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'1.2')">1.2×</button><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'1.5')">1.5×</button><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'1.8')">1.8×</button><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'2.2')">2.2×</button></div></div>
           </div>
           <div class="fake-textarea" id="ppv_extra" contenteditable="true" data-tall style="min-height:260px;"></div>
         </div>
@@ -912,10 +915,15 @@ function saveFmtSel(e, sel) {
   }
   _fmtSavedRange = null;
 }
-function fmtLineHeight(sel) {
-  const val = sel.value;
-  sel.value = '';
-  if (!val || !_fmtSavedRange || _fmtSavedRange.collapsed) return;
+function toggleFmtLh(btn) {
+  const pop = btn.nextElementSibling;
+  const isOpen = pop.classList.contains('open');
+  document.querySelectorAll('.fmt-lh-pop.open').forEach(p => p.classList.remove('open'));
+  if (!isOpen) pop.classList.add('open');
+}
+function applyFmtLh(btn, val) {
+  btn.closest('.fmt-lh-pop').classList.remove('open');
+  if (!_fmtSavedRange || _fmtSavedRange.collapsed) return;
   const selection = window.getSelection();
   selection.removeAllRanges();
   selection.addRange(_fmtSavedRange);
@@ -927,6 +935,11 @@ function fmtLineHeight(sel) {
   range.insertNode(div);
   _fmtSavedRange = null;
 }
+document.addEventListener('mousedown', function(e) {
+  if (!e.target.closest('.fmt-lh')) {
+    document.querySelectorAll('.fmt-lh-pop.open').forEach(p => p.classList.remove('open'));
+  }
+});
 
 // ===== ACTIVITY DRAG-TO-REORDER =====
 let _dragActId = null;
@@ -1025,7 +1038,7 @@ async function loadActivities() {
           <button class="fmt-btn" type="button" data-size="1em" onmousedown="event.preventDefault();fmtWrap(this)">M</button>
           <button class="fmt-btn" type="button" data-size="1.2em" onmousedown="event.preventDefault();fmtWrap(this)">L</button>
           <div class="fmt-sep"></div>
-          <select class="fmt-select" title="Riadkovanie" onmousedown="saveFmtSel(event,this)" onchange="fmtLineHeight(this)"><option value="">↕</option><option value="1.2">1.2×</option><option value="1.5">1.5×</option><option value="1.8">1.8×</option><option value="2.2">2.2×</option></select>
+          <div class="fmt-lh"><button class="fmt-btn" type="button" title="Riadkovanie" onmousedown="event.preventDefault();saveFmtSel(event,this);" onclick="toggleFmtLh(this)" style="padding:3px 7px;"><svg width="13" height="11" viewBox="0 0 13 11" fill="none"><rect x="4" y="0" width="9" height="1.5" rx=".75" fill="currentColor"/><rect x="4" y="4.75" width="9" height="1.5" rx=".75" fill="currentColor"/><rect x="4" y="9.5" width="9" height="1.5" rx=".75" fill="currentColor"/><path d="M1.5 2.5v6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M.5 4L1.5 2.5L2.5 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M.5 7L1.5 8.5L2.5 7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button><div class="fmt-lh-pop"><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'1.2')">1.2×</button><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'1.5')">1.5×</button><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'1.8')">1.8×</button><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'2.2')">2.2×</button></div></div>
         </div>
         <div class="fake-textarea" contenteditable="true" onblur="updateActivity(${a.id},'description',this.innerHTML)">${a.description||''}</div>
       </div>
@@ -1038,7 +1051,7 @@ async function loadActivities() {
           <button class="fmt-btn" type="button" data-size="1em" onmousedown="event.preventDefault();fmtWrap(this)">M</button>
           <button class="fmt-btn" type="button" data-size="1.2em" onmousedown="event.preventDefault();fmtWrap(this)">L</button>
           <div class="fmt-sep"></div>
-          <select class="fmt-select" title="Riadkovanie" onmousedown="saveFmtSel(event,this)" onchange="fmtLineHeight(this)"><option value="">↕</option><option value="1.2">1.2×</option><option value="1.5">1.5×</option><option value="1.8">1.8×</option><option value="2.2">2.2×</option></select>
+          <div class="fmt-lh"><button class="fmt-btn" type="button" title="Riadkovanie" onmousedown="event.preventDefault();saveFmtSel(event,this);" onclick="toggleFmtLh(this)" style="padding:3px 7px;"><svg width="13" height="11" viewBox="0 0 13 11" fill="none"><rect x="4" y="0" width="9" height="1.5" rx=".75" fill="currentColor"/><rect x="4" y="4.75" width="9" height="1.5" rx=".75" fill="currentColor"/><rect x="4" y="9.5" width="9" height="1.5" rx=".75" fill="currentColor"/><path d="M1.5 2.5v6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M.5 4L1.5 2.5L2.5 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M.5 7L1.5 8.5L2.5 7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button><div class="fmt-lh-pop"><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'1.2')">1.2×</button><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'1.5')">1.5×</button><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'1.8')">1.8×</button><button class="fmt-lh-opt" onmousedown="event.preventDefault();applyFmtLh(this,'2.2')">2.2×</button></div></div>
         </div>
         <div class="fake-textarea" data-tall contenteditable="true" onblur="updateActivity(${a.id},'popup_text',this.innerHTML)">${a.popup_text||''}</div>
       </div>
