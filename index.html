@@ -1194,11 +1194,11 @@ button{outline:none;border:none;}
             <div class="contact-sub">kliknutím zavoláte</div>
           </div>
       </a>
-      <a class="contact-card green" href="/cdn-cgi/l/email-protection#bdd4d3dbd2fdced6d2d1d6dc90cbded4d8d1d6dc93ced6">
+      <a class="contact-card green" id="cms-email-link" href="mailto:info@skolka-vcielka.sk">
           <div class="contact-icon" id="cms-icon-email">✉️</div>
           <div class="contact-body">
             <div class="contact-label">E-mail</div>
-            <div class="cms-email contact-value"><span class="__cf_email__" data-cfemail="3f565159507f4c545053545e12495c565a53545e114c54">[email&#160;protected]</span></div>
+            <div class="cms-email contact-value">info@skolka-vcielka.sk</div>
             <div class="contact-sub">kliknutím napíšete</div>
           </div>
       </a>
@@ -1262,7 +1262,7 @@ button{outline:none;border:none;}
       <h4>Kontakt</h4>
       <span class="footer-link">Sečovská 144/3, Ružinov</span>
       <a href="tel:0918607935" class="footer-link">0918 607 935</a>
-      <a href="/cdn-cgi/l/email-protection#640d0a020b24170f0b080f054912070d01080f054a170f" class="footer-link"><span class="__cf_email__" data-cfemail="e68f888089a6958d898a8d87cb90858f838a8d87c8958d">[email&#160;protected]</span></a>
+      <a id="cms-footer-email-link" href="mailto:info@skolka-vcielka.sk" class="footer-link">info@skolka-vcielka.sk</a>
       <span class="footer-link">Po–Pia: 7:00 – 17:00</span>
     </div>
   </div>
@@ -1535,7 +1535,11 @@ async function loadCMS() {
       // Contact
       if (s.contact_address) { const el = document.getElementById('cms-address'); if(el) el.textContent = s.contact_address; }
       if (s.contact_phone) { document.querySelectorAll('.cms-phone').forEach(el => { el.textContent = s.contact_phone; el.href = 'tel:'+s.contact_phone.replace(/\s/g,''); }); }
-      if (s.contact_email) { document.querySelectorAll('.cms-email').forEach(el => { el.textContent = s.contact_email; el.href = 'mailto:'+s.contact_email; }); }
+      if (s.contact_email) {
+        document.querySelectorAll('.cms-email').forEach(el => { el.textContent = s.contact_email; });
+        const _el = document.getElementById('cms-email-link'); if(_el) _el.href = 'mailto:'+s.contact_email;
+        const _fl = document.getElementById('cms-footer-email-link'); if(_fl){ _fl.textContent = s.contact_email; _fl.href = 'mailto:'+s.contact_email; }
+      }
       if (s.contact_hours) { const el = document.getElementById('cms-hours'); if(el) el.textContent = s.contact_hours; }
       // O nás
       // Section icons (contact + program z-items)
