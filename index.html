@@ -381,7 +381,7 @@ button{outline:none;border:none;}
 =========================== */
 .contact-cards{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:14px;}
 .contact-card{border-radius:20px;display:flex;align-items:center;gap:0;min-height:72px;overflow:hidden;transition:transform .2s;text-decoration:none;color:inherit;}
-.contact-card a{display:flex;align-items:center;width:100%;min-height:72px;text-decoration:none;color:inherit;}
+.contact-card a{text-decoration:none;color:inherit;}
 .contact-card:hover{transform:translateY(-2px);}
 .contact-card.blue{background:var(--blue-card);}
 .contact-card.yellow{background:var(--yellow-card);}
@@ -1198,7 +1198,7 @@ button{outline:none;border:none;}
           <div class="contact-icon" id="cms-icon-email">✉️</div>
           <div class="contact-body">
             <div class="contact-label">E-mail</div>
-            <div class="cms-email contact-value">info@skolka-vcielka.sk</div>
+            <div class="cms-email contact-value"></div>
             <div class="contact-sub">kliknutím napíšete</div>
           </div>
       </a>
@@ -1262,7 +1262,7 @@ button{outline:none;border:none;}
       <h4>Kontakt</h4>
       <span class="footer-link">Sečovská 144/3, Ružinov</span>
       <a href="tel:0918607935" class="footer-link">0918 607 935</a>
-      <a id="cms-footer-email-link" href="mailto:info@skolka-vcielka.sk" class="footer-link">info@skolka-vcielka.sk</a>
+      <a id="cms-footer-email-link" href="#" class="footer-link"></a>
       <span class="footer-link">Po–Pia: 7:00 – 17:00</span>
     </div>
   </div>
@@ -1535,8 +1535,7 @@ async function loadCMS() {
       // Contact
       if (s.contact_address) { const el = document.getElementById('cms-address'); if(el) el.textContent = s.contact_address; }
       if (s.contact_phone) { document.querySelectorAll('.cms-phone').forEach(el => { el.textContent = s.contact_phone; el.href = 'tel:'+s.contact_phone.replace(/\s/g,''); }); }
-      if (s.contact_email?.trim()) {
-        const _em = s.contact_email.trim();
+      { const _em = s.contact_email?.trim() || 'info@skolka-vcielka.sk';
         document.querySelectorAll('.cms-email').forEach(el => { el.textContent = _em; });
         const _el = document.getElementById('cms-email-link'); if(_el) _el.href = 'mailto:'+_em;
         const _fl = document.getElementById('cms-footer-email-link'); if(_fl){ _fl.textContent = _em; _fl.href = 'mailto:'+_em; }
