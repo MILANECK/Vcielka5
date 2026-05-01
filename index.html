@@ -1535,10 +1535,11 @@ async function loadCMS() {
       // Contact
       if (s.contact_address) { const el = document.getElementById('cms-address'); if(el) el.textContent = s.contact_address; }
       if (s.contact_phone) { document.querySelectorAll('.cms-phone').forEach(el => { el.textContent = s.contact_phone; el.href = 'tel:'+s.contact_phone.replace(/\s/g,''); }); }
-      if (s.contact_email) {
-        document.querySelectorAll('.cms-email').forEach(el => { el.textContent = s.contact_email; });
-        const _el = document.getElementById('cms-email-link'); if(_el) _el.href = 'mailto:'+s.contact_email;
-        const _fl = document.getElementById('cms-footer-email-link'); if(_fl){ _fl.textContent = s.contact_email; _fl.href = 'mailto:'+s.contact_email; }
+      if (s.contact_email?.trim()) {
+        const _em = s.contact_email.trim();
+        document.querySelectorAll('.cms-email').forEach(el => { el.textContent = _em; });
+        const _el = document.getElementById('cms-email-link'); if(_el) _el.href = 'mailto:'+_em;
+        const _fl = document.getElementById('cms-footer-email-link'); if(_fl){ _fl.textContent = _em; _fl.href = 'mailto:'+_em; }
       }
       if (s.contact_hours) { const el = document.getElementById('cms-hours'); if(el) el.textContent = s.contact_hours; }
       // O nás
