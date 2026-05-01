@@ -108,25 +108,24 @@ button{outline:none;border:none;}
 .nav-mobile{
   display:none;
   position:fixed;
-  top:0;left:0;right:0;
-  padding:100px 40px 12vh;
-  background:linear-gradient(to bottom,#fff 58%,rgba(255,255,255,.78) 100%);
+  inset:0;
+  background:#fff;
   z-index:99;
   flex-direction:column;
   align-items:center;
-  justify-content:flex-start;
-  gap:22px;
-  clip-path:polygon(0% 0%,100% 0%,100% 95.5%,97.9% 98.7%,93% 100%,80.8% 99.4%,59.7% 97.4%,38.3% 94.3%,18.1% 90.2%,9.2% 85.3%,2.3% 79.8%,0% 74%);
+  justify-content:center;
+  gap:24px;
+  padding:40px;
 }
-.nav-mobile.open{display:flex;animation:nmOpen .9s cubic-bezier(.4,0,.2,1) both;}
-.nav-mobile.closing{display:flex;animation:nmClose .55s cubic-bezier(.4,0,.2,1) both;}
+.nav-mobile.open{display:flex;animation:nmOpen .7s cubic-bezier(.4,0,.2,1) both;}
+.nav-mobile.closing{display:flex;animation:nmClose .45s cubic-bezier(.4,0,.2,1) both;}
 @keyframes nmOpen{
-  from{clip-path:polygon(calc(100% - 44px) 32px,calc(100% - 44px) 32px,calc(100% - 44px) 32px,calc(100% - 44px) 32px,calc(100% - 44px) 32px,calc(100% - 44px) 32px,calc(100% - 44px) 32px,calc(100% - 44px) 32px,calc(100% - 44px) 32px,calc(100% - 44px) 32px,calc(100% - 44px) 32px,calc(100% - 44px) 32px);}
-  to  {clip-path:polygon(0% 0%,100% 0%,100% 95.5%,97.9% 98.7%,93% 100%,80.8% 99.4%,59.7% 97.4%,38.3% 94.3%,18.1% 90.2%,9.2% 85.3%,2.3% 79.8%,0% 74%);}
+  from{clip-path:circle(0px at calc(100% - 44px) 32px);}
+  to  {clip-path:circle(150vmax at calc(100% - 44px) 32px);}
 }
 @keyframes nmClose{
-  from{clip-path:polygon(0% 0%,100% 0%,100% 95.5%,97.9% 98.7%,93% 100%,80.8% 99.4%,59.7% 97.4%,38.3% 94.3%,18.1% 90.2%,9.2% 85.3%,2.3% 79.8%,0% 74%);}
-  to  {clip-path:polygon(calc(100% - 44px) 32px,calc(100% - 44px) 32px,calc(100% - 44px) 32px,calc(100% - 44px) 32px,calc(100% - 44px) 32px,calc(100% - 44px) 32px,calc(100% - 44px) 32px,calc(100% - 44px) 32px,calc(100% - 44px) 32px,calc(100% - 44px) 32px,calc(100% - 44px) 32px,calc(100% - 44px) 32px);}
+  from{clip-path:circle(150vmax at calc(100% - 44px) 32px);}
+  to  {clip-path:circle(0px at calc(100% - 44px) 32px);}
 }
 .nav-mobile .menu-link{
   font-family:'Quicksand',sans-serif;font-size:22px;font-weight:700;
@@ -436,7 +435,6 @@ button{outline:none;border:none;}
   .gallery-item{flex:0 0 320px;width:320px;height:240px;}
 }
 @media(max-width:900px){
-  .nav{position:sticky;top:0;z-index:100;}
   .nav-links{display:none;}
   .nav-burger{display:flex;}
   .hero{flex-direction:column;padding:40px 20px 32px;text-align:left;}
@@ -493,7 +491,8 @@ button{outline:none;border:none;}
 
 
 /* Make sure all sections sit above blobs */
-.nav,.hero,.stats,.section,.gallery-section,.footer,.wave{position:relative;z-index:1;} .gallery-popup-overlay,.news-popup-overlay,.lightbox{z-index:9999!important;}
+.hero,.stats,.section,.gallery-section,.footer,.wave{position:relative;z-index:1;} .gallery-popup-overlay,.news-popup-overlay,.lightbox{z-index:9999!important;}
+@media(max-width:900px){.nav{position:sticky;top:0;z-index:100;}}
 
 
 /* ===== NEWS POPUP ===== */
