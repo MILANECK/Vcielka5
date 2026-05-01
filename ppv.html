@@ -11,7 +11,7 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{font-family:'Inter',sans-serif;background:#FFF9E0;color:#1a1a1a;min-height:100vh;}
+body{font-family:'Inter',sans-serif;background:#FFF9E0;color:#1a1a1a;min-height:100vh;overflow-wrap:break-word;word-break:normal;hyphens:none;}
 a{text-decoration:none;color:inherit;}
 
 /* ── top bar ── */
@@ -83,11 +83,7 @@ async function loadPPV() {
     const db = createClient(SUPA_URL, SUPA_KEY);
     const { data } = await db.from('settings').select('value').eq('key','ppv_extra').single();
     if (data && data.value && data.value.trim()) {
-      container.innerHTML = data.value
-        .split(/\n{2,}/)
-        .filter(p => p.trim())
-        .map(p => `<p>${p.trim().replace(/\n/g,'<br>')}</p>`)
-        .join('');
+      container.innerHTML = data.value;
     } else {
       container.innerHTML = '<p>Obsah ešte nebol pridaný. Prosím, vložte text v administrátorskom rozhraní.</p>';
     }

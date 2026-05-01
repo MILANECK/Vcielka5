@@ -16,7 +16,7 @@
 /* ===== RESET & BASE ===== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{font-family:'Inter',sans-serif;background:var(--blue-pale);color:#1a1a1a;overflow-x:hidden;font-size:16px;}
+body{font-family:'Inter',sans-serif;background:var(--blue-pale);color:#1a1a1a;overflow-x:hidden;font-size:16px;overflow-wrap:break-word;word-break:normal;hyphens:none;}
 img{max-width:100%;display:block;}
 a{text-decoration:none;color:inherit;}
 
@@ -62,7 +62,7 @@ button{outline:none;border:none;}
 .section-center{text-align:center;margin-bottom:32px;}
 .section-inner{max-width:1100px;margin:0 auto;width:100%;position:relative;z-index:2;}
 .section-center .label{color:#1a1a1a;display:block;margin-bottom:6px;}
-.section-center h2{font-size:clamp(28px,5vw,49px);font-weight:900;color:#fff;margin-bottom:10px;text-shadow:0 1px 8px rgba(0,20,60,.10),0 4px 20px rgba(0,20,60,.06);}
+.section-center h2{font-size:clamp(24px,5vw,49px);font-weight:900;color:#fff;margin-bottom:10px;text-shadow:0 1px 8px rgba(0,20,60,.10),0 4px 20px rgba(0,20,60,.06);}
 .section-center .desc{font-family:'Inter',sans-serif;font-size:16px;color:rgba(0,0,0,.65);line-height:1.72;max-width:500px;margin:0 auto;}
 
 /* ===== LEAF DECORATIONS ===== */
@@ -339,12 +339,14 @@ button{outline:none;border:none;}
 .contact-card.yellow{background:var(--yellow-card);}
 .contact-card.green{background:var(--green-card);}
 .contact-card.sky{background:var(--blue-sky);}
+.contact-card.red{background:#FFEAEA;}
 .contact-icon{width:52px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;align-self:stretch;line-height:1;}
 .contact-icon img{width:60%!important;height:60%!important;object-fit:contain;}
 .contact-card.blue .contact-icon{background:var(--blue-sky);}
 .contact-card.yellow .contact-icon{background:var(--yellow-bright);}
 .contact-card.green .contact-icon{background:var(--green-bright);}
 .contact-card.sky .contact-icon{background:#A8D4F5;}
+.contact-card.red .contact-icon{background:#FFCECE;}
 .contact-body{padding:10px 14px;}
 .contact-label{font-family:'Quicksand',sans-serif;font-size:9px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;}
 .contact-value{font-family:'Inter',sans-serif;font-size:15px;color:#1a1a1a;font-weight:500;line-height:1.4;}
@@ -424,7 +426,6 @@ button{outline:none;border:none;}
 .container{max-width:1100px;margin:0 auto;width:100%;}
 
 .section > *:not([style*="position:absolute"]):not(.section-bg){max-width:1100px;margin-left:auto;margin-right:auto;}
-.section-center h2{font-size:clamp(24px,5vw,49px);}
 
 
 /* ===== LIGHTBOX ===== */
@@ -834,8 +835,8 @@ button{outline:none;border:none;}
   <div style="width:100%;max-width:1100px;margin:0 auto;padding:0 0 0 48px;" class="hero-wrapper">
   <div class="hero-content fade-in">
     <div class="hero-badge">🐝 Ružinov, Bratislava</div>
-    <h1 id="cms-hero-title">Kde deti <em>rastú</em><br>a objavujú svet</h1>
-    <p class="hero-desc" id="cms-hero-subtitle">Súkromná materská škola s odborným tímom, bohatým programom <strong>Zvedavá Včielka</strong> a láskyplným prostredím pre deti od 2,5 do 6 rokov.</p>
+    <h1 id="cms-hero-title" style="opacity:0;transition:opacity .35s;"></h1>
+    <p class="hero-desc" id="cms-hero-subtitle" style="opacity:0;transition:opacity .35s .08s;"></p>
     <div class="hero-btns">
       <a href="#sluzby" class="btn btn-primary">Zistiť viac o škôlke</a>
       <a href="#kontakt" class="btn btn-outline">Kontaktujte nás</a>
@@ -1152,7 +1153,7 @@ button{outline:none;border:none;}
             <div class="contact-sub">kliknutím napíšete</div>
           </div>
       </a>
-      <div class="contact-card sky">
+      <div class="contact-card red">
         <div class="contact-icon" id="cms-icon-hodiny">🕐</div>
         <div class="contact-body">
           <div class="contact-label">Prevádzková doba</div>
@@ -1257,9 +1258,11 @@ button{outline:none;border:none;}
       </div>
       <button class="act-popup-close" onclick="closeActPopup()">✕</button>
     </div>
-    <div class="act-popup-body" id="actPopupText"></div>
-    <div id="actPopupImgWrap" style="display:none;padding:0 28px 28px;">
-      <img id="actPopupImg" src="" alt="" style="width:100%;height:auto;border-radius:16px;display:block;"/>
+    <div class="act-popup-body">
+      <div id="actPopupText"></div>
+      <div id="actPopupImgWrap" style="display:none;padding-top:16px;">
+        <img id="actPopupImg" src="" alt="" style="width:100%;height:auto;border-radius:16px;display:block;"/>
+      </div>
     </div>
   </div>
 </div>
@@ -1443,8 +1446,10 @@ async function loadCMS() {
     const s = settings ? Object.fromEntries(settings.map(r => [r.key, r.value])) : {};
     if (s) {
       // Hero
-      if (s.hero_title) { const el = document.getElementById('cms-hero-title'); if(el) el.innerHTML = s.hero_title.replace('rastú','<em>rastú</em>'); }
-      if (s.hero_subtitle) { const el = document.getElementById('cms-hero-subtitle'); if(el) el.textContent = s.hero_subtitle; }
+      const _heroTitle = document.getElementById('cms-hero-title');
+      if (_heroTitle) { const raw = s.hero_title || 'Kde deti rastú a objavujú svet'; _heroTitle.innerHTML = raw.replace('rastú','<em>rastú</em>'); _heroTitle.style.opacity='1'; }
+      const _heroSub = document.getElementById('cms-hero-subtitle');
+      if (_heroSub) { _heroSub.textContent = s.hero_subtitle || 'Súkromná materská škola s odborným tímom, bohatým programom Zvedavá Včielka a láskyplným prostredím pre deti od 2,5 do 6 rokov.'; _heroSub.style.opacity='1'; }
       if (s.hero_photo) { const bg = document.getElementById('cms-hero-bg'); if(bg) { bg.src = s.hero_photo; bg.style.display='block'; } }
       if (s.logo_url) { document.querySelectorAll('.cms-logo').forEach(el => el.src = s.logo_url); }
       // Contact
@@ -1469,9 +1474,9 @@ async function loadCMS() {
       if (s.program_text) { const el = document.getElementById('cms-program-text'); if(el) el.innerHTML = s.program_text; }
       if (s.onas_list) { const el = document.getElementById('cms-onas-list'); if(el) el.innerHTML = s.onas_list.split('\n').filter(l=>l.trim()).map(l=>`<li>${l.trim()}</li>`).join(''); }
       // PPV
-      if (s.ppv_intro) { const el = document.getElementById('cms-ppv-intro'); if(el) el.textContent = s.ppv_intro; }
+      if (s.ppv_intro) { const el = document.getElementById('cms-ppv-intro'); if(el) el.innerHTML = s.ppv_intro; }
       if (s.ppv_extra && s.ppv_extra.trim()) {
-        const el = document.getElementById('cms-ppv-extra'); if(el) el.innerHTML = s.ppv_extra.replace(/\n/g,'<br>');
+        const el = document.getElementById('cms-ppv-extra'); if(el) el.innerHTML = s.ppv_extra;
         const btn = document.getElementById('ppvBtn'); if(btn) btn.style.display = '';
       }
       // Pricing
@@ -1587,7 +1592,13 @@ async function loadCMS() {
     } else if (docsErr) {
       console.error('Documents error:', docsErr);
     }
-  } catch(e) { console.error('CMS error:', e.message, e.stack); }
+  } catch(e) {
+    console.error('CMS error:', e.message, e.stack);
+    const _ht = document.getElementById('cms-hero-title');
+    if (_ht && !_ht.textContent.trim()) { _ht.innerHTML = 'Kde deti <em>rastú</em><br>a objavujú svet'; _ht.style.opacity='1'; }
+    const _hs = document.getElementById('cms-hero-subtitle');
+    if (_hs && !_hs.textContent.trim()) { _hs.textContent = 'Súkromná materská škola s odborným tímom, bohatým programom Zvedavá Včielka a láskyplným prostredím pre deti od 2,5 do 6 rokov.'; _hs.style.opacity='1'; }
+  }
 }
 
 document.addEventListener('DOMContentLoaded', loadCMS);

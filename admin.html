@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:100vh;}
+body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:100vh;overflow-wrap:break-word;word-break:normal;hyphens:none;}
 
 /* LOGIN */
 .login-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
@@ -91,6 +91,8 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
 .fmt-btn.b{font-weight:900;font-style:normal;}
 .fmt-btn.i{font-style:italic;}
 .fmt-sep{width:1px;background:#C8E6FA;margin:2px 2px;}
+.fmt-select{background:#E0ECFF;border:none;border-radius:6px;padding:3px 6px;font-family:'Quicksand',sans-serif;font-size:12px;font-weight:700;cursor:pointer;color:#1A5FA8;outline:none;line-height:1.6;}
+.fmt-select:hover{background:#C8E6FA;}
 .fake-textarea{width:100%;min-height:75px;padding:8px 10px;border:1.5px solid #C8E6FA;border-radius:10px;font-family:'Inter',sans-serif;font-size:14px;color:#333;background:#fff;outline:none;line-height:1.6;box-sizing:border-box;cursor:text;overflow-y:auto;resize:vertical;}
 .fake-textarea:focus{border-color:#1A5FA8;box-shadow:0 0 0 3px rgba(26,95,168,.08);}
 .fake-textarea[data-tall]{min-height:110px;}
@@ -180,7 +182,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
   <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="sidebar-logo">
-      <div style="width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><img src="vcielka_logo2.png" alt="Včielka" style="height:36px;width:auto;"/></div>
+      <img src="vcielka_logo2.png" alt="Včielka" style="height:44px;width:auto;flex-shrink:0;"/>
       <span>Materská škola Včielka</span>
     </div>
     <div class="nav-item active" onclick="showPage('hero')" id="nav-hero">
@@ -221,6 +223,9 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
     <div class="nav-item" onclick="showPage('skolka_pw')" id="nav-skolka_pw">
       <span class="icon">🔑</span> VS Heslo
     </div>
+    <div class="nav-item" onclick="showPage('admin_pw')" id="nav-admin_pw">
+      <span class="icon">🛡️</span> Admin Heslo
+    </div>
     <div class="nav-divider"></div>
     <button class="logout-btn" data-tip="Odhlásiť sa zo správcu" data-tip-r onclick="doLogout()"><span>🚪</span> Odhlásiť sa</button>
   </div>
@@ -248,6 +253,8 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
             <button class="fmt-btn" type="button" data-action="justifyLeft" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať vľavo"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="0" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="0" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
             <button class="fmt-btn" type="button" data-action="justifyCenter" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať na stred"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="2.5" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="1" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
             <button class="fmt-btn" type="button" data-action="justifyRight" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať vpravo"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="5" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="2" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
+            <div class="fmt-sep"></div>
+            <select class="fmt-select" title="Riadkovanie" onmousedown="saveFmtSel(event,this)" onchange="fmtLineHeight(this)"><option value="">↕</option><option value="1.2">1.2×</option><option value="1.5">1.5×</option><option value="1.8">1.8×</option><option value="2.2">2.2×</option></select>
           </div>
           <div class="fake-textarea" id="onas_p1" contenteditable="true"></div>
         </div>
@@ -264,6 +271,8 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
             <button class="fmt-btn" type="button" data-action="justifyLeft" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať vľavo"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="0" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="0" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
             <button class="fmt-btn" type="button" data-action="justifyCenter" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať na stred"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="2.5" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="1" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
             <button class="fmt-btn" type="button" data-action="justifyRight" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať vpravo"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="5" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="2" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
+            <div class="fmt-sep"></div>
+            <select class="fmt-select" title="Riadkovanie" onmousedown="saveFmtSel(event,this)" onchange="fmtLineHeight(this)"><option value="">↕</option><option value="1.2">1.2×</option><option value="1.5">1.5×</option><option value="1.8">1.8×</option><option value="2.2">2.2×</option></select>
           </div>
           <div class="fake-textarea" id="onas_p2" contenteditable="true" data-tall></div>
         </div>
@@ -285,6 +294,8 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
             <button class="fmt-btn" type="button" data-action="justifyLeft" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať vľavo"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="0" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="0" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
             <button class="fmt-btn" type="button" data-action="justifyCenter" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať na stred"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="2.5" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="1" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
             <button class="fmt-btn" type="button" data-action="justifyRight" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať vpravo"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="5" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="2" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
+            <div class="fmt-sep"></div>
+            <select class="fmt-select" title="Riadkovanie" onmousedown="saveFmtSel(event,this)" onchange="fmtLineHeight(this)"><option value="">↕</option><option value="1.2">1.2×</option><option value="1.5">1.5×</option><option value="1.8">1.8×</option><option value="2.2">2.2×</option></select>
           </div>
           <div class="fake-textarea" id="onas_extra_p1" contenteditable="true"></div>
         </div>
@@ -301,6 +312,8 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
             <button class="fmt-btn" type="button" data-action="justifyLeft" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať vľavo"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="0" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="0" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
             <button class="fmt-btn" type="button" data-action="justifyCenter" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať na stred"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="2.5" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="1" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
             <button class="fmt-btn" type="button" data-action="justifyRight" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať vpravo"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="5" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="2" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
+            <div class="fmt-sep"></div>
+            <select class="fmt-select" title="Riadkovanie" onmousedown="saveFmtSel(event,this)" onchange="fmtLineHeight(this)"><option value="">↕</option><option value="1.2">1.2×</option><option value="1.5">1.5×</option><option value="1.8">1.8×</option><option value="2.2">2.2×</option></select>
           </div>
           <div class="fake-textarea" id="onas_extra_p2" contenteditable="true"></div>
         </div>
@@ -326,6 +339,8 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
             <button class="fmt-btn" type="button" data-action="justifyLeft" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať vľavo"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="0" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="0" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
             <button class="fmt-btn" type="button" data-action="justifyCenter" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať na stred"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="2.5" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="1" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
             <button class="fmt-btn" type="button" data-action="justifyRight" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať vpravo"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="5" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="2" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
+            <div class="fmt-sep"></div>
+            <select class="fmt-select" title="Riadkovanie" onmousedown="saveFmtSel(event,this)" onchange="fmtLineHeight(this)"><option value="">↕</option><option value="1.2">1.2×</option><option value="1.5">1.5×</option><option value="1.8">1.8×</option><option value="2.2">2.2×</option></select>
           </div>
           <div class="fake-textarea" id="program_text" contenteditable="true" data-tall style="min-height:160px;"></div>
         </div>
@@ -378,13 +393,41 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
       <div class="card">
         <div class="card-title">📜 Povinné predprimárne vzdelávanie</div>
         <p style="font-size:12px;color:#888;margin-bottom:14px;">Krátky úryvok sa zobrazí na hlavnej stránke. Celý text sa zobrazí na samostatnej podstránke <strong>ppv.html</strong> po kliknutí na tlačidlo „Čítať viac →".</p>
-        <div class="field">
+        <div class="field fmt-wrap">
           <label>Krátky úryvok (na hlavnej stránke)</label>
-          <textarea id="ppv_intro" style="min-height:120px;" placeholder="Predprimárne vzdelávanie je povinné pre všetky deti..."></textarea>
+          <div class="fmt-toolbar">
+            <button class="fmt-btn b" type="button" data-action="bold" onmousedown="event.preventDefault();fmtWrap(this)">B</button>
+            <button class="fmt-btn i" type="button" data-action="italic" onmousedown="event.preventDefault();fmtWrap(this)">I</button>
+            <div class="fmt-sep"></div>
+            <button class="fmt-btn" type="button" data-size="0.82em" onmousedown="event.preventDefault();fmtWrap(this)">S</button>
+            <button class="fmt-btn" type="button" data-size="1em" onmousedown="event.preventDefault();fmtWrap(this)">M</button>
+            <button class="fmt-btn" type="button" data-size="1.2em" onmousedown="event.preventDefault();fmtWrap(this)">L</button>
+            <div class="fmt-sep"></div>
+            <button class="fmt-btn" type="button" data-action="justifyLeft" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať vľavo"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="0" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="0" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
+            <button class="fmt-btn" type="button" data-action="justifyCenter" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať na stred"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="2.5" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="1" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
+            <button class="fmt-btn" type="button" data-action="justifyRight" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať vpravo"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="5" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="2" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
+            <div class="fmt-sep"></div>
+            <select class="fmt-select" title="Riadkovanie" onmousedown="saveFmtSel(event,this)" onchange="fmtLineHeight(this)"><option value="">↕</option><option value="1.2">1.2×</option><option value="1.5">1.5×</option><option value="1.8">1.8×</option><option value="2.2">2.2×</option></select>
+          </div>
+          <div class="fake-textarea" id="ppv_intro" contenteditable="true" style="min-height:120px;"></div>
         </div>
-        <div class="field">
+        <div class="field fmt-wrap">
           <label>Celý text podstránky ppv.html (môže byť dlhý — podporuje nové riadky)</label>
-          <textarea id="ppv_extra" style="min-height:260px;" placeholder="Tu vložte celý text o povinnom predprimárnom vzdelávaní..."></textarea>
+          <div class="fmt-toolbar">
+            <button class="fmt-btn b" type="button" data-action="bold" onmousedown="event.preventDefault();fmtWrap(this)">B</button>
+            <button class="fmt-btn i" type="button" data-action="italic" onmousedown="event.preventDefault();fmtWrap(this)">I</button>
+            <div class="fmt-sep"></div>
+            <button class="fmt-btn" type="button" data-size="0.82em" onmousedown="event.preventDefault();fmtWrap(this)">S</button>
+            <button class="fmt-btn" type="button" data-size="1em" onmousedown="event.preventDefault();fmtWrap(this)">M</button>
+            <button class="fmt-btn" type="button" data-size="1.2em" onmousedown="event.preventDefault();fmtWrap(this)">L</button>
+            <div class="fmt-sep"></div>
+            <button class="fmt-btn" type="button" data-action="justifyLeft" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať vľavo"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="0" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="0" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
+            <button class="fmt-btn" type="button" data-action="justifyCenter" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať na stred"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="2.5" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="1" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
+            <button class="fmt-btn" type="button" data-action="justifyRight" onmousedown="event.preventDefault();fmtWrap(this)" title="Zarovnať vpravo"><svg width="13" height="10" viewBox="0 0 13 10" fill="none"><rect x="0" y="0" width="13" height="1.8" rx="0.9" fill="currentColor"/><rect x="5" y="4.1" width="8" height="1.8" rx="0.9" fill="currentColor"/><rect x="2" y="8.2" width="11" height="1.8" rx="0.9" fill="currentColor"/></svg></button>
+            <div class="fmt-sep"></div>
+            <select class="fmt-select" title="Riadkovanie" onmousedown="saveFmtSel(event,this)" onchange="fmtLineHeight(this)"><option value="">↕</option><option value="1.2">1.2×</option><option value="1.5">1.5×</option><option value="1.8">1.8×</option><option value="2.2">2.2×</option></select>
+          </div>
+          <div class="fake-textarea" id="ppv_extra" contenteditable="true" data-tall style="min-height:260px;"></div>
         </div>
         <button class="btn-save" data-tip="Uložiť text PPV sekcie" onclick="saveSettings(['ppv_intro','ppv_extra'])">💾 Uložiť</button>
       </div>
@@ -670,6 +713,31 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
       </div>
     </div>
 
+    <!-- ADMIN HESLO -->
+    <div class="section-page" id="page-admin_pw">
+      <div class="page-title">🛡️ Admin heslo</div>
+      <div class="page-sub">Zmena hesla pre prihlásenie do tohto administrátorského rozhrania</div>
+      <div class="card" style="max-width:480px;">
+        <div class="card-title">🔐 Zmena hesla</div>
+        <p style="font-size:13px;color:#888;margin-bottom:18px;">Pre zmenu zadajte aktuálne heslo a nové heslo.</p>
+        <div class="field">
+          <label>Aktuálne heslo</label>
+          <input type="password" id="admin_pw_current" placeholder="Zadajte aktuálne heslo…"/>
+        </div>
+        <div class="field">
+          <label>Nové heslo</label>
+          <input type="password" id="admin_pw_new" placeholder="Zadajte nové heslo…"/>
+        </div>
+        <div class="field">
+          <label>Potvrdiť nové heslo</label>
+          <input type="password" id="admin_pw_confirm" placeholder="Zopakujte nové heslo…"/>
+        </div>
+        <div style="margin-top:6px;">
+          <button class="btn-save" onclick="saveAdminPw()">💾 Zmeniť heslo</button>
+        </div>
+      </div>
+    </div>
+
     <!-- VS HESLO -->
     <div class="section-page" id="page-skolka_pw">
       <div class="page-title">🔑 Heslo pre Virtuálnu Škôlku</div>
@@ -712,15 +780,14 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
 <script>
 const SUPABASE_URL = 'https://fmjtzuligqsugsauqkgz.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZtanR6dWxpZ3FzdWdzYXVxa2d6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MTQyMTUsImV4cCI6MjA5MDk5MDIxNX0.gRF-roExLgnVDG4bSNt7EzX6c1v-JtM5v6ZcX8dY934';
-const ADMIN_PASSWORD = 'vcielka2025';
-
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ===== AUTH =====
-function doLogin() {
+async function doLogin() {
   const pw = document.getElementById('passwordInput').value;
-  if (pw === ADMIN_PASSWORD) {
+  const { data, error } = await db.rpc('admin_verify_password', { pw });
+  if (!error && data === true) {
     sessionStorage.setItem('admin_auth', '1');
     document.getElementById('loginWrap').style.display = 'none';
     document.getElementById('app').style.display = 'flex';
@@ -760,6 +827,7 @@ function initApp() {
 async function loadPage(name) {
   if (name === 'skolka') { loadSkolka(); return; }
   if (name === 'skolka_pw') { loadSkolkaPw(); return; }
+  if (name === 'admin_pw') { return; }
   if (name === 'hero') await loadSettings(['hero_title','hero_subtitle','hero_photo']);
   if (name === 'onas') await loadSettings(['onas_p1','onas_p2','onas_extra_p1','onas_extra_p2','onas_list','ppv_intro','ppv_extra','program_text','icon_social','icon_kreativ','icon_sport','icon_intellect']);
   if (name === 'contact') await loadSettings(['contact_address','contact_phone','contact_email','contact_hours','icon_adresa','icon_telefon','icon_email','icon_hodiny']);
@@ -831,6 +899,35 @@ function fmtWrap(btn) {
   }
 }
 
+let _fmtSavedRange = null;
+function saveFmtSel(e, sel) {
+  const selection = window.getSelection();
+  if (selection && selection.rangeCount) {
+    const range = selection.getRangeAt(0);
+    const editor = sel.closest('.fmt-wrap').querySelector('[contenteditable]');
+    if (editor && editor.contains(range.commonAncestorContainer)) {
+      _fmtSavedRange = range.cloneRange();
+      return;
+    }
+  }
+  _fmtSavedRange = null;
+}
+function fmtLineHeight(sel) {
+  const val = sel.value;
+  sel.value = '';
+  if (!val || !_fmtSavedRange || _fmtSavedRange.collapsed) return;
+  const selection = window.getSelection();
+  selection.removeAllRanges();
+  selection.addRange(_fmtSavedRange);
+  const range = _fmtSavedRange.cloneRange();
+  const frag = range.extractContents();
+  const div = document.createElement('div');
+  div.style.lineHeight = val;
+  div.appendChild(frag);
+  range.insertNode(div);
+  _fmtSavedRange = null;
+}
+
 // ===== ACTIVITY DRAG-TO-REORDER =====
 let _dragActId = null;
 function actDragStart(e, id) {
@@ -839,7 +936,8 @@ function actDragStart(e, id) {
   setTimeout(() => { if(e.target) e.target.style.opacity='0.45'; }, 0);
 }
 function actDragEnd(e) {
-  e.target.style.opacity = '';
+  e.currentTarget.style.opacity = '';
+  e.currentTarget.removeAttribute('draggable');
   document.querySelectorAll('.activity-card').forEach(c => c.classList.remove('drag-over'));
 }
 function actDragOver(e) {
@@ -874,14 +972,16 @@ async function loadActivities() {
   if (!data) return;
   const grid = document.getElementById('activitiesGrid');
   grid.innerHTML = data.map(a => `
-    <div class="activity-card" draggable="true"
+    <div class="activity-card"
       ondragstart="actDragStart(event,${a.id})"
       ondragend="actDragEnd(event)"
       ondragover="actDragOver(event)"
       ondragleave="actDragLeave(event)"
       ondrop="actDrop(event,${a.id})">
       <div class="activity-card-header">
-        <span class="drag-handle" title="Presunúť">⠿</span>
+        <span class="drag-handle" title="Presunúť"
+          onmousedown="this.closest('.activity-card').setAttribute('draggable','true')"
+          onmouseup="this.closest('.activity-card').removeAttribute('draggable')">⠿</span>
         <span class="activity-card-icon">${a.icon && a.icon.startsWith('http') ? `<img src="${a.icon}" style="width:28px;height:28px;object-fit:contain;border-radius:6px;vertical-align:middle;"/>` : a.icon}</span>
         <button class="btn-danger" style="padding:5px 10px;font-size:11px;" data-tip="Natrvalo odstrániť aktivitu" onclick="deleteActivity(${a.id})">🗑️ Odstrániť</button>
       </div>
@@ -924,6 +1024,8 @@ async function loadActivities() {
           <button class="fmt-btn" type="button" data-size="0.82em" onmousedown="event.preventDefault();fmtWrap(this)">S</button>
           <button class="fmt-btn" type="button" data-size="1em" onmousedown="event.preventDefault();fmtWrap(this)">M</button>
           <button class="fmt-btn" type="button" data-size="1.2em" onmousedown="event.preventDefault();fmtWrap(this)">L</button>
+          <div class="fmt-sep"></div>
+          <select class="fmt-select" title="Riadkovanie" onmousedown="saveFmtSel(event,this)" onchange="fmtLineHeight(this)"><option value="">↕</option><option value="1.2">1.2×</option><option value="1.5">1.5×</option><option value="1.8">1.8×</option><option value="2.2">2.2×</option></select>
         </div>
         <div class="fake-textarea" contenteditable="true" onblur="updateActivity(${a.id},'description',this.innerHTML)">${a.description||''}</div>
       </div>
@@ -935,6 +1037,8 @@ async function loadActivities() {
           <button class="fmt-btn" type="button" data-size="0.82em" onmousedown="event.preventDefault();fmtWrap(this)">S</button>
           <button class="fmt-btn" type="button" data-size="1em" onmousedown="event.preventDefault();fmtWrap(this)">M</button>
           <button class="fmt-btn" type="button" data-size="1.2em" onmousedown="event.preventDefault();fmtWrap(this)">L</button>
+          <div class="fmt-sep"></div>
+          <select class="fmt-select" title="Riadkovanie" onmousedown="saveFmtSel(event,this)" onchange="fmtLineHeight(this)"><option value="">↕</option><option value="1.2">1.2×</option><option value="1.5">1.5×</option><option value="1.8">1.8×</option><option value="2.2">2.2×</option></select>
         </div>
         <div class="fake-textarea" data-tall contenteditable="true" onblur="updateActivity(${a.id},'popup_text',this.innerHTML)">${a.popup_text||''}</div>
       </div>
@@ -1668,6 +1772,22 @@ async function saveSkolkaPw() {
   document.getElementById('vs_pw_current').value = '';
   document.getElementById('vs_pw_new').value = '';
   toast('✅ Heslo uložené!');
+}
+
+// ===== ADMIN HESLO =====
+async function saveAdminPw() {
+  const oldPw = document.getElementById('admin_pw_current').value.trim();
+  const newPw = document.getElementById('admin_pw_new').value.trim();
+  const confirmPw = document.getElementById('admin_pw_confirm').value.trim();
+  if (!oldPw) { toast('Zadajte aktuálne heslo', 'error'); return; }
+  if (!newPw) { toast('Zadajte nové heslo', 'error'); return; }
+  if (newPw !== confirmPw) { toast('❌ Nové heslá sa nezhodujú', 'error'); return; }
+  const { error } = await db.rpc('admin_set_password', { old_pw: oldPw, new_pw: newPw });
+  if (error) { toast('❌ Nesprávne aktuálne heslo', 'error'); return; }
+  document.getElementById('admin_pw_current').value = '';
+  document.getElementById('admin_pw_new').value = '';
+  document.getElementById('admin_pw_confirm').value = '';
+  toast('✅ Admin heslo zmenené!');
 }
 
 // ===== GALLERY DRAG TO REORDER =====
