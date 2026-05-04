@@ -752,8 +752,8 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
           </div>
           <!-- Scrollable preview container -->
           <div id="jl-preview-wrap" style="flex:1;overflow:auto;border-radius:14px;box-shadow:0 6px 28px rgba(0,0,0,.22);">
-            <div id="jl-preview-sizer" style="width:420px;height:594px;">
-              <div id="jl-preview-scaler" style="width:794px;transform:scale(0.529);transform-origin:top left;">
+            <div id="jl-preview-sizer" style="width:420px;height:594px;overflow:hidden;">
+              <div id="jl-preview-scaler" style="width:794px;transform-origin:top left;">
                 <div id="jl-preview-page" style="width:794px;min-height:1123px;background:#F8F4ED url('jedalny-bg.png') center top/cover no-repeat;position:relative;font-family:'Quicksand',sans-serif;">
                   <div id="jl-preview-overlay" style="position:absolute;top:248px;left:72px;right:62px;"></div>
                 </div>
@@ -1844,15 +1844,30 @@ function loadJLLocal(){
     });
   }catch(e){}
   updateJLPreview();
+  requestAnimationFrame(jlInitZoom);
 }
 
 let jlZoom = 1.0;
-const JL_BASE_SCALE = 0.529;
+let jlBaseScale = 0.529;
 const JL_CONTENT_W = 794;
 const JL_CONTENT_H = 1123;
+const JL_ZOOM_MIN  = 0.25;
+const JL_ZOOM_MAX  = 3.0;
+const JL_ZOOM_STEP = 0.1;
+
+function jlCalcBaseScale(){
+  const wrap = document.getElementById('jl-preview-wrap');
+  if(!wrap) return;
+  /* Temporarily collapse the sizer so it doesn't inflate clientHeight */
+  const sizer = document.getElementById('jl-preview-sizer');
+  if(sizer){ sizer.style.width='0'; sizer.style.height='0'; }
+  const w = wrap.clientWidth  || 420;
+  const h = wrap.clientHeight || 594;
+  jlBaseScale = Math.min(w / JL_CONTENT_W, h / JL_CONTENT_H);
+}
 
 function jlApplyZoom(){
-  const scale = JL_BASE_SCALE * jlZoom;
+  const scale  = jlBaseScale * jlZoom;
   const sizer  = document.getElementById('jl-preview-sizer');
   const scaler = document.getElementById('jl-preview-scaler');
   const pct    = document.getElementById('jl-zoom-pct');
@@ -1863,10 +1878,23 @@ function jlApplyZoom(){
   if(pct) pct.textContent = Math.round(jlZoom * 100) + '%';
 }
 
-function jlZoomStep(delta){
-  jlZoom = Math.min(3.0, Math.max(0.3, Math.round((jlZoom + delta) * 10) / 10));
+function jlInitZoom(){
+  jlZoom = 1.0;
+  jlCalcBaseScale();
   jlApplyZoom();
 }
+
+function jlZoomStep(delta){
+  jlZoom = Math.round(Math.min(JL_ZOOM_MAX, Math.max(JL_ZOOM_MIN, jlZoom + delta)) * 100) / 100;
+  jlApplyZoom();
+}
+
+window.addEventListener('resize', ()=>{
+  if(document.getElementById('page-jedalny')?.classList.contains('active')){
+    jlCalcBaseScale();
+    jlApplyZoom();
+  }
+});
 
 function _jlEsc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');}
 
