@@ -436,6 +436,22 @@ button{outline:none;border:none;}
 =========================== */
 @media(min-width:901px){
   .gallery-item{flex:0 0 320px;width:320px;height:240px;}
+  /* ── Desktop: fixed nav that auto-hides on scroll ── */
+  body{padding-top:64px;}
+  .nav{
+    position:fixed;width:100%;
+    transition:transform .42s cubic-bezier(.4,0,.2,1);
+  }
+  .nav.nav-hidden{transform:translateY(-100%);}
+  /* Pinned logo – always visible even when nav is gone */
+  #nav-pin-logo{
+    position:fixed;top:7px;left:32px;z-index:101;
+    display:flex;align-items:center;text-decoration:none;
+    opacity:0;pointer-events:none;
+    transition:opacity .3s ease;
+  }
+  #nav-pin-logo img{height:50px;width:auto;object-fit:contain;}
+  #nav-pin-logo.visible{opacity:1;pointer-events:auto;}
 }
 @media(max-width:900px){
   .nav-links{display:none;}
@@ -837,6 +853,11 @@ button{outline:none;border:none;}
 <!-- ===========================
      NAV
 =========================== -->
+<!-- Pinned logo – only visible on desktop when nav is hidden -->
+<a href="#home" id="nav-pin-logo" aria-label="Včielka – domov">
+  <img src="VCIELKA_LOGO.png" alt="Materská škola Včielka" class="cms-logo"/>
+</a>
+
 <nav class="nav">
   <a href="#home" class="nav-logo">
     <img src="VCIELKA_LOGO.png" alt="Materská škola Včielka" class="cms-logo" style="height:50px;width:auto;object-fit:contain;"/>
@@ -2028,6 +2049,47 @@ document.addEventListener('DOMContentLoaded', function(){
   if(lb) lb.addEventListener('click',e=>{if(e.target===lb)closeLightbox();});
   if(lbClose) lbClose.addEventListener('click',closeLightbox);
 });
+
+// ── Desktop: auto-hide nav on scroll, reveal on mouse near top ──
+(function(){
+  if(window.innerWidth <= 900) return;
+  const nav = document.querySelector('.nav');
+  const pin = document.getElementById('nav-pin-logo');
+  if(!nav || !pin) return;
+
+  let hidden = false;
+  let lastY = window.scrollY;
+  const THRESHOLD = 80; // px scrolled before we hide
+
+  function show(){
+    if(!hidden) return;
+    hidden = false;
+    nav.classList.remove('nav-hidden');
+    pin.classList.remove('visible');
+  }
+  function hide(){
+    if(hidden) return;
+    hidden = true;
+    nav.classList.add('nav-hidden');
+    pin.classList.add('visible');
+  }
+
+  window.addEventListener('scroll', ()=>{
+    const y = window.scrollY;
+    if(y < THRESHOLD){ show(); }
+    else if(y > lastY + 6){ hide(); }
+    lastY = y;
+  }, {passive:true});
+
+  // Reveal when mouse drifts to within 56 px of the top edge
+  window.addEventListener('mousemove', e=>{
+    if(e.clientY < 56) show();
+  });
+
+  window.addEventListener('resize', ()=>{
+    if(window.innerWidth <= 900) show();
+  });
+})();
 </script>
 
 <!-- cookie notice -->
