@@ -740,7 +740,7 @@ body{font-family:'Inter',sans-serif;background:#F0F7FF;color:#1a1a1a;min-height:
         </div>
 
         <!-- RIGHT: LIVE PREVIEW -->
-        <div style="width:420px;flex-shrink:0;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:8px;padding:20px 0;">
+        <div id="jl-preview-panel" style="flex-shrink:0;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:8px;padding:20px 0;">
           <!-- Label + zoom controls -->
           <div style="display:flex;align-items:center;justify-content:space-between;padding:0 4px;flex-shrink:0;">
             <div style="font-family:'Quicksand',sans-serif;font-weight:700;font-size:12px;color:#888;letter-spacing:.5px;text-transform:uppercase;">Náhľad v reálnom čase</div>
@@ -1856,14 +1856,17 @@ const JL_ZOOM_MAX  = 3.0;
 const JL_ZOOM_STEP = 0.1;
 
 function jlCalcBaseScale(){
-  const wrap = document.getElementById('jl-preview-wrap');
-  if(!wrap) return;
-  /* Temporarily collapse the sizer so it doesn't inflate clientHeight */
+  const wrap  = document.getElementById('jl-preview-wrap');
+  const panel = document.getElementById('jl-preview-panel');
+  if(!wrap || !panel) return;
+  /* Collapse sizer so it doesn't inflate clientHeight */
   const sizer = document.getElementById('jl-preview-sizer');
   if(sizer){ sizer.style.width='0'; sizer.style.height='0'; }
-  const w = wrap.clientWidth  || 420;
+  /* Scale by available height so the A4 fills the panel vertically */
   const h = wrap.clientHeight || 594;
-  jlBaseScale = Math.min(w / JL_CONTENT_W, h / JL_CONTENT_H);
+  jlBaseScale = h / JL_CONTENT_H;
+  /* Widen the panel to match the A4 aspect ratio at this scale */
+  panel.style.width = Math.round(JL_CONTENT_W * jlBaseScale) + 'px';
 }
 
 function jlApplyZoom(){
