@@ -240,6 +240,14 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#c8d8e4;color:#1a2a3a
   .zoom-v-track{height:80px}
   #zoom-slider{height:80px}
   .zoom-pct{font-size:11px}
+  .sb-box{padding:14px;gap:10px;border-radius:18px;max-height:92vh}
+  .sb-title{font-size:14px}
+  .sb-folders{grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;padding:4px}
+  .sb-folder-btn{padding:12px 8px;border-radius:12px;font-size:12px;gap:5px}
+  .sb-folder-icon{font-size:26px}
+  .sb-photos{grid-template-columns:repeat(3,1fr);gap:6px}
+  .sb-photo-chk{width:20px;height:20px;font-size:10px;top:4px;right:4px}
+  .sb-pridat{padding:11px 22px;font-size:13px}
 }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -736,13 +744,13 @@ async function sbOpenFolder(folderId, folderName){
   content.innerHTML = '<div class="sb-loading">Načítavam fotografie…</div>';
 
   const { data: files, error } = await sbDb.storage.from('vcielka').list('skolka/' + folderId, {limit:200});
-  const photos = (files||[]).filter(x=>x.name!=='.keep');
-  if(!photos.length){
+  const fileList = (files||[]).filter(x=>x.name!=='.keep');
+  if(!fileList.length){
     content.innerHTML = '<div class="sb-loading">Priečinok je prázdny.</div>';
     return;
   }
   content.innerHTML = '';
-  for(const p of photos){
+  for(const p of fileList){
     const { data: { publicUrl } } = sbDb.storage.from('vcielka').getPublicUrl('skolka/'+folderId+'/'+p.name);
     const div = document.createElement('div');
     div.className = 'sb-photo';
