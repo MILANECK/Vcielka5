@@ -340,7 +340,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#c8d8e4;color:#1a2a3a
     <button class="panel-close" onclick="event.stopPropagation();togglePanel()">✕</button>
   </div>
   <div id="panel-body">
-    <div id="photo-count">0/10 fotografií</div>
+    <div id="photo-count">0/5 fotografií</div>
     <div id="photos-list"></div>
     <div id="photos-empty">Pridajte fotografie<br>z Virtuálnej Školky<br>pomocou ružového tlačidla<br><br><span style="font-size:10px;color:#a0b0c0">Klepnite na ružové tlačidlo vľavo</span></div>
   </div>
@@ -429,7 +429,7 @@ const MASKS_DEF=[
   ]}
 ];
 let MASKS=[];
-let photos=[],items=[],selId=null,maskIdx=0;
+let photos=[],items=[],selId=null,maskIdx=window.innerWidth<900?1:0;
 let frameHue=0;
 let panOpen=false,txtMode=false,txtPos=null,moving=null;
 let zoomPct=100;
@@ -534,7 +534,7 @@ function togglePanel(){
 }
 
 function renderPanel(){
-  document.getElementById('photo-count').textContent=`${photos.length}/10 fotografií`;
+  document.getElementById('photo-count').textContent=`${photos.length}/5 fotografií`;
   document.getElementById('photos-empty').style.display=photos.length?'none':'block';
   const list=document.getElementById('photos-list');list.innerHTML='';
   photos.forEach(ph=>{
@@ -592,7 +592,7 @@ function handleCanvasClick(e){
   if(e.target!==cv&&e.target.id!=='mask-overlay'&&!e.target.closest('#hints-svg'))return;
   setSel(null);document.getElementById('mask-picker').classList.remove('open');
   if(txtMode){const{x,y}=c2c(e.clientX,e.clientY);txtPos={x,y};const w=document.getElementById('txt-input-wrap');w.style.left=x+'px';w.style.top=y+'px';w.classList.add('open');document.getElementById('txt-inp').value='';setTimeout(()=>document.getElementById('txt-inp').focus(),30);setTxtMode(false);}
-  else if(txtPos){cancelTxt();}
+  else if(txtPos){confirmTxt();}
 }
 function toggleTxtMode(){setTxtMode(!txtMode);}
 function setTxtMode(v){txtMode=v;document.getElementById('canvas').style.cursor=v?'crosshair':'default';document.getElementById('txt-mode-bar').classList.toggle('open',v);const b=document.getElementById('txt-btn');b.style.background=v?'#005e9f':'';b.style.color=v?'#fff':'';}
@@ -680,8 +680,10 @@ const sbDb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let sbSelected = [];   // {url, name}
 let sbCurrentFolder = null;
+let sbRemaining = 5;
 
 function sbOpen(){
+  if(photos.length >= 5){ toast('Všetkých 5 slotov je obsadených.'); return; }
   document.getElementById('sb-picker').classList.add('open');
   sbShowFolders();
 }
@@ -725,8 +727,9 @@ async function sbOpenFolder(folderId, folderName){
   sbSelected = [];
   document.getElementById('sb-back-btn').style.display = 'flex';
   document.getElementById('sb-title').textContent = '📁 ' + folderName;
-  document.getElementById('sb-info').textContent = 'Vyberte fotografie (max 6)';
-  document.getElementById('sb-sel-count').textContent = '0 / 6 vybraných';
+  sbRemaining = Math.max(0, 5 - photos.length);
+  document.getElementById('sb-info').textContent = `Vyberte fotografie (zostatok: ${sbRemaining})`;
+  document.getElementById('sb-sel-count').textContent = `0 / ${sbRemaining} vybraných`;
   document.getElementById('sb-pridat-btn').disabled = true;
   const content = document.getElementById('sb-content');
   content.className = 'sb-photos';
@@ -758,7 +761,7 @@ function sbTogglePhoto(div, url, name){
     div.classList.remove('sel');
     div.querySelector('.sb-photo-chk').textContent = '';
   } else {
-    if(sbSelected.length >= 6){ toast('Maximum 6 fotografi!'); return; }
+    if(sbSelected.length >= sbRemaining){ toast(`Maximum ${sbRemaining} fotografi!`); return; }
     sbSelected.push({url, name});
     div.classList.add('sel');
     div.querySelector('.sb-photo-chk').textContent = sbSelected.length;
@@ -768,7 +771,7 @@ function sbTogglePhoto(div, url, name){
     });
   }
   const n = sbSelected.length;
-  document.getElementById('sb-sel-count').textContent = n + ' / 6 vybraných';
+  document.getElementById('sb-sel-count').textContent = `${n} / ${sbRemaining} vybraných`;
   document.getElementById('sb-pridat-btn').disabled = n === 0;
 }
 
@@ -776,7 +779,7 @@ async function sbImport(){
   if(!sbSelected.length) return;
   let added = 0;
   for(const {url, name} of sbSelected){
-    if(photos.length >= 10) break;
+    if(photos.length >= 5) break;
     // fetch as blob → dataURL so it works offline too
     try{
       const resp = await fetch(url);
@@ -840,8 +843,8 @@ async function sbImport(){
 async function init(){
   document.getElementById('logo-img').src=LOGO_SRC;
   for(const m of MASKS_DEF){const processed=await buildMaskSrc(m.raw);MASKS.push({...m,processed});}
-  document.getElementById('mask-thumb').src=MASKS_DEF[0].raw;
-  document.getElementById('tpl-thumb-big').querySelector('img').src=MASKS_DEF[0].raw;
+  document.getElementById('mask-thumb').src=MASKS_DEF[maskIdx].raw;
+  document.getElementById('tpl-thumb-big').querySelector('img').src=MASKS_DEF[maskIdx].raw;
   document.getElementById('canvas').style.background=mask().bg;
   document.getElementById('mask-overlay').src=mask().processed;
   updateCanvasDims(mask());

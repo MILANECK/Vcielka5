@@ -265,13 +265,16 @@ button{outline:none;border:none;}
 .act-popup-overlay.open{opacity:1;visibility:visible;pointer-events:auto;}
 .act-popup{background:#fff;border-radius:28px;max-width:680px;width:100%;max-height:85vh;position:relative;display:flex;flex-direction:column;transform:scale(.94) translateY(18px);opacity:0;transition:transform .32s cubic-bezier(.4,0,.2,1),opacity .32s ease;}
 .act-popup-overlay.open .act-popup{transform:scale(1) translateY(0);opacity:1;}
-.act-popup-header{padding:28px 28px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-shrink:0;}
+.act-popup-header{padding:28px 28px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-shrink:0;position:relative;}
+.act-popup-header::after{content:'';position:absolute;bottom:-28px;left:0;right:0;height:28px;background:linear-gradient(to bottom,#fff,transparent);pointer-events:none;z-index:1;}
 .act-popup-close{background:#F0F0F0;border:none;border-radius:50%;width:36px;height:36px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;line-height:1;}
 .act-popup-body{padding:16px 28px 32px;font-family:'Inter',sans-serif;font-size:15px;color:#444;line-height:1.75;overflow-y:auto;flex:1;}
 .act-popup-body::-webkit-scrollbar{width:5px;}
 .act-popup-body::-webkit-scrollbar-track{background:transparent;margin:28px 0;}
 .act-popup-body::-webkit-scrollbar-thumb{background:#ddd;border-radius:10px;}
 .act-popup-body::-webkit-scrollbar-thumb:hover{background:#bbb;}
+.act-popup-body a{color:var(--blue);text-decoration:underline;}
+.act-popup-body a:hover{opacity:.8;}
 
 /* ===========================
    WHY US
@@ -1880,19 +1883,22 @@ function openActPopup(idx){
   if(!a) return;
   const _iconEl = document.getElementById('actPopupIcon');
   if (a.icon && a.icon.startsWith('http')) {
-    _iconEl.innerHTML = `<img src="${a.icon}" style="width:96px;height:96px;object-fit:contain;border-radius:22px;filter:drop-shadow(0 6px 18px rgba(0,0,0,.14));" alt=""/>`;
+    _iconEl.innerHTML = `<img src="${a.icon}" style="width:77px;height:77px;object-fit:contain;border-radius:18px;filter:drop-shadow(0 6px 18px rgba(0,0,0,.14));" alt=""/>`;
     _iconEl.style.fontSize = '';
   } else {
     _iconEl.textContent = a.icon||'';
-    _iconEl.style.fontSize = '40px';
+    _iconEl.style.fontSize = '32px';
   }
   document.getElementById('actPopupTitle').textContent = a.title||'';
-  document.getElementById('actPopupText').innerHTML = (a.popup_text||'').replace(/\n/g,'<br>');
+  function _autoLink(h){return h.replace(/(https?:\/\/[^&\s<"']+)/g,function(u){u=u.replace(/[.,;:!?)\]]+$/,'');return '<a href="'+u+'" target="_blank" rel="noopener noreferrer">'+u+'</a>';});}
+  document.getElementById('actPopupText').innerHTML = _autoLink((a.popup_text||'').replace(/\n/g,'<br>'));
   const imgWrap = document.getElementById('actPopupImgWrap');
   const img = document.getElementById('actPopupImg');
   if(a.popup_photo_url && imgWrap && img){ img.src = a.popup_photo_url; imgWrap.style.display='block'; }
   else if(imgWrap){ imgWrap.style.display='none'; }
   const ov = document.getElementById('actPopupOverlay');
+  const body = document.querySelector('.act-popup-body');
+  if(body) body.scrollTop = 0;
   if(ov){ ov.classList.add('open'); document.body.style.overflow='hidden'; }
 }
 function closeActPopup(){
